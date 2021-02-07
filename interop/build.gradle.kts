@@ -10,6 +10,13 @@ evaluationDependsOn(":vst3cwrapper")
 val cwrapper = project(":vst3cwrapper")
 dependencies {
     commonMainImplementation(kotlin("stdlib-common"))
+
+    // Test Dependencies
+    val kotestVersion = "4.4.0"
+    commonTestImplementation(kotlin("test-common"))
+    commonTestImplementation(kotlin("test-annotations-common"))
+    commonTestImplementation("io.kotest:kotest-assertions-core:$kotestVersion")
+    commonTestImplementation("io.kotest:kotest-property:$kotestVersion")
 }
 
 kotlin {
