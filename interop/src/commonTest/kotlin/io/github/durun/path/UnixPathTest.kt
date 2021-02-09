@@ -24,6 +24,23 @@ class UnixPathTest {
 	}
 
 	@Test
+	fun name() {
+		UnixPath.of("home/a.out").name shouldBe "a.out"
+		UnixPath.of("home/.git").name shouldBe ".git"
+		UnixPath.of("/a.out.old").name shouldBe "a.out.old"
+		UnixPath.of("/.git").name shouldBe ".git"
+	}
+
+	@Test
+	fun nameWithoutExtension() {
+		UnixPath.of("home/a.out").nameWithoutExtension shouldBe "a"
+		UnixPath.of("home/a.out.old").nameWithoutExtension shouldBe "a.out"
+		UnixPath.of("home/.git").nameWithoutExtension shouldBe ""
+		UnixPath.of("/a.out.old").nameWithoutExtension shouldBe "a.out"
+		UnixPath.of("/.git").nameWithoutExtension shouldBe ""
+	}
+
+	@Test
 	fun resolve_String() {
 		UnixPath.of("/").resolve("home/user") shouldBe UnixPath.of("/home/user")
 		UnixPath.of("user").resolve("bin") shouldBe UnixPath.of("user/bin")

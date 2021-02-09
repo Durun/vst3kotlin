@@ -7,6 +7,8 @@ interface Path {
 	val isAbsolute: Boolean
 	val isRelative: Boolean
 		get() = !isAbsolute
+	val name: String
+	val nameWithoutExtension: String
 
 	companion object {
 		fun of(path: String): Path = when (DEFAULT_FILESYSTEM) {

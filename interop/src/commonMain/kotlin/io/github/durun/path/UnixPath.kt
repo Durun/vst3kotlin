@@ -21,6 +21,15 @@ private constructor(
 		private fun String.isValidPath() = invalidCharacters.all { !this.contains(it) } && !this.contains("//")
 	}
 
+	override val name: String
+		get() = elements.lastOrNull().orEmpty()
+	override val nameWithoutExtension: String
+		get() {
+			val nameDot = name.dropLastWhile { it != '.' }
+			return if (nameDot.isNotEmpty()) nameDot.dropLast(1)
+			else name
+		}
+
 	override fun resolve(other: String): Path {
 		return when {
 			isRoot() -> of("/$other")
