@@ -1,11 +1,22 @@
 package io.github.durun.dylib
 
+import io.github.durun.io.Closeable
 import kotlinx.cinterop.*
 import platform.posix.*
 
-actual class DylibScope(
-	val handle: CPointer<*>
-) {
+actual class Dylib (val handle: CPointer<*>): Closeable {
+	actual companion object {
+		actual fun open(lib: String): Dylib {
+			val handle = dlopen(lib, RTLD_LAZY)
+			checkNotNull(handle) { "Load failed: $lib" }
+			return Dylib(handle)
+		}
+	}
+
+	actual override fun close() {
+		dlclose(handle)
+	}
+
 	inline fun <reified T : CPointed> getAddress(name: String): CPointer<T>? {
 		dlerror()
 		val symbol = dlsym(handle, name)?.reinterpret<T>()
@@ -25,17 +36,4 @@ actual class DylibScope(
 		checkNotNull(address)
 		return address
 	}
-}
-
-actual fun <T> useDylib(lib: String, body: DylibScope.() -> T?): T? {
-	val handle = dlopen(lib, RTLD_LAZY)
-	checkNotNull(handle) { "Load failed: $lib" }
-
-	val result = runCatching {
-		DylibScope(handle).body()
-	}
-
-	dlclose(handle)
-
-	return result.getOrThrow()
 }

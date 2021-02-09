@@ -1,6 +1,19 @@
 package io.github.durun.dylib
 
+import io.github.durun.io.Closeable
 
-expect class DylibScope
+expect class Dylib : Closeable {
+	companion object {
+		fun open(lib: String): Dylib
+	}
 
-expect fun <T> useDylib(lib: String, body: DylibScope.() -> T?): T?
+	override fun close()
+}
+
+fun <T : Closeable, R> T.use(block: T.() -> R): R {
+	val result = runCatching {
+		block()
+	}
+	close()
+	return result.getOrThrow()
+}

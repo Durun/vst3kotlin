@@ -6,13 +6,22 @@ import kotlin.test.Test
 
 class DylibTest {
 	@Test
-	fun use_libc() {
-		useDylib("libc.so.6") {
+	fun openAndClose() {
+		val lib = Dylib.open("libc.so.6")
+		val abs = lib.getFunction<(Int) -> Int>("abs")
+		abs(-1) shouldBe 1
+		val atoi = lib.getFunction<(CPointer<ByteVar>) -> Int>("atoi")
+		memScoped { atoi("-255".utf8.ptr) } shouldBe -255
+		lib.close()
+	}
+
+	@Test
+	fun autoClose() {
+		Dylib.open("libc.so.6").use {
 			val abs = getFunction<(Int) -> Int>("abs")
 			abs(-1) shouldBe 1
-
 			val atoi = getFunction<(CPointer<ByteVar>) -> Int>("atoi")
-			memScoped { atoi("-255".utf8.ptr) } shouldBe -255
-		}
+			memScoped { atoi("-255".utf8.ptr) }
+		} shouldBe -255
 	}
 }
