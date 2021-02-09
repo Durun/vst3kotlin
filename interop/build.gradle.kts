@@ -1,3 +1,6 @@
+import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTargetWithHostTests
+import org.jetbrains.kotlin.gradle.tasks.CInteropProcess
+
 plugins {
     kotlin("multiplatform") version "1.4.30"
 }
@@ -20,7 +23,7 @@ dependencies {
 }
 
 kotlin {
-    linuxX64 {
+    fun KotlinNativeTargetWithHostTests.configureTarget() {
         compilations.getByName("main") {
             cinterops {
                 create("cwrapper") {
@@ -37,8 +40,11 @@ kotlin {
             sharedLib()
         }
     }
+    linuxX64 { configureTarget() }
+    macosX64 { configureTarget() }
+    mingwX64("windowsX64") { configureTarget() }
 }
-tasks.findByName("cinteropCwrapperLinuxX64")?.apply {
+tasks.withType(CInteropProcess::class) {
     dependsOn(cwrapper.tasks["copyHeaders"])
     dependsOn(cwrapper.tasks["createReleaseLinux"])
 }
