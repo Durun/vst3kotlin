@@ -5,6 +5,7 @@ import io.github.durun.dylib.Dylib
 import io.github.durun.io.Closeable
 import io.github.durun.path.Path
 import kotlinx.cinterop.*
+import kotlin.native.concurrent.AtomicInt
 
 actual class Vst3Package
 private constructor(
@@ -18,8 +19,13 @@ private constructor(
 		}
 	}
 
+	actual override var isOpen: Boolean = true
+	private set
+
 	actual override fun close() {
+		check(isOpen)
 		lib.close()
+		isOpen = false
 	}
 
 	actual fun openPluginFactory(): PluginFactory {
@@ -31,6 +37,8 @@ private constructor(
 actual class PluginFactory(
 	private val factoryPtr: CPointer<IPluginFactory>
 ): Closeable {
+	actual override var isOpen: Boolean = true
+		private set
 	actual val factoryInfo: FactoryInfo by lazy {
 		memScoped {
 			val infoPtr = alloc<PFactoryInfo>().ptr
@@ -51,7 +59,9 @@ actual class PluginFactory(
 	}
 
 	actual override fun close() {
+		check(isOpen)
 		IPluginFactory_release(factoryPtr)
+		isOpen = false
 	}
 
 	@OptIn(ExperimentalUnsignedTypes::class)

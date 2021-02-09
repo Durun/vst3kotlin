@@ -9,6 +9,9 @@ expect class Dylib : Closeable {
 		fun open(lib: Path): Dylib
 	}
 
+	override var isOpen: Boolean
+		private set
+
 	override fun close()
 }
 

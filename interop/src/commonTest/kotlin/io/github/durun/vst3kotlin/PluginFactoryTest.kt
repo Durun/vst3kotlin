@@ -33,8 +33,10 @@ class PluginFactoryTest {
 	@Test
 	fun classInfo() {
 		val path = Path.of("src/commonTest/resources/vst3/again.vst3")
-		val classes = Vst3Package.open(path).use {
-			it.pluginFactory.classInfo
+		val classes = Vst3Package.open(path).use { plugin ->
+			plugin.openPluginFactory().use {
+				it.classInfo
+			}
 		}
 		println(classes.joinToString("\n"))
 		classes shouldBe listOf(

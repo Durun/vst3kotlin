@@ -12,15 +12,21 @@ actual class Dylib (val handle: CPointer<*>): Closeable {
 			checkNotNull(handle) { "Load failed: $lib" }
 			return Dylib(handle)
 		}
+
 		actual fun open(lib: Path): Dylib {
-			check(access("$lib", F_OK) == 0) {"Not exists: $lib"}
-			return if(lib.isAbsolute) open("$lib")
+			check(access("$lib", F_OK) == 0) { "Not exists: $lib" }
+			return if (lib.isAbsolute) open("$lib")
 			else open("./$lib")
 		}
 	}
 
+	actual override var isOpen: Boolean = true
+		private set
+
 	actual override fun close() {
+		check(isOpen)
 		dlclose(handle)
+		isOpen = false
 	}
 
 	inline fun <reified T : CPointed> getAddress(name: String): CPointer<T>? {
