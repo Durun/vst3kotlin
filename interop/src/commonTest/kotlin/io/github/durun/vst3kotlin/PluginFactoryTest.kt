@@ -10,8 +10,10 @@ class PluginFactoryTest {
 	@Test
 	fun factoryInfo() {
 		val path = Path.of("src/commonTest/resources/vst3/again.vst3")
-		val info = Vst3Package.open(path).use {
-			it.pluginFactory.factoryInfo
+		val info = Vst3Package.open(path).use {plugin->
+			plugin.openPluginFactory().use {
+				it.factoryInfo
+			}
 		}
 		println(info)
 		info shouldBe FactoryInfo(

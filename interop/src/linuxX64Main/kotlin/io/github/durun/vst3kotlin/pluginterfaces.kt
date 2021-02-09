@@ -22,15 +22,15 @@ private constructor(
 		lib.close()
 	}
 
-	actual val pluginFactory: PluginFactory by lazy {
+	actual fun openPluginFactory(): PluginFactory {
 		val proc = lib.getFunction<() -> CPointer<IPluginFactory>>("GetPluginFactory")
-		PluginFactory(proc.invoke())
+		return PluginFactory(proc.invoke())
 	}
 }
 
 actual class PluginFactory(
 	private val factoryPtr: CPointer<IPluginFactory>
-) {
+): Closeable {
 	actual val factoryInfo: FactoryInfo by lazy {
 		memScoped {
 			val infoPtr = alloc<PFactoryInfo>().ptr
@@ -50,6 +50,9 @@ actual class PluginFactory(
 		}.toList()
 	}
 
+	actual override fun close() {
+		IPluginFactory_release(factoryPtr)
+	}
 
 	@OptIn(ExperimentalUnsignedTypes::class)
 	private fun PFactoryInfo.toKFactoryInfo(): FactoryInfo {

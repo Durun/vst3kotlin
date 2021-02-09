@@ -10,13 +10,14 @@ expect class Vst3Package : Closeable {
 	}
 
 	override fun close()
-
-	val pluginFactory: PluginFactory
+	fun openPluginFactory(): PluginFactory
 }
 
-expect class PluginFactory {
+expect class PluginFactory : Closeable {
 	val factoryInfo: FactoryInfo
 	val classInfo: List<ClassInfo>
+
+	override fun close()
 }
 
 data class FactoryInfo(
