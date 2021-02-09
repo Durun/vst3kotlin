@@ -14,7 +14,6 @@ actual class Dylib (val handle: CPointer<*>): Closeable {
 		}
 		actual fun open(lib: Path): Dylib {
 			check(access("$lib", F_OK) == 0) {"Not exists: $lib"}
-			check(access("$lib", X_OK) == 0) {"Not executable: $lib"}
 			return if(lib.isAbsolute) open("$lib")
 			else open("./$lib")
 		}
