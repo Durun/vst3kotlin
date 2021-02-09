@@ -41,19 +41,19 @@ class PluginFactoryTest {
 		println(classes.joinToString("\n"))
 		classes shouldBe listOf(
 			ClassInfo(
-				classId = TUID("84E8DE5F92554F5396FAE4133C935A18".decodeAsBigEndian()),
+				classId = TUID("84E8DE5F92554F5396FAE4133C935A18"),
 				cardinality = 2147483647,
 				category = "Audio Module Class",
 				name = "AGain VST3"
 			),
 			ClassInfo(
-				classId = TUID("D39D5B65D7AF42FA843F4AC841EB04F0".decodeAsBigEndian()),
+				classId = TUID("D39D5B65D7AF42FA843F4AC841EB04F0"),
 				cardinality = 2147483647,
 				category = "Component Controller Class",
 				name = "AGain VST3Controller"
 			),
 			ClassInfo(
-				classId = TUID("41347FD6FED64094AFBB12B7DBA1D441".decodeAsBigEndian()),
+				classId = TUID("41347FD6FED64094AFBB12B7DBA1D441"),
 				cardinality = 2147483647,
 				category = "Audio Module Class",
 				name = "AGain SideChain VST3"

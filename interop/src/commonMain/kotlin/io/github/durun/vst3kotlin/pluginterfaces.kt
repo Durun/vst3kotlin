@@ -2,6 +2,7 @@ package io.github.durun.vst3kotlin
 
 import io.github.durun.io.Closeable
 import io.github.durun.path.Path
+import io.github.durun.util.decodeAsBigEndian
 import io.github.durun.util.encodeBigEndian
 
 expect class Vst3Package : Closeable {
@@ -41,6 +42,8 @@ data class FactoryInfo(
 data class TUID(
 	private val bytes: ByteArray
 ) {
+	constructor(id: String) : this(id.decodeAsBigEndian())
+
 	init {
 		require(bytes.size == 16) { "TUID must be 16 bytes but was ${bytes.size} bytes" }
 	}
@@ -67,5 +70,14 @@ data class ClassInfo(
 	val classId: TUID,
 	val cardinality: Int,
 	val category: String,
-	val name: String
-)
+	val name: String,
+	val flags: Flags? = null,
+	val subCategories: String? = null,
+	val vendor: String? = null,
+	val version: String? = null,
+	val sdkVersion: String? = null
+) {
+	data class Flags(
+		val value: Int
+	)
+}
