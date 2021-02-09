@@ -1,10 +1,12 @@
 package io.github.durun.dylib
 
 import io.github.durun.io.Closeable
+import io.github.durun.path.Path
 
 expect class Dylib : Closeable {
 	companion object {
 		fun open(lib: String): Dylib
+		fun open(lib: Path): Dylib
 	}
 
 	override fun close()
