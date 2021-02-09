@@ -25,7 +25,7 @@ typedef struct PFactoryInfo {
 	char8 vendor[PFactoryInfo_kNameSize];
 	char8 url[PFactoryInfo_kURLSize];
 	char8 email[PFactoryInfo_kEmailSize];
-	int32 flags;
+	uint32 flags;
 } PFactoryInfo;
 
 
