@@ -10,9 +10,9 @@ expect class Dylib : Closeable {
 	override fun close()
 }
 
-fun <T : Closeable, R> T.use(block: T.() -> R): R {
+fun <T : Closeable, R> T.use(block: (T) -> R): R {
 	val result = runCatching {
-		block()
+		block(this)
 	}
 	close()
 	return result.getOrThrow()

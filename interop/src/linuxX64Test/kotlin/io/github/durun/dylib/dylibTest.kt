@@ -18,9 +18,9 @@ class DylibTest {
 	@Test
 	fun autoClose() {
 		Dylib.open("libc.so.6").use {
-			val abs = getFunction<(Int) -> Int>("abs")
+			val abs = it.getFunction<(Int) -> Int>("abs")
 			abs(-1) shouldBe 1
-			val atoi = getFunction<(CPointer<ByteVar>) -> Int>("atoi")
+			val atoi = it.getFunction<(CPointer<ByteVar>) -> Int>("atoi")
 			memScoped { atoi("-255".utf8.ptr) }
 		} shouldBe -255
 	}
