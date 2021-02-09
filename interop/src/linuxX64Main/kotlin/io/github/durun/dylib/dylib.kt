@@ -1,6 +1,7 @@
 package io.github.durun.dylib
 
 import io.github.durun.io.Closeable
+import io.github.durun.path.Path
 import kotlinx.cinterop.*
 import platform.posix.*
 
@@ -10,6 +11,12 @@ actual class Dylib (val handle: CPointer<*>): Closeable {
 			val handle = dlopen(lib, RTLD_LAZY)
 			checkNotNull(handle) { "Load failed: $lib" }
 			return Dylib(handle)
+		}
+		actual fun open(lib: Path): Dylib {
+			check(access("$lib", F_OK) == 0) {"Not exists: $lib"}
+			check(access("$lib", X_OK) == 0) {"Not executable: $lib"}
+			return if(lib.isAbsolute) open("$lib")
+			else open("./$lib")
 		}
 	}
 
