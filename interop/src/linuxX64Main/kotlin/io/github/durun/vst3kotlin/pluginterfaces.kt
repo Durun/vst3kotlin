@@ -31,24 +31,48 @@ private constructor(
 actual class PluginFactory(
 	private val factoryPtr: CPointer<IPluginFactory>
 ) {
-	@OptIn(ExperimentalUnsignedTypes::class)
 	actual val factoryInfo: FactoryInfo by lazy {
 		memScoped {
 			val infoPtr = alloc<PFactoryInfo>().ptr
 			IPluginFactory_getFactoryInfo(factoryPtr, infoPtr)
-			val info = infoPtr.pointed
-			FactoryInfo(
-				vendor = info.vendor.toKString(),
-				url = info.url.toKString(),
-				email = info.email.toKString(),
-				flags = FactoryInfo.Flags(
-					NoFlags = info.flags == kNoFlags,
-					ClassesDiscardable = (info.flags and kClassesDiscardable) != 0u,
-					LicenseCheck = (info.flags and kLicenseCheck) != 0u,
-					ComponentNonDiscardable = (info.flags and kComponentNonDiscardable) != 0u,
-					Unicode = (info.flags and kUnicode) != 0u
-				)
-			)
+			infoPtr.pointed.toKFactoryInfo()
 		}
+	}
+
+	actual val classInfo: List<ClassInfo> by lazy {
+		val nClass = IPluginFactory_countClasses(factoryPtr)
+		memScoped {
+			val infoPtr = alloc<PClassInfo>().ptr
+			(0 until nClass).map { i ->
+				IPluginFactory_getClassInfo(factoryPtr, i, infoPtr)
+				infoPtr.pointed.toKClassInfo()
+			}
+		}.toList()
+	}
+
+
+	@OptIn(ExperimentalUnsignedTypes::class)
+	private fun PFactoryInfo.toKFactoryInfo(): FactoryInfo {
+		return FactoryInfo(
+			vendor = vendor.toKString(),
+			url = url.toKString(),
+			email = email.toKString(),
+			flags = FactoryInfo.Flags(
+				NoFlags = flags == kNoFlags,
+				ClassesDiscardable = (flags and kClassesDiscardable) != 0u,
+				LicenseCheck = (flags and kLicenseCheck) != 0u,
+				ComponentNonDiscardable = (flags and kComponentNonDiscardable) != 0u,
+				Unicode = (flags and kUnicode) != 0u
+			)
+		)
+	}
+
+	private fun PClassInfo.toKClassInfo(): ClassInfo {
+		return ClassInfo(
+			classId = TUID(cid.readBytes(16)),
+			cardinality = cardinality,
+			category = category.toKString(),
+			name = name.toKString()
+		)
 	}
 }
