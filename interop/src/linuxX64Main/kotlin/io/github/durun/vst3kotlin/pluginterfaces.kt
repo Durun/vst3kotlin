@@ -36,7 +36,7 @@ private constructor(
 
 actual class PluginFactory(
 	private val factoryPtr: CPointer<IPluginFactory>
-): Closeable {
+): FUnknown {
 	actual override var isOpen: Boolean = true
 		private set
 	actual val factoryInfo: FactoryInfo by lazy {

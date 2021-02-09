@@ -15,7 +15,7 @@ expect class Vst3Package : Closeable {
 	fun openPluginFactory(): PluginFactory
 }
 
-expect class PluginFactory : Closeable {
+expect class PluginFactory : FUnknown {
 	override var isOpen: Boolean
 		private set
 	val factoryInfo: FactoryInfo
