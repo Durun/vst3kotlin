@@ -1,12 +1,10 @@
 
 #pragma once
 
-#include "base/FUID.h"
 #include "base/FUnknown.h"
 #include "base/IBStream.h"
 #include "base/PFactoryInfo.h"
 #include "vsttypes.h"
-#include "vtable.h"
 
 #ifdef __cplusplus
 extern "C" {
