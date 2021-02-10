@@ -28,25 +28,25 @@ enum NoteExpressionTypeIDs {
     kInvalidTypeID = 0xFFFFFFFF
 };
 
-struct NoteExpressionValueDescription {
+typedef struct NoteExpressionValueDescription {
     NoteExpressionValue defaultValue;
     NoteExpressionValue minimum;
     NoteExpressionValue maximum;
     int32 stepCount;
-};
+} NoteExpressionValueDescription;
 
-struct NoteExpressionValueEvent {
+typedef struct NoteExpressionValueEvent {
     NoteExpressionTypeID typeId;
     int32 noteId;
     NoteExpressionValue value;
-};
+} NoteExpressionValueEvent;
 
-struct NoteExpressionTextEvent {
+typedef struct NoteExpressionTextEvent {
     NoteExpressionTypeID typeId;
     int32 noteId;
     uint32 textLen;
     const TChar* text;
-};
+} NoteExpressionTextEvent;
 
 enum NoteExpressionTypeFlags {
     kIsBipolar = 1 << 0,
@@ -54,7 +54,7 @@ enum NoteExpressionTypeFlags {
     kIsAbsolute = 1 << 2,
     kAssociatedParameterIDValid = 1 << 3,
 };
-struct NoteExpressionTypeInfo {
+typedef struct NoteExpressionTypeInfo {
     NoteExpressionTypeID typeId;
     String128 title;
     String128 shortTitle;
@@ -64,7 +64,7 @@ struct NoteExpressionTypeInfo {
     ParamID associatedParameterId;
 
     int32 flags;
-};
+} NoteExpressionTypeInfo;
 
 
 /**
@@ -88,7 +88,7 @@ enum KeyswitchTypeIDs {
     kKeyRangeTypeID
 };
 typedef uint32 KeyswitchTypeID;
-struct KeyswitchInfo {
+typedef struct KeyswitchInfo {
     KeyswitchTypeID typeId;
     String128 title;
     String128 shortTitle;
@@ -98,7 +98,7 @@ struct KeyswitchInfo {
     int32 unitId;
 
     int32 flags;
-};
+} KeyswitchInfo;
 
 
 /**

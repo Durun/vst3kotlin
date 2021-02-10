@@ -26,7 +26,7 @@ tresult PLUGIN_API INoteExpressionController_getNoteExpressionStringByValue(INot
 	return cast(this_ptr)->getNoteExpressionStringByValue(busIndex, channel, id, valueNormalized, string);
 }
 tresult PLUGIN_API INoteExpressionController_getNoteExpressionValueByString(INoteExpressionController* this_ptr, int32 busIndex, int16 channel, NoteExpressionTypeID id, const TChar* string, NoteExpressionValue* valueNormalized) {
-	return cast(this_ptr)->getNoteExpressionValueByString(busIndex, channel, id, string, *valueNormalized)
+	return cast(this_ptr)->getNoteExpressionValueByString(busIndex, channel, id, string, *valueNormalized);
 }
 
 // [IKeyswitchController] member functions

@@ -11,21 +11,21 @@ enum FrameRateFlags {
     kPullDownRate = 1 << 0,
     kDropRate = 1 << 1
 };
-struct FrameRate {
+typedef struct FrameRate {
     uint32 framesPerSecond;
     uint32 flags;
-};
+} FrameRate;
 
 enum Masks {
     kChordMask = 0x0FFF,
     kReservedMask = 0xF000
 };
-struct Chord {
+typedef struct Chord {
     uint8 keyNote;
     uint8 rootNote;
 
     int16 chordMask;
-};
+} Chord;
 
 
 enum StatesAndFlags {
@@ -47,7 +47,7 @@ enum StatesAndFlags {
     kSmpteValid = 1 << 14,
     kClockValid = 1 << 15
 };
-struct ProcessContext {
+typedef struct ProcessContext {
     uint32 state;
 
     double sampleRate;
@@ -71,7 +71,7 @@ struct ProcessContext {
     FrameRate frameRate;
 
     int32 samplesToNextClock;
-};
+} ProcessContext;
 
 
 #ifdef __cplusplus

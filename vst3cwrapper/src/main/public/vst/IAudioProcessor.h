@@ -24,22 +24,22 @@ enum ProcessModes {
 };
 const uint32 kNoTail = 0;
 const uint32 kInfiniteTail = kMaxInt32u;
-struct ProcessSetup {
+typedef struct ProcessSetup {
 	int32 processMode;
 	int32 symbolicSampleSize;
 	int32 maxSamplesPerBlock;
 	SampleRate sampleRate;
-};
-struct AudioBusBuffers {
+} ProcessSetup;
+typedef struct AudioBusBuffers {
 	int32 numChannels;
 	uint64 silenceFlags;
 	union {
 		Sample32** channelBuffers32;
 		Sample64** channelBuffers64;
 	};
-};
+} AudioBusBuffers;
 
-struct ProcessData {
+typedef struct ProcessData {
 	int32 processMode;
 	int32 symbolicSampleSize;
 	int32 numSamples;
@@ -53,7 +53,7 @@ struct ProcessData {
 	IEventList* inputEvents;
 	IEventList* outputEvents;
 	ProcessContext* processContext;
-};
+} ProcessData;
 
 
 /**
@@ -107,3 +107,8 @@ typedef struct IProcessContextRequirements {
 const TUID IProcessContextRequirements_iid = INLINE_UID_c(0x2A654303, 0xEF764E3D, 0x95B5FE83, 0x730EF6D0);
 // [IProcessContextRequirements] member functions
 uint32 PLUGIN_API IProcessContextRequirements_getProcessContextRequirements(IProcessContextRequirements* this_ptr);
+
+
+#ifdef __cplusplus
+}
+#endif

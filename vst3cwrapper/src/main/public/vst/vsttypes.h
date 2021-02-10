@@ -5,8 +5,6 @@
 
 #pragma once
 
-#include "base/fstrdefs.h"
-
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -46,7 +44,7 @@ extern "C" {
 //------------------------------------------------------------------------
 typedef char16 TChar;          ///< UTF-16 character
 typedef TChar String128[128];  ///< 128 character UTF-16 string
-typedef const char8* CString;  ///< C-String
+typedef const char8* VST_CString;  ///< C-String
 
 //------------------------------------------------------------------------
 // General

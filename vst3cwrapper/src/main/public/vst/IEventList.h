@@ -16,24 +16,24 @@ enum NoteIDUserRange {
     kNoteIDUserRangeUpperBound = -1000,
 };
 
-struct NoteOnEvent {
+typedef struct NoteOnEvent {
     int16 channel;
     int16 pitch;
     float tuning;
     float velocity;
     int32 length;
     int32 noteId;
-};
+} NoteOnEvent;
 
-struct NoteOffEvent {
+typedef struct NoteOffEvent {
     int16 channel;
     int16 pitch;
     float velocity;
     int32 noteId;
     float tuning;
-};
+} NoteOffEvent;
 
-struct DataEvent {
+typedef struct DataEvent {
     uint32 size;
     uint32 type;
     const uint8* bytes;
@@ -42,38 +42,38 @@ struct DataEvent {
     enum DataTypes {
         kMidiSysEx = 0
     };
-};
+} DataEvent;
 
-struct PolyPressureEvent {
+typedef struct PolyPressureEvent {
     int16 channel;
     int16 pitch;
     float pressure;
     int32 noteId;
-};
+} PolyPressureEvent;
 
-struct ChordEvent {
+typedef struct ChordEvent {
     int16 root;
     int16 bassNote;
     int16 mask;
     uint16 textLen;
 
     const TChar* text;
-};
+} ChordEvent;
 
-struct ScaleEvent {
+typedef struct ScaleEvent {
     int16 root;
     int16 mask;
     uint16 textLen;
 
     const TChar* text;
-};
+} ScaleEvent;
 
-struct LegacyMIDICCOutEvent {
+typedef struct LegacyMIDICCOutEvent {
     uint8 controlNumber;
     int8 channel;
     int8 value;
     int8 value2;
-};
+} LegacyMIDICCOutEvent;
 
 
 enum EventFlags {
@@ -92,7 +92,7 @@ enum EventTypes {
 	kScaleEvent = 7,
 	kLegacyMIDICCOutEvent = 65535
 };
-struct Event {
+typedef struct Event {
     int32 busIndex;
     int32 sampleOffset;
     TQuarterNotes ppqPosition;
@@ -111,7 +111,7 @@ struct Event {
         ScaleEvent scale;
         LegacyMIDICCOutEvent midiCCOut;
     };
-};
+} Event;
 
 /**
  * inherited from [FUnknown]
