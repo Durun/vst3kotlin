@@ -121,9 +121,9 @@ typedef struct IEventList {
 } IEventList;
 const TUID IEventList_iid = INLINE_UID_c(0x3A2C4214, 0x346349FE, 0xB2C4F397, 0xB9695A44);
 
-int32 PLUGIN_API getEventCount(IEventList* this_ptr);
-tresult PLUGIN_API getEvent(IEventList* this_ptr, int32 index, Event* e);
-tresult PLUGIN_API addEvent(IEventList* this_ptr, Event* e);
+int32 PLUGIN_API IEventList_getEventCount(IEventList* this_ptr);
+tresult PLUGIN_API IEventList_getEvent(IEventList* this_ptr, int32 index, Event* e);
+tresult PLUGIN_API IEventList_addEvent(IEventList* this_ptr, Event* e);
 
 #ifdef __cplusplus
 }

@@ -66,18 +66,18 @@ typedef struct IComponent {
 const TUID IComponent_iid = INLINE_UID_c(0xE831FF31, 0xF2D54301, 0x928EBBEE, 0x25697802);
 
 // [IPluginBase] member functions
-tresult PLUGIN_API initialize(IComponent* this_ptr, FUnknown* context);
-tresult PLUGIN_API terminate(IComponent* this_ptr);
+tresult PLUGIN_API IComponent_initialize(IComponent* this_ptr, FUnknown* context);
+tresult PLUGIN_API IComponent_terminate(IComponent* this_ptr);
 // [IComponent] member functions
-tresult PLUGIN_API getControllerClassId(IComponent* this_ptr, TUID classId);
-tresult PLUGIN_API setIoMode(IComponent* this_ptr, IoMode mode);
-int32 PLUGIN_API getBusCount(IComponent* this_ptr, MediaType type, BusDirection dir);
-tresult PLUGIN_API getBusInfo(IComponent* this_ptr, MediaType type, BusDirection dir, int32 index, BusInfo& bus);
-tresult PLUGIN_API getRoutingInfo(IComponent* this_ptr, RoutingInfo& inInfo, RoutingInfo& outInfo);
-tresult PLUGIN_API activateBus(IComponent* this_ptr, MediaType type, BusDirection dir, int32 index, TBool state);
-tresult PLUGIN_API setActive(IComponent* this_ptr, TBool state);
-tresult PLUGIN_API setState(IComponent* this_ptr, IBStream* state);
-tresult PLUGIN_API getState(IComponent* this_ptr, IBStream* state);
+tresult PLUGIN_API IComponent_getControllerClassId(IComponent* this_ptr, TUID classId);
+tresult PLUGIN_API IComponent_setIoMode(IComponent* this_ptr, IoMode mode);
+int32 PLUGIN_API IComponent_getBusCount(IComponent* this_ptr, MediaType type, BusDirection dir);
+tresult PLUGIN_API IComponent_getBusInfo(IComponent* this_ptr, MediaType type, BusDirection dir, int32 index, BusInfo& bus);
+tresult PLUGIN_API IComponent_getRoutingInfo(IComponent* this_ptr, RoutingInfo& inInfo, RoutingInfo& outInfo);
+tresult PLUGIN_API IComponent_activateBus(IComponent* this_ptr, MediaType type, BusDirection dir, int32 index, TBool state);
+tresult PLUGIN_API IComponent_setActive(IComponent* this_ptr, TBool state);
+tresult PLUGIN_API IComponent_setState(IComponent* this_ptr, IBStream* state);
+tresult PLUGIN_API IComponent_getState(IComponent* this_ptr, IBStream* state);
 
 #ifdef __cplusplus
 }

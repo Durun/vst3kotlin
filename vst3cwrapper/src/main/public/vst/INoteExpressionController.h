@@ -75,10 +75,10 @@ typedef struct INoteExpressionController {
 } INoteExpressionController;
 const TUID INoteExpressionController_iid = INLINE_UID_c(0xB7F8F859, 0x41234872, 0x91169581, 0x4F3721A3);
 // [INoteExpressionController] member functions
-int32 PLUGIN_API getNoteExpressionCount(INoteExpressionController* this_ptr, int32 busIndex, int16 channel);
-tresult PLUGIN_API getNoteExpressionInfo(INoteExpressionController* this_ptr, int32 busIndex, int16 channel, int32 noteExpressionIndex, NoteExpressionTypeInfo* info);
-tresult PLUGIN_API getNoteExpressionStringByValue(INoteExpressionController* this_ptr, int32 busIndex, int16 channel, NoteExpressionTypeID id, NoteExpressionValue valueNormalized, String128 string);
-tresult PLUGIN_API getNoteExpressionValueByString(INoteExpressionController* this_ptr, int32 busIndex, int16 channel, NoteExpressionTypeID id, const TChar* string, NoteExpressionValue* valueNormalized);
+int32 PLUGIN_API INoteExpressionController_getNoteExpressionCount(INoteExpressionController* this_ptr, int32 busIndex, int16 channel);
+tresult PLUGIN_API INoteExpressionController_getNoteExpressionInfo(INoteExpressionController* this_ptr, int32 busIndex, int16 channel, int32 noteExpressionIndex, NoteExpressionTypeInfo* info);
+tresult PLUGIN_API INoteExpressionController_getNoteExpressionStringByValue(INoteExpressionController* this_ptr, int32 busIndex, int16 channel, NoteExpressionTypeID id, NoteExpressionValue valueNormalized, String128 string);
+tresult PLUGIN_API INoteExpressionController_getNoteExpressionValueByString(INoteExpressionController* this_ptr, int32 busIndex, int16 channel, NoteExpressionTypeID id, const TChar* string, NoteExpressionValue* valueNormalized);
 
 
 enum KeyswitchTypeIDs {
@@ -109,8 +109,8 @@ typedef struct IKeyswitchController {
 } IKeyswitchController;
 const TUID IKeyswitchController_iid = INLINE_UID_c(0x1F2F76D3, 0xBFFB4B96, 0xB99527A5, 0x5EBCCEF4);
 // [IKeyswitchController] member functions
-int32 PLUGIN_API getKeyswitchCount(IKeyswitchController* this_ptr, int32 busIndex, int16 channel);
-tresult PLUGIN_API getKeyswitchInfo(IKeyswitchController* this_ptr, int32 busIndex, int16 channel, int32 keySwitchIndex, KeyswitchInfo* info);
+int32 PLUGIN_API IKeyswitchController_getKeyswitchCount(IKeyswitchController* this_ptr, int32 busIndex, int16 channel);
+tresult PLUGIN_API IKeyswitchController_getKeyswitchInfo(IKeyswitchController* this_ptr, int32 busIndex, int16 channel, int32 keySwitchIndex, KeyswitchInfo* info);
 
 
 #ifdef __cplusplus

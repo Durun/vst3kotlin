@@ -18,8 +18,8 @@ typedef struct IPluginBase {
 const TUID IPluginBase_iid = INLINE_UID_c(0x22888DDB, 0x156E45AE, 0x8358B348, 0x08190625);
 
 // [IPluginBase] member functions
-tresult PLUGIN_API initialize(IPluginBase* this_ptr, FUnknown* context);
-tresult PLUGIN_API terminate(IPluginBase* this_ptr);
+tresult PLUGIN_API IPluginBase_initialize(IPluginBase* this_ptr, FUnknown* context);
+tresult PLUGIN_API IPluginBase_terminate(IPluginBase* this_ptr);
 
 #ifdef __cplusplus
 }
