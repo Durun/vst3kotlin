@@ -1,4 +1,4 @@
-#include "FUID.h"
+#include "base/FUID.h"
 
 #include <pluginterfaces/base/funknown.h>
 

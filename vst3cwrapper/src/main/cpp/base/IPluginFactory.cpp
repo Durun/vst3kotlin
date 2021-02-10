@@ -1,4 +1,4 @@
-#include "IPluginFactory.h"
+#include "base/IPluginFactory.h"
 
 #include <pluginterfaces/base/ipluginbase.h>
 
