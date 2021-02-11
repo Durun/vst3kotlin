@@ -1,13 +1,4 @@
-#include "vst/IEventList.h"
-
-#include <pluginterfaces/vst/ivstevents.h>
-
-Steinberg::Vst::IEventList* cast(IEventList* this_ptr) {  //private
-    return reinterpret_cast<Steinberg::Vst::IEventList*>(this_ptr);
-}
-Steinberg::Vst::Event* cast(Event* this_ptr) {  // private
-    return reinterpret_cast<Steinberg::Vst::Event*>(this_ptr);
-}
+#include "cast.h"
 
 // [IEventList] member functions
 int32 PLUGIN_API IEventList_getEventCount(IEventList* this_ptr) {

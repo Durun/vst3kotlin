@@ -1,13 +1,4 @@
-#include "base/IBStream.h"
-
-#include <pluginterfaces/base/ibstream.h>
-
-Steinberg::IBStream* cast(IBStream* this_ptr) { // private
-	return reinterpret_cast<Steinberg::IBStream*>(this_ptr);
-}
-Steinberg::ISizeableStream* cast(ISizeableStream* this_ptr) {  // private
-    return reinterpret_cast<Steinberg::ISizeableStream*>(this_ptr);
-}
+#include "cast.h"
 
 // [IBStream] member functions
 tresult PLUGIN_API IBStream_read(IBStream* this_ptr, void* buffer, int32 numBytes, int32* numBytesRead) {

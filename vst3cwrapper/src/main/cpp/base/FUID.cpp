@@ -1,14 +1,6 @@
-#include "base/FUID.h"
+#include "cast.h"
 
-#include <pluginterfaces/base/funknown.h>
-
-Steinberg::FUID *cast(FUID *this_ptr) {  // private
-	return reinterpret_cast<Steinberg::FUID *>(this_ptr);
-}
-const Steinberg::FUID *cast_const(const FUID *this_ptr) {  // private
-	return reinterpret_cast<const Steinberg::FUID *>(this_ptr);
-}
-
+// [FUID] member functions
 bool FUID_generate(FUID *this_ptr) {
 	return cast(this_ptr)->generate();
 }
@@ -16,17 +8,17 @@ bool FUID_isValid(FUID *this_ptr) {
 	return cast(this_ptr)->isValid();
 }
 FUID *FUID_set(FUID *this_ptr, const FUID *f) {
-	const auto other = cast_const(f);
-	Steinberg::FUID ret = cast(this_ptr)->operator=(*other);
-	return reinterpret_cast<FUID *>(this_ptr);
+    const auto other = cast(f);
+    Steinberg::FUID ret = cast(this_ptr)->operator=(*other);
+    return reinterpret_cast<FUID *>(this_ptr);
 }
 bool FUID_equals(FUID *this_ptr, const FUID *f) {
-	const auto other = cast_const(f);
-	return cast(this_ptr)->operator==(*other);
+    const auto other = cast(f);
+    return cast(this_ptr)->operator==(*other);
 }
 bool FUID_lessThan(FUID *this_ptr, const FUID *f) {
-	const auto other = cast_const(f);
-	return cast(this_ptr)->operator<(*other);
+    const auto other = cast(f);
+    return cast(this_ptr)->operator<(*other);
 }
 uint32 FUID_getLong1(FUID *this_ptr) {
 	return cast(this_ptr)->getLong1();

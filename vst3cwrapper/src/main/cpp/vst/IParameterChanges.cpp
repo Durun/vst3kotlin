@@ -1,16 +1,4 @@
-#include "vst/IParameterChanges.h"
-
-#include <pluginterfaces/vst/ivstparameterchanges.h>
-
-Steinberg::Vst::IParamValueQueue* cast(IParamValueQueue* this_ptr) { // private
-	return reinterpret_cast<Steinberg::Vst::IParamValueQueue*>(this_ptr);
-}
-Steinberg::Vst::IParameterChanges* cast(IParameterChanges* this_ptr) { // private
-	return reinterpret_cast<Steinberg::Vst::IParameterChanges*>(this_ptr);
-}
-IParamValueQueue* cast(Steinberg::Vst::IParamValueQueue* this_ptr) { // private
-	return reinterpret_cast<IParamValueQueue*>(this_ptr);
-}
+#include "cast.h"
 
 // [IParamValueQueue] member functions
 ParamID PLUGIN_API IParamValueQueue_getParameterId(IParamValueQueue* this_ptr) {

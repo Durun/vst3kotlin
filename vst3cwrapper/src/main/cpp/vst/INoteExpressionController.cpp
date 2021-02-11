@@ -1,19 +1,4 @@
-#include "vst/INoteExpressionController.h"
-
-#include <pluginterfaces/vst/ivstnoteexpression.h>
-
-Steinberg::Vst::INoteExpressionController* cast(INoteExpressionController* this_ptr) { // private
-    return reinterpret_cast<Steinberg::Vst::INoteExpressionController*>(this_ptr);
-}
-Steinberg::Vst::IKeyswitchController* cast(IKeyswitchController* this_ptr) {  // private
-    return reinterpret_cast<Steinberg::Vst::IKeyswitchController*>(this_ptr);
-}
-Steinberg::Vst::NoteExpressionTypeInfo* cast(NoteExpressionTypeInfo* this_ptr) {  // private
-    return reinterpret_cast<Steinberg::Vst::NoteExpressionTypeInfo*>(this_ptr);
-}
-Steinberg::Vst::KeyswitchInfo* cast(KeyswitchInfo* this_ptr) {  // private
-    return reinterpret_cast<Steinberg::Vst::KeyswitchInfo*>(this_ptr);
-}
+#include "cast.h"
 
 // [INoteExpressionController] member functions
 int32 PLUGIN_API INoteExpressionController_getNoteExpressionCount(INoteExpressionController* this_ptr, int32 busIndex, int16 channel) {

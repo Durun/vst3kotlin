@@ -1,22 +1,4 @@
-#include "vst/IAudioProcessor.h"
-
-#include <pluginterfaces/vst/ivstaudioprocessor.h>
-
-Steinberg::Vst::IAudioProcessor* cast(IAudioProcessor* this_ptr) {  // private
-    return reinterpret_cast<Steinberg::Vst::IAudioProcessor*>(this_ptr);
-}
-Steinberg::Vst::IAudioPresentationLatency* cast(IAudioPresentationLatency* this_ptr) {  // private
-    return reinterpret_cast<Steinberg::Vst::IAudioPresentationLatency*>(this_ptr);
-}
-Steinberg::Vst::IProcessContextRequirements* cast(IProcessContextRequirements* this_ptr) {  // private
-    return reinterpret_cast<Steinberg::Vst::IProcessContextRequirements*>(this_ptr);
-}
-Steinberg::Vst::ProcessSetup* cast(ProcessSetup* this_ptr) {  // private
-    return reinterpret_cast<Steinberg::Vst::ProcessSetup*>(this_ptr);
-}
-Steinberg::Vst::ProcessData* cast(ProcessData* this_ptr) {  // private
-    return reinterpret_cast<Steinberg::Vst::ProcessData*>(this_ptr);
-}
+#include "cast.h"
 
 // [IAudioProcessor] member functions
 tresult PLUGIN_API IAudioProcessor_setBusArrangements(IAudioProcessor* this_ptr, SpeakerArrangement* inputs, int32 numIns, SpeakerArrangement* outputs, int32 numOuts) {

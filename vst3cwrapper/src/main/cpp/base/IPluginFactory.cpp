@@ -1,16 +1,4 @@
-#include "base/IPluginFactory.h"
-
-#include <pluginterfaces/base/ipluginbase.h>
-
-Steinberg::IPluginFactory* PLUGIN_API cast(IPluginFactory* this_ptr) {  // private
-	return reinterpret_cast<Steinberg::IPluginFactory*>(this_ptr);
-}
-Steinberg::IPluginFactory2* PLUGIN_API cast2(IPluginFactory2* this_ptr) {  // private
-	return reinterpret_cast<Steinberg::IPluginFactory2*>(this_ptr);
-}
-Steinberg::IPluginFactory3* PLUGIN_API cast3(IPluginFactory3* this_ptr) {  // private
-	return reinterpret_cast<Steinberg::IPluginFactory3*>(this_ptr);
-}
+#include "cast.h"
 
 // [IPluginFactory] member functions
 tresult PLUGIN_API IPluginFactory_queryInterface(IPluginFactory* this_ptr, const TUID _iid, void** obj) {

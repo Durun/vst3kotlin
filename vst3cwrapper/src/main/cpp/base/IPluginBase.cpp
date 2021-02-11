@@ -1,10 +1,4 @@
-#include "base/IPluginBase.h"
-
-#include <pluginterfaces/base/ipluginbase.h>
-
-Steinberg::IPluginBase* PLUGIN_API cast(IPluginBase* this_ptr) { //private
-	return reinterpret_cast<Steinberg::IPluginBase*>(this_ptr);
-}
+#include "cast.h"
 
 // [IPluginBase] member functions
 tresult PLUGIN_API IPluginBase_initialize(IPluginBase* this_ptr, FUnknown* context) {

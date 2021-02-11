@@ -1,13 +1,4 @@
-#include "vst/IComponent.h"
-
-#include "pluginterfaces/vst/ivstcomponent.h"
-
-Steinberg::Vst::IComponent* cast(IComponent* this_ptr) {
-    return reinterpret_cast<Steinberg::Vst::IComponent*>(this_ptr);
-}
-Steinberg::IBStream* cast(IBStream* this_ptr) {
-    return reinterpret_cast<Steinberg::IBStream*>(this_ptr);
-}
+#include "cast.h"
 
 // [IPluginBase] member functions
 tresult PLUGIN_API IComponent_initialize(IComponent* this_ptr, FUnknown* context) {
