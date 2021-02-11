@@ -13,7 +13,8 @@ typedef struct FUID {
 	VTable *vtable;
 	TUID tuid;
 } FUID;
-
+// [FUID] constructors
+FUID *FUID_new_int(uint32 i1, uint32 i2, uint32 i3, uint32 i4);
 // [FUID] member functions
 bool FUID_generate (FUID *this_ptr);
 bool FUID_isValid(FUID *this_ptr);
@@ -38,9 +39,6 @@ enum UIDPrintStyle {
     UIDPrintStyle_kFUID,
     UIDPrintStyle_kCLASS_UID
 };
-
-// [FUID] static functions
-FUID FUID_fromTUID(const TUID uid);
 
 
 #if COM_COMPATIBLE
