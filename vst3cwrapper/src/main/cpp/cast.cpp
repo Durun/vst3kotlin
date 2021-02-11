@@ -6,6 +6,9 @@ Steinberg::FUID* cast(FUID* this_ptr) {
 const Steinberg::FUID* cast(const FUID* this_ptr) {
 	return reinterpret_cast<const Steinberg::FUID*>(this_ptr);
 }
+FUID* cast(Steinberg::FUID* this_ptr) {
+	return reinterpret_cast<FUID*>(this_ptr);
+}
 Steinberg::FUnknown* cast(FUnknown* this_ptr) {
 	return reinterpret_cast<Steinberg::FUnknown*>(this_ptr);
 }

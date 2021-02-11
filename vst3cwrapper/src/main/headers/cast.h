@@ -21,6 +21,7 @@
 
 Steinberg::FUID* cast(FUID* this_ptr);
 const Steinberg::FUID* cast(const FUID* this_ptr);
+FUID* cast(Steinberg::FUID* this_ptr);
 Steinberg::FUnknown* cast(FUnknown* this_ptr);
 Steinberg::IPluginFactory* PLUGIN_API cast(IPluginFactory* this_ptr);
 Steinberg::IPluginFactory2* PLUGIN_API cast2(IPluginFactory2* this_ptr);
