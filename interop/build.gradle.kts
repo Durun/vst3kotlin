@@ -22,11 +22,37 @@ dependencies {
     commonTestImplementation("io.kotest:kotest-property:$kotestVersion")
 }
 
+val cwrapperDef = file(buildDir.resolve("cinterop/cwrapper.def"))
+tasks {
+    val cinteropDef by creating {
+        doLast {
+            cwrapperDef.parentFile.mkdirs()
+            if (!cwrapperDef.exists()) cwrapperDef.createNewFile()
+            cwrapperDef.writeText(
+                """
+                staticLibraries.linux_x64 = libvst3cwrapper.a
+                staticLibraries.macos_x64 = libvst3cwrapper.a
+                staticLibraries.mingw_x64 = vst3cwrapper.lib
+                libraryPaths.linux_x64 = ${cwrapper.buildDir.resolve("lib/main/release/linux")}
+                libraryPaths.macos_x64 = ${cwrapper.buildDir.resolve("lib/main/release/macos")}
+                libraryPaths.mingw_x64 = ${cwrapper.buildDir.resolve("lib/main/release/windows")}
+            """.trimIndent()
+            )
+        }
+    }
+    withType(CInteropProcess::class) {
+        dependsOn(cwrapper.tasks["copyHeaders"])
+        dependsOn(cwrapper.tasks["createReleaseLinux"])
+        dependsOn(cinteropDef)
+    }
+}
+
 kotlin {
     fun KotlinNativeTargetWithHostTests.configureTarget() {
         compilations.getByName("main") {
             cinterops {
                 create("cwrapper") {
+                    this.defFile = cwrapperDef
                     includeDirs.allHeaders(
                         cwrapper.projectDir.resolve("src/main/public"),
                         cwrapper.buildDir.resolve("headers")
@@ -43,8 +69,4 @@ kotlin {
     linuxX64 { configureTarget() }
     macosX64 { configureTarget() }
     mingwX64("windowsX64") { configureTarget() }
-}
-tasks.withType(CInteropProcess::class) {
-    dependsOn(cwrapper.tasks["copyHeaders"])
-    dependsOn(cwrapper.tasks["createReleaseLinux"])
 }
