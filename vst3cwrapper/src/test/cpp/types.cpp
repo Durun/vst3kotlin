@@ -1,8 +1,9 @@
-#include "ftypes.h"
-#include <cassert>
 #include <stdio.h>
+#include <cassert>
 
-int main() {
+#include "base/ftypes.h"
+
+int test_types() {
 	assert(sizeof(int8) == 1);
 	assert(sizeof(uint8) == 1);
 	assert(sizeof(char8) == 1);
@@ -25,5 +26,5 @@ int main() {
 	assert(sizeof(tresult) == 4);
 	assert(sizeof(UCoord) == 4);
 
-    return 0;
+	return 0;
 }
