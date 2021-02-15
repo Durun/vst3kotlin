@@ -22,6 +22,10 @@ library {
     targetMachines.add(machines.windows.x86_64)
 }
 
+tasks.withType<LinkExecutable> {
+    linkerArgs.add("-ldl")
+}
+
 
 val sdkDir = buildDir.resolve("sdk")
 tasks {
