@@ -1,10 +1,22 @@
 package io.github.durun.vst3kotlin.vst
 
+import io.github.durun.vst3kotlin.base.BStream
 import io.github.durun.vst3kotlin.base.PluginBase
 import io.github.durun.vst3kotlin.base.UID
 
 expect class Component : PluginBase {
 	val controllerClassID: UID
+	val audioInputBusInfos: List<BusInfo>
+	val eventInputBusInfos: List<BusInfo>
+	val audioOutputBusInfos: List<BusInfo>
+	val eventOutputBusInfos: List<BusInfo>
+	actual val routingInfo: Pair<RoutingInfo, RoutingInfo>
+	val state: BStream
+	fun setState(state: BStream)
+	fun setIoMode(mode: IoMode)
+	fun activateBus(mediaType: MediaType, direction: BusDirection, index: Int, state: Boolean)
+	fun setActive(state: Boolean)
+	fun getBusInfos(type: MediaType, direction: BusDirection): List<BusInfo>
 }
 
 enum class IoMode(val value: Int) {
