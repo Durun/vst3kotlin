@@ -1,5 +1,11 @@
 #include "cast.h"
 
+
+// [IPluginFactory] constructor
+IPluginFactory* PLUGIN_API IPluginFactory_new(void* factory) {
+	return reinterpret_cast<IPluginFactory*>(factory);
+}
+
 // [IPluginFactory] member functions
 tresult PLUGIN_API IPluginFactory_queryInterface(IPluginFactory* this_ptr, const TUID _iid, void** obj) {
 	return cast(this_ptr)->queryInterface(_iid, obj);
@@ -30,8 +36,8 @@ tresult PLUGIN_API IPluginFactory_getClassInfo(IPluginFactory* this_ptr, int32 i
 	);
 }
 
-tresult PLUGIN_API IPluginFactory_createInstance(IPluginFactory* this_ptr, FIDString cid, FIDString _iid, void** obj) {
-	return cast(this_ptr)->createInstance(cid, _iid, obj);
+tresult PLUGIN_API IPluginFactory_createInstance(IPluginFactory* this_ptr, FUID cid, FUID iid, void** obj) {
+	return cast(this_ptr)->createInstance(*cast(&cid), *cast(&iid), obj);
 }
 
 // [IPluginFactory2] member functions

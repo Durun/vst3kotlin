@@ -3,6 +3,6 @@
 int main() {
 	test_types();
 	test_fuid();
-	sandbox();
+	test_createInstance();
 	return 0;
 }

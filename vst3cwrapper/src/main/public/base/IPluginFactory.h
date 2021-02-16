@@ -19,7 +19,8 @@ typedef struct IPluginFactory {
 	VTable *vtable;
 } IPluginFactory;
 const TUID IPluginFactory_iid = INLINE_UID_c(0x7A4D811C, 0x52114A1F, 0xAED9D2EE, 0x0B43BF9F);
-
+// [IPluginFactory] constructor
+IPluginFactory* PLUGIN_API IPluginFactory_new(void* factory);
 // [IPluginFactory] member functions
 tresult PLUGIN_API IPluginFactory_queryInterface(IPluginFactory* this_ptr, const TUID _iid, void** obj);
 uint32 PLUGIN_API IPluginFactory_addRef(IPluginFactory* this_ptr);
@@ -27,7 +28,7 @@ uint32 PLUGIN_API IPluginFactory_release(IPluginFactory* this_ptr);
 tresult PLUGIN_API IPluginFactory_getFactoryInfo(IPluginFactory* this_ptr, PFactoryInfo* info);
 int32 PLUGIN_API IPluginFactory_countClasses(IPluginFactory* this_ptr);
 tresult PLUGIN_API IPluginFactory_getClassInfo(IPluginFactory* this_ptr, int32 index, PClassInfo* info);
-tresult PLUGIN_API IPluginFactory_createInstance(IPluginFactory* this_ptr, FIDString cid, FIDString _iid, void** obj);
+tresult PLUGIN_API IPluginFactory_createInstance(IPluginFactory* this_ptr, FUID cid, FUID iid, void** obj);
 
 typedef IPluginFactory*(PLUGIN_API* IPluginFactoryGetter)(void);
 
