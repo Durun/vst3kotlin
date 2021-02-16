@@ -5,37 +5,36 @@ import io.github.durun.vst3kotlin.InterfaceID
 import kotlinx.cinterop.*
 
 actual class PluginFactory(
-	private val factoryPtr: CPointer<IPluginFactory>
-) : FUnknown {
+	thisPtr: CPointer<IPluginFactory>
+) : FUnknown(thisPtr) {
+	private val thisPtr get() = thisRawPtr.reinterpret<IPluginFactory>()
 	private val factory2Ptr: CPointer<IPluginFactory2>? = memScoped {
 		val ptrPtr = alloc<CPointerVarOf<CPointer<IPluginFactory2>>>().ptr
-		val result = IPluginFactory_queryInterface(factoryPtr, IPluginFactory2_iid, ptrPtr.reinterpret())
+		val result = IPluginFactory_queryInterface(thisPtr, IPluginFactory2_iid, ptrPtr.reinterpret())
 		check(result == kResultOk)
 		ptrPtr.pointed.value
 	}
 	private val factory3Ptr: CPointer<IPluginFactory3>? = memScoped {
 		val ptrPtr = alloc<CPointerVarOf<CPointer<IPluginFactory3>>>().ptr
-		val result = IPluginFactory_queryInterface(factoryPtr, IPluginFactory3_iid, ptrPtr.reinterpret())
+		val result = IPluginFactory_queryInterface(thisPtr, IPluginFactory3_iid, ptrPtr.reinterpret())
 		check(result == kResultOk)
 		ptrPtr.pointed.value
 	}
 
-	actual override var isOpen: Boolean = true
-		private set
 	actual val factoryInfo: FactoryInfo by lazy {
 		memScoped {
 			val infoPtr = alloc<PFactoryInfo>().ptr
-			IPluginFactory_getFactoryInfo(factoryPtr, infoPtr)
+			IPluginFactory_getFactoryInfo(thisPtr, infoPtr)
 			infoPtr.pointed.toKFactoryInfo()
 		}
 	}
 
 	actual val classInfo: List<ClassInfo> by lazy {
-		val nClass = IPluginFactory_countClasses(factoryPtr)
+		val nClass = IPluginFactory_countClasses(thisPtr)
 		memScoped {
 			val infoPtr = alloc<PClassInfo>().ptr
 			(0 until nClass).map { i ->
-				IPluginFactory_getClassInfo(factoryPtr, i, infoPtr)
+				IPluginFactory_getClassInfo(thisPtr, i, infoPtr)
 				infoPtr.pointed.toKClassInfo()
 			}
 		}.toList()
@@ -43,15 +42,13 @@ actual class PluginFactory(
 
 	fun createIAudioProcessor(classID: UID): CPointer<IAudioProcessor> = memScoped {
 		val interfaceID = IAudioProcessor_iid.toUID()
-		createInstance(factoryPtr, classID, interfaceID)
+		createInstance(thisPtr, classID, interfaceID)
 	}
 
 	actual override fun close() {
-		check(isOpen)
-		IPluginFactory_release(factoryPtr)
+		super.close()
 		factory2Ptr?.let { IPluginFactory_release(it.reinterpret()) }
 		factory3Ptr?.let { IPluginFactory_release(it.reinterpret()) }
-		isOpen = false
 	}
 
 	private inline fun <S : CStructVar, reified I : FUnknown> AutofreeScope.createInstance(

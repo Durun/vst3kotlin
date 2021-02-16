@@ -1,11 +1,6 @@
 package io.github.durun.vst3kotlin.vst
 
-import io.github.durun.vst3kotlin.base.FUnknown
+import io.github.durun.vst3kotlin.base.PluginBase
 
-expect class Component : FUnknown {
-	override var isOpen: Boolean
-		private set
-
-	override fun close()
-	// TODO
+expect class Component : PluginBase {
 }

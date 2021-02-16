@@ -8,8 +8,8 @@ import kotlinx.cinterop.CPointer
 import kotlinx.cinterop.reinterpret
 
 actual abstract class PluginBase(
-	protected val thisRawPtr: CPointer<*>
-) : FUnknown {
+	thisRawPtr: CPointer<*>
+) : FUnknown(thisRawPtr) {
 	private val thisPtr get() = thisRawPtr.reinterpret<IPluginBase>()
 	actual fun initialize() {
 		val result = IPluginBase_initialize(thisPtr, TODO())
