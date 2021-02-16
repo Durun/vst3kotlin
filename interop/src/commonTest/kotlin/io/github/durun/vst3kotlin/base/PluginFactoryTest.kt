@@ -7,9 +7,10 @@ import io.kotest.matchers.shouldBe
 import kotlin.test.Test
 
 class PluginFactoryTest {
+	val path = Path.of("src/commonTest/resources/vst3/again.vst3")
+
 	@Test
 	fun factoryInfo() {
-		val path = Path.of("src/commonTest/resources/vst3/again.vst3")
 		val info = Vst3Package.open(path).use { plugin ->
 			plugin.openPluginFactory().use {
 				it.factoryInfo
@@ -32,7 +33,6 @@ class PluginFactoryTest {
 
 	@Test
 	fun classInfo() {
-		val path = Path.of("src/commonTest/resources/vst3/again.vst3")
 		val classes = Vst3Package.open(path).use { plugin ->
 			plugin.openPluginFactory().use {
 				it.classInfo
