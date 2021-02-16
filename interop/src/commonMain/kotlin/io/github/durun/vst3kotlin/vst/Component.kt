@@ -7,4 +7,5 @@ expect class Component : FUnknown {
 		private set
 
 	override fun close()
+	// TODO
 }
