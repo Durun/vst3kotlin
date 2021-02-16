@@ -10,7 +10,7 @@ expect class Component : PluginBase {
 	val eventInputBusInfos: List<BusInfo>
 	val audioOutputBusInfos: List<BusInfo>
 	val eventOutputBusInfos: List<BusInfo>
-	actual val routingInfo: Pair<RoutingInfo, RoutingInfo>
+	val routingInfo: Pair<RoutingInfo?, RoutingInfo?>
 	val state: BStream
 	fun setState(state: BStream)
 	fun setIoMode(mode: IoMode)

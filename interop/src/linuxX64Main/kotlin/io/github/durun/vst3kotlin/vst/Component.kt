@@ -19,11 +19,12 @@ actual class Component(
 	actual val eventInputBusInfos: List<BusInfo> get() = getBusInfos(MediaType.Event, BusDirection.Input)
 	actual val audioOutputBusInfos: List<BusInfo> get() = getBusInfos(MediaType.Audio, BusDirection.Output)
 	actual val eventOutputBusInfos: List<BusInfo> get() = getBusInfos(MediaType.Event, BusDirection.Output)
-	actual val routingInfo: Pair<RoutingInfo, RoutingInfo>
+	actual val routingInfo: Pair<RoutingInfo?, RoutingInfo?>
 		get() = memScoped {
 			val inInfo = alloc<cwrapper.RoutingInfo>()
 			val outInfo = alloc<cwrapper.RoutingInfo>()
 			val result = IComponent_getRoutingInfo(thisPtr, inInfo.ptr, outInfo.ptr)
+			if (result == kNotImplemented) return null to null
 			check(result == kResultTrue) { result.kResultString }
 			inInfo.toKRoutingInfo() to outInfo.toKRoutingInfo()
 		}
