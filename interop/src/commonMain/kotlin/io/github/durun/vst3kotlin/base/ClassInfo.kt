@@ -1,7 +1,7 @@
 package io.github.durun.vst3kotlin.base
 
 data class ClassInfo(
-	val classId: TUID,
+	val classId: UID,
 	val cardinality: Int,
 	val category: String,
 	val name: String,

@@ -48,6 +48,17 @@ actual class PluginFactory(
 		isOpen = false
 	}
 
+	private fun IPluginFactory_createInstance(
+		this_ptr: CValuesRef<IPluginFactory>,
+		classID: UID,
+		interfaceID: UID,
+		obj: CValuesRef<COpaquePointerVar>
+	): tresult = memScoped {
+		val cid = classID.toFuidPtr(this)
+		val iid = interfaceID.toFuidPtr(this)
+		IPluginFactory_createInstance(this_ptr, cid, iid, obj)
+	}
+
 	@OptIn(ExperimentalUnsignedTypes::class)
 	private fun PFactoryInfo.toKFactoryInfo(): FactoryInfo {
 		return FactoryInfo(
@@ -67,7 +78,7 @@ actual class PluginFactory(
 	@OptIn(ExperimentalUnsignedTypes::class)
 	private fun PClassInfo.toKClassInfo(info2: PClassInfo2? = null, info3: PClassInfoW? = null): ClassInfo {
 		return ClassInfo(
-			classId = TUID((info3?.cid ?: info2?.cid ?: cid).readBytes(16)),
+			classId = UID((info3?.cid ?: info2?.cid ?: cid).readBytes(16)),
 			cardinality = info3?.cardinality ?: info2?.cardinality ?: cardinality,
 			category = (info3?.category ?: info2?.category ?: category).toKString(),
 			name = info3?.name?.toKStringFromUtf16() ?: (info2?.name ?: name).toKString(),
