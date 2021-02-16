@@ -12,8 +12,8 @@ actual abstract class PluginBase(
 ) : FUnknown(thisRawPtr) {
 	private val thisPtr get() = thisRawPtr.reinterpret<IPluginBase>()
 	actual fun initialize() {
-		val result = IPluginBase_initialize(thisPtr, TODO())
-		check(result== kResultTrue) {
+		val result = IPluginBase_initialize(thisPtr, null)    // TODO: specify context
+		check(result == kResultTrue) {
 			terminate()
 			"${result.kResultString} on initialize"
 		}
