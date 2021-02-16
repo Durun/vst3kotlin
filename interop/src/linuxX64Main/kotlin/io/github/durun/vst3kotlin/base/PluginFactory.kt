@@ -2,6 +2,7 @@ package io.github.durun.vst3kotlin.base
 
 import cwrapper.*
 import io.github.durun.vst3kotlin.InterfaceID
+import io.github.durun.vst3kotlin.vst.Component
 import kotlinx.cinterop.*
 
 actual class PluginFactory(
@@ -49,6 +50,12 @@ actual class PluginFactory(
 		super.close()
 		factory2Ptr?.let { IPluginFactory_release(it.reinterpret()) }
 		factory3Ptr?.let { IPluginFactory_release(it.reinterpret()) }
+	}
+
+	actual fun createComponent(classID: UID): Component {
+		return Component(memScoped {
+			createInstance(thisPtr, classID, InterfaceID.get<Component>())
+		})
 	}
 
 	private inline fun <S : CStructVar, reified I : FUnknown> AutofreeScope.createInstance(
