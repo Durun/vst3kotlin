@@ -1,5 +1,6 @@
 package io.github.durun.vst3kotlin
 
+import io.github.durun.vst3kotlin.base.BStream
 import io.github.durun.vst3kotlin.base.FUnknown
 import io.github.durun.vst3kotlin.base.PluginFactory
 import io.github.durun.vst3kotlin.base.UID
@@ -14,6 +15,7 @@ object InterfaceID {
 			3 -> IPluginFactory3
 			else -> throw IllegalArgumentException("IPluginFactory version must be in 1-3 but: $version")
 		}
+		BStream::class -> IBStream
 		AudioProcessor::class -> IAudioProcessor
 		Component::class -> IComponent
 		else -> throw NoSuchElementException("No interface ID: ${I::class}")
