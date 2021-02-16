@@ -28,7 +28,7 @@ uint32 PLUGIN_API IPluginFactory_release(IPluginFactory* this_ptr);
 tresult PLUGIN_API IPluginFactory_getFactoryInfo(IPluginFactory* this_ptr, PFactoryInfo* info);
 int32 PLUGIN_API IPluginFactory_countClasses(IPluginFactory* this_ptr);
 tresult PLUGIN_API IPluginFactory_getClassInfo(IPluginFactory* this_ptr, int32 index, PClassInfo* info);
-tresult PLUGIN_API IPluginFactory_createInstance(IPluginFactory* this_ptr, FUID cid, FUID iid, void** obj);
+tresult PLUGIN_API IPluginFactory_createInstance(IPluginFactory* this_ptr, FUID* cid, FUID* iid, void** obj);
 
 typedef IPluginFactory*(PLUGIN_API* IPluginFactoryGetter)(void);
 

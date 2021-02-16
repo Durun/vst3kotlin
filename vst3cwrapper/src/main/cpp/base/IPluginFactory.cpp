@@ -36,8 +36,10 @@ tresult PLUGIN_API IPluginFactory_getClassInfo(IPluginFactory* this_ptr, int32 i
 	);
 }
 
-tresult PLUGIN_API IPluginFactory_createInstance(IPluginFactory* this_ptr, FUID cid, FUID iid, void** obj) {
-	return cast(this_ptr)->createInstance(*cast(&cid), *cast(&iid), obj);
+tresult PLUGIN_API IPluginFactory_createInstance(IPluginFactory* this_ptr, FUID* cid, FUID* iid, void** obj) {
+    return cast(this_ptr)->createInstance(
+        *reinterpret_cast<Steinberg::FUID*>(cid),
+        *reinterpret_cast<Steinberg::FUID*>(iid), obj);
 }
 
 // [IPluginFactory2] member functions
