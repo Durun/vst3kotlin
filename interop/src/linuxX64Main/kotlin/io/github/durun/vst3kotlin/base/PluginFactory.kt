@@ -99,7 +99,7 @@ actual class PluginFactory(
 		return ClassInfo(
 			classId = UID((info3?.cid ?: info2?.cid ?: cid).readBytes(16)),
 			cardinality = info3?.cardinality ?: info2?.cardinality ?: cardinality,
-			category = (info3?.category ?: info2?.category ?: category).toKString(),
+			category = (info3?.category ?: info2?.category ?: category).toKString().toVstClassCategory(),
 			name = info3?.name?.toKStringFromUtf16() ?: (info2?.name ?: name).toKString(),
 			subCategories = (info3?.subCategories ?: info2?.subCategories)?.toKString(),
 			vendor = info3?.vendor?.toKStringFromUtf16() ?: info2?.vendor?.toKString(),
@@ -107,5 +107,11 @@ actual class PluginFactory(
 			sdkVersion = info3?.sdkVersion?.toKStringFromUtf16() ?: info2?.sdkVersion?.toKString(),
 			flags = (info3?.classFlags ?: info2?.classFlags)?.let { ClassInfo.Flags(it.toInt()) }
 		)
+	}
+
+	private fun String.toVstClassCategory(): VstClassCategory = when (this) {
+		VstClassCategory.AudioEffect.value -> VstClassCategory.AudioEffect
+		VstClassCategory.ComponentController.value -> VstClassCategory.ComponentController
+		else -> throw IllegalArgumentException()
 	}
 }
