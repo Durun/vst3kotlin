@@ -3,6 +3,7 @@ package io.github.durun.vst3kotlin
 import io.github.durun.vst3kotlin.base.FUnknown
 import io.github.durun.vst3kotlin.base.PluginFactory
 import io.github.durun.vst3kotlin.base.UID
+import io.github.durun.vst3kotlin.vst.AudioProcessor
 
 object InterfaceID {
 	inline operator fun <reified I : FUnknown> get(version: Int = 1): UID = when (I::class) {
@@ -12,6 +13,7 @@ object InterfaceID {
 			3 -> IPluginFactory3
 			else -> throw IllegalArgumentException("IPluginFactory version must be in 1-3 but: $version")
 		}
+		AudioProcessor::class -> IAudioProcessor
 		else -> throw NoSuchElementException("No interface ID: ${I::class}")
 	}
 
