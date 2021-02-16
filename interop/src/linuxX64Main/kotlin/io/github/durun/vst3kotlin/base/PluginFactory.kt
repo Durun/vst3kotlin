@@ -1,6 +1,7 @@
 package io.github.durun.vst3kotlin.base
 
 import cwrapper.*
+import io.github.durun.vst3kotlin.InterfaceID
 import kotlinx.cinterop.*
 
 actual class PluginFactory(
@@ -53,14 +54,19 @@ actual class PluginFactory(
 		isOpen = false
 	}
 
-	private fun <I: CStructVar> AutofreeScope.createInstance(
+	private inline fun <S : CStructVar, reified I : FUnknown> AutofreeScope.createInstance(
+		factory: CPointer<IPluginFactory>,
+		classID: UID
+	): CPointer<S> = createInstance(factory, classID, InterfaceID.get<I>())
+
+	private fun <S : CStructVar> AutofreeScope.createInstance(
 		factory: CPointer<IPluginFactory>,
 		classID: UID,
 		interfaceID: UID
-	): CPointer<I> {
+	): CPointer<S> {
 		val cid = classID.toFuidPtr(this)
 		val iid = interfaceID.toFuidPtr(this)
-		val buf: CPointerVar<I> = alloc()
+		val buf: CPointerVar<S> = alloc()
 		val bufPtr: CPointer<COpaquePointerVar> = buf.ptr.reinterpret()
 		val result = IPluginFactory_createInstance(factory, cid, iid, bufPtr)
 		val interfacePtr = buf.value

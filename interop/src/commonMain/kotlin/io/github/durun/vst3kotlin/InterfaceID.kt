@@ -6,7 +6,7 @@ import io.github.durun.vst3kotlin.base.UID
 
 object InterfaceID {
 	inline operator fun <reified I : FUnknown> get(version: Int = 1): UID = when (I::class) {
-		is PluginFactory -> when (version) {
+		PluginFactory::class -> when (version) {
 			1 -> IPluginFactory
 			2 -> IPluginFactory2
 			3 -> IPluginFactory3
