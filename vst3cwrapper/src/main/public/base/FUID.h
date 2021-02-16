@@ -14,7 +14,8 @@ typedef struct FUID {
 	TUID tuid;
 } FUID;
 // [FUID] constructors
-FUID *FUID_new_int(uint32 i1, uint32 i2, uint32 i3, uint32 i4);
+void FUID_new_int(FUID* out, uint32 i1, uint32 i2, uint32 i3, uint32 i4);
+void FUID_new_string(FUID *out, const char *str);
 // [FUID] member functions
 bool FUID_generate (FUID *this_ptr);
 bool FUID_isValid(FUID *this_ptr);
