@@ -14,6 +14,7 @@ object InterfaceID {
 			else -> throw IllegalArgumentException("IPluginFactory version must be in 1-3 but: $version")
 		}
 		AudioProcessor::class -> IAudioProcessor
+		IComponent::class -> IComponent
 		else -> throw NoSuchElementException("No interface ID: ${I::class}")
 	}
 
