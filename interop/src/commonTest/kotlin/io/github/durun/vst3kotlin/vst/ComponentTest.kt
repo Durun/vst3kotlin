@@ -11,12 +11,20 @@ class ComponentTest {
 	val path = Path.of("src/commonTest/resources/vst3/again.vst3")
 
 	@Test
-	fun getControllerClassID() {
+	fun getInfo() {
 		Vst3Package.open(path).use { plugin ->
 			plugin.openPluginFactory().use { factory ->
 				val cid = factory.classInfo.first().classId
 				factory.createComponent(cid).use { component ->
-					component.controllerClassID shouldBe UID("D39D5B65D7AF42FA843F4AC841EB04F0")
+					component.apply {
+						println("controllerClassID=$controllerClassID")
+						println("audioInputBusInfos=$audioInputBusInfos")
+						println("eventInputBusInfos=$eventInputBusInfos")
+						println("audioOutputBusInfos=$audioOutputBusInfos")
+						println("eventOutputBusInfos=$eventOutputBusInfos")
+						println("routingInfo=$routingInfo")
+						controllerClassID shouldBe UID("D39D5B65D7AF42FA843F4AC841EB04F0")
+					}
 				}
 			}
 		}
