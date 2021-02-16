@@ -13,7 +13,10 @@ actual abstract class PluginBase(
 	private val thisPtr get() = thisRawPtr.reinterpret<IPluginBase>()
 	actual fun initialize() {
 		val result = IPluginBase_initialize(thisPtr, TODO())
-		check(result== kResultTrue) {"${result.kResultString} on initialize"}
+		check(result== kResultTrue) {
+			terminate()
+			"${result.kResultString} on initialize"
+		}
 	}
 
 	actual fun terminate() {
