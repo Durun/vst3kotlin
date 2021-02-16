@@ -40,6 +40,11 @@ actual class PluginFactory(
 		}.toList()
 	}
 
+	fun createIAudioProcessor(classID: UID): CPointer<IAudioProcessor> = memScoped {
+		val interfaceID = IAudioProcessor_iid.toUID()
+		createInstance(factoryPtr, classID, interfaceID)
+	}
+
 	actual override fun close() {
 		check(isOpen)
 		IPluginFactory_release(factoryPtr)
@@ -48,15 +53,19 @@ actual class PluginFactory(
 		isOpen = false
 	}
 
-	private fun IPluginFactory_createInstance(
-		this_ptr: CValuesRef<IPluginFactory>,
+	private fun <I: CStructVar> AutofreeScope.createInstance(
+		factory: CPointer<IPluginFactory>,
 		classID: UID,
-		interfaceID: UID,
-		obj: CValuesRef<COpaquePointerVar>
-	): tresult = memScoped {
+		interfaceID: UID
+	): CPointer<I> {
 		val cid = classID.toFuidPtr(this)
 		val iid = interfaceID.toFuidPtr(this)
-		IPluginFactory_createInstance(this_ptr, cid, iid, obj)
+		val buf: CPointerVar<I> = alloc()
+		val bufPtr: CPointer<COpaquePointerVar> = buf.ptr.reinterpret()
+		val result = IPluginFactory_createInstance(factory, cid, iid, bufPtr)
+		val interfacePtr = buf.value
+		checkNotNull(interfacePtr) { "${result.kResultString}: classID=$classID, interfaceID=$interfaceID" }
+		return interfacePtr
 	}
 
 	@OptIn(ExperimentalUnsignedTypes::class)
