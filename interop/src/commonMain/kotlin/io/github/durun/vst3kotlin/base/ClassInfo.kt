@@ -3,7 +3,7 @@ package io.github.durun.vst3kotlin.base
 data class ClassInfo(
 	val classId: UID,
 	val cardinality: Int,
-	val category: String,
+	val category: VstClassCategory,
 	val name: String,
 	val flags: Flags? = null,
 	val subCategories: String? = null,

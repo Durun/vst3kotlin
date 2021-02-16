@@ -43,19 +43,19 @@ class PluginFactoryTest {
 			ClassInfo(
 				classId = UID("84E8DE5F92554F5396FAE4133C935A18"),
 				cardinality = 2147483647,
-				category = "Audio Module Class",
+				category = VstClassCategory.AudioEffect,
 				name = "AGain VST3"
 			),
 			ClassInfo(
 				classId = UID("D39D5B65D7AF42FA843F4AC841EB04F0"),
 				cardinality = 2147483647,
-				category = "Component Controller Class",
+				category = VstClassCategory.ComponentController,
 				name = "AGain VST3Controller"
 			),
 			ClassInfo(
 				classId = UID("41347FD6FED64094AFBB12B7DBA1D441"),
 				cardinality = 2147483647,
-				category = "Audio Module Class",
+				category = VstClassCategory.AudioEffect,
 				name = "AGain SideChain VST3"
 			)
 		)
