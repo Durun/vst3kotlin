@@ -18,6 +18,7 @@
 #include "gui/IPlugView.h"
 #include "vst/IAudioProcessor.h"
 #include "vst/IComponent.h"
+#include "vst/IEditController.h"
 #include "vst/IEventList.h"
 #include "vst/IMidiMapping.h"
 #include "vst/INoteExpressionController.h"
@@ -35,6 +36,7 @@ Steinberg::IBStream* cast(IBStream* this_ptr);
 Steinberg::IPluginBase* PLUGIN_API cast(IPluginBase* this_ptr);
 Steinberg::ISizeableStream* cast(ISizeableStream* this_ptr);
 Steinberg::IPlugView* cast(IPlugView* this_ptr);
+IPlugView* cast(Steinberg::IPlugView* this_ptr);
 Steinberg::IPlugFrame* cast(IPlugFrame* this_ptr);
 Steinberg::ViewRect* cast(ViewRect* this_ptr);
 Steinberg::Vst::IAudioProcessor* cast(IAudioProcessor* this_ptr);
@@ -43,6 +45,11 @@ Steinberg::Vst::IProcessContextRequirements* cast(IProcessContextRequirements* t
 Steinberg::Vst::ProcessSetup* cast(ProcessSetup* this_ptr);
 Steinberg::Vst::ProcessData* cast(ProcessData* this_ptr);
 Steinberg::Vst::IComponent* cast(IComponent* this_ptr);
+Steinberg::Vst::IEditController* cast(IEditController* this_ptr);
+Steinberg::Vst::IEditController2* cast(IEditController2* this_ptr);
+Steinberg::Vst::ParameterInfo* cast(ParameterInfo* this_ptr);
+Steinberg::Vst::ParamValue* cast(ParamValue* this_ptr);
+Steinberg::Vst::IComponentHandler* cast(IComponentHandler* this_ptr);
 Steinberg::Vst::IEventList* cast(IEventList* this_ptr);
 Steinberg::Vst::Event* cast(Event* this_ptr);
 Steinberg::Vst::IProgress* cast(IProgress* this_ptr);

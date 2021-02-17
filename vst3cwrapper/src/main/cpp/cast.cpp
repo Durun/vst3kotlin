@@ -33,6 +33,9 @@ Steinberg::ISizeableStream* cast(ISizeableStream* this_ptr) {
 Steinberg::IPlugView* cast(IPlugView* this_ptr) {
 	return reinterpret_cast<Steinberg::IPlugView*>(this_ptr);
 }
+IPlugView* cast(Steinberg::IPlugView* this_ptr) {
+    return reinterpret_cast<IPlugView*>(this_ptr);
+}
 Steinberg::IPlugFrame* cast(IPlugFrame* this_ptr) {
     return reinterpret_cast<Steinberg::IPlugFrame*>(this_ptr);
 }
@@ -54,7 +57,22 @@ Steinberg::Vst::ProcessData* cast(ProcessData* this_ptr) {
 Steinberg::Vst::IComponent* cast(IComponent* this_ptr) {
 	return reinterpret_cast<Steinberg::Vst::IComponent*>(this_ptr);
 }
-Steinberg::Vst::IEventList* cast(IEventList* this_ptr) {  //private
+Steinberg::Vst::IEditController* cast(IEditController* this_ptr) {
+    return reinterpret_cast<Steinberg::Vst::IEditController*>(this_ptr);
+}
+Steinberg::Vst::IEditController2* cast(IEditController2* this_ptr) {
+    return reinterpret_cast<Steinberg::Vst::IEditController2*>(this_ptr);
+}
+Steinberg::Vst::ParameterInfo* cast(ParameterInfo* this_ptr) {
+    return reinterpret_cast<Steinberg::Vst::ParameterInfo*>(this_ptr);
+}
+Steinberg::Vst::ParamValue* cast(ParamValue* this_ptr) {
+    return reinterpret_cast<Steinberg::Vst::ParamValue*>(this_ptr);
+}
+Steinberg::Vst::IComponentHandler* cast(IComponentHandler* this_ptr) {
+    return reinterpret_cast<Steinberg::Vst::IComponentHandler*>(this_ptr);
+}
+Steinberg::Vst::IEventList* cast(IEventList* this_ptr) {
 	return reinterpret_cast<Steinberg::Vst::IEventList*>(this_ptr);
 }
 Steinberg::Vst::Event* cast(Event* this_ptr) {
