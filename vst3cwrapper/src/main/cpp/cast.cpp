@@ -57,6 +57,9 @@ Steinberg::Vst::ProcessData* cast(ProcessData* this_ptr) {
 Steinberg::Vst::IComponent* cast(IComponent* this_ptr) {
 	return reinterpret_cast<Steinberg::Vst::IComponent*>(this_ptr);
 }
+Steinberg::Vst::IComponentHandlerBusActivation* cast(IComponentHandlerBusActivation* this_ptr) {
+    return reinterpret_cast<Steinberg::Vst::IComponentHandlerBusActivation*>(this_ptr);
+}
 Steinberg::Vst::IEditController* cast(IEditController* this_ptr) {
     return reinterpret_cast<Steinberg::Vst::IEditController*>(this_ptr);
 }
