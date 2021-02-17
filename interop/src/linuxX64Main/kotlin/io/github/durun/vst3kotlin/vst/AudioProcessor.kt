@@ -28,6 +28,7 @@ actual class AudioProcessor(
 		direction: BusDirection,
 		index: Int
 	): SpeakerArrangement {
+		TODO()
 		return memScoped {
 			val buf = alloc<SpeakerArrangementVar>()
 			val result = IAudioProcessor_getBusArrangement(thisPtr, direction.value, index, buf.ptr)
@@ -35,6 +36,18 @@ actual class AudioProcessor(
 			SpeakerArrangement.of(buf.value)
 		}
 	}
+
+	actual val inputBusArrangements: List<SpeakerArrangement>
+		get() {
+			val size = queryInterface<IComponent>().usePointer {
+				IComponent_getBusCount(it, MediaType.Audio.value, BusDirection.Input.value)
+			}
+			return (0 until size).map { i ->
+				getBusArrangement(BusDirection.Input, i)
+			}
+		}
+	actual val outputBusArrangements: List<SpeakerArrangement>
+		get() = TODO("Not yet implemented")
 
 	actual fun canProcessSampleSize(sampleSize: SymbolicSampleSize): Boolean {
 		return IAudioProcessor_canProcessSampleSize(thisPtr, sampleSize.value) == kResultTrue

@@ -6,6 +6,8 @@ import io.github.durun.vstkotlin3.vst.SpeakerArrangement
 expect class AudioProcessor : FUnknown {
 	fun setBusArrangements(inputs: List<SpeakerArrangement>, outputs: List<SpeakerArrangement>)
 	fun getBusArrangement(direction: BusDirection, index: Int): SpeakerArrangement
+	val inputBusArrangements: List<SpeakerArrangement>
+	val outputBusArrangements: List<SpeakerArrangement>
 	fun canProcessSampleSize(sampleSize: SymbolicSampleSize): Boolean
 	fun setupProcessing(setup: ProcessSetup)
 	fun setProcessing(state: Boolean)
