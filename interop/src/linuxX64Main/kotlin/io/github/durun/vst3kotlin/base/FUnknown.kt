@@ -1,9 +1,6 @@
 package io.github.durun.vst3kotlin.base
 
-import cwrapper.FUnknown_queryInterface
-import cwrapper.FUnknown_release
-import cwrapper.IProcessContextRequirements
-import cwrapper.kResultTrue
+import cwrapper.*
 import io.github.durun.io.Closeable
 import io.github.durun.vst3kotlin.VstInterface
 import kotlinx.cinterop.*
@@ -21,11 +18,14 @@ actual abstract class FUnknown(
 		isOpen = false
 	}
 
-	private fun queryInterface(interfaceID: UID): CPointer<*> {
+	private fun queryInterface(interfaceID: TUID): CPointer<*> {
 		return memScoped {
-			val iid = interfaceID.toFuidPtr(this).pointed.tuid
 			val obj = alloc<CPointerVar<*>>()
-			val result = FUnknown_queryInterface(thisPtr, iid, obj.ptr)
+			val result = IPluginFactory_queryInterface(
+				thisPtr.reinterpret(),
+				interfaceID,
+				obj.ptr
+			)    // TODO: use FUnknown_queryInterface
 			check(result == kResultTrue) { result.kResultString }
 			val ptr = obj.value
 			checkNotNull(ptr)
@@ -34,7 +34,7 @@ actual abstract class FUnknown(
 	}
 
 	fun <I : CPointed> queryInterface(): VstInterface<CPointer<I>> {
-		val iid = VstInterface.IID.get<IProcessContextRequirements>()
+		val iid = IProcessContextRequirements_iid
 		val ptr = queryInterface(iid).reinterpret<I>()
 		return VstInterface(ptr)
 	}
