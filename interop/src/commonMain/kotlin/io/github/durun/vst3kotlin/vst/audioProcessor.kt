@@ -12,7 +12,7 @@ expect class AudioProcessor : FUnknown {
 	fun process()// TODO
 	val latencySampleSize: Int
 	val tailSampleSize: Int
-	val processContextRequirements: ProcessContextRequirement
+	val processContextRequirement: ProcessContextRequirement
 }
 
 class ComponentFlag
