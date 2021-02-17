@@ -7,6 +7,8 @@ actual class BStream(
 	thisPtr: CPointer<IBStream>
 ) : FUnknown(thisPtr) {
 	private val thisPtr: CPointer<IBStream> get() = thisRawPtr.reinterpret()
+	val ptr: CPointer<IBStream> get() = thisPtr
+
 	actual fun read(numBytes: Int): ByteArray {
 		return memScoped {
 			val buffer = allocArray<ByteVar>(numBytes)    // TODO: pool buffer

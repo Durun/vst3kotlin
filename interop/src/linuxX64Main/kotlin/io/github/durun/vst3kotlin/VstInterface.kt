@@ -10,6 +10,7 @@ actual class VstInterface<P>(
 	ptr: P
 ) : Closeable {
 	private val thisPtr: CPointer<*>
+	val ptr: CPointer<*> get() = thisPtr
 
 	init {
 		require(ptr is CPointer<*>)
