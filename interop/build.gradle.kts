@@ -1,5 +1,6 @@
 import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTargetWithHostTests
 import org.jetbrains.kotlin.gradle.tasks.CInteropProcess
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
     kotlin("multiplatform") version "1.4.30"
@@ -45,6 +46,12 @@ tasks {
         dependsOn(cwrapper.tasks["createReleaseLinux"])
         dependsOn(cinteropDef)
     }
+
+    withType(KotlinCompile::class).all {
+        kotlinOptions {
+            freeCompilerArgs += "-Xopt-in=kotlin.RequiresOptIn"
+        }
+    }
 }
 
 kotlin {
@@ -69,4 +76,6 @@ kotlin {
     linuxX64 { configureTarget() }
     macosX64 { configureTarget() }
     mingwX64("windowsX64") { configureTarget() }
+
+
 }
