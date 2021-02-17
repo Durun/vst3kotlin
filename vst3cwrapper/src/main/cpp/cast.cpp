@@ -75,6 +75,9 @@ Steinberg::Vst::ParamValue* cast(ParamValue* this_ptr) {
 Steinberg::Vst::IComponentHandler* cast(IComponentHandler* this_ptr) {
     return reinterpret_cast<Steinberg::Vst::IComponentHandler*>(this_ptr);
 }
+Steinberg::Vst::IComponentHandler2* cast(IComponentHandler2* this_ptr) {
+    return reinterpret_cast<Steinberg::Vst::IComponentHandler2*>(this_ptr);
+}
 Steinberg::Vst::IEventList* cast(IEventList* this_ptr) {
 	return reinterpret_cast<Steinberg::Vst::IEventList*>(this_ptr);
 }

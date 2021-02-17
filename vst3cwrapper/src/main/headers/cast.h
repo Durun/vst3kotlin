@@ -51,6 +51,7 @@ Steinberg::Vst::IEditController2* cast(IEditController2* this_ptr);
 Steinberg::Vst::ParameterInfo* cast(ParameterInfo* this_ptr);
 Steinberg::Vst::ParamValue* cast(ParamValue* this_ptr);
 Steinberg::Vst::IComponentHandler* cast(IComponentHandler* this_ptr);
+Steinberg::Vst::IComponentHandler2* cast(IComponentHandler2* this_ptr);
 Steinberg::Vst::IComponentHandlerBusActivation* cast(IComponentHandlerBusActivation* this_ptr);
 Steinberg::Vst::IEventList* cast(IEventList* this_ptr);
 Steinberg::Vst::Event* cast(Event* this_ptr);
