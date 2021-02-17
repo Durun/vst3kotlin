@@ -69,4 +69,12 @@ actual class AudioProcessor(
 	@OptIn(ExperimentalUnsignedTypes::class)
 	actual val tailSampleSize: Int
 		get() = IAudioProcessor_getTailSamples(thisPtr).toInt()
+
+	actual val processContextRequirements: ProcessContextRequirement
+		get() {
+			val flags = queryInterface<IProcessContextRequirements>().usePointer {
+				IProcessContextRequirements_getProcessContextRequirements(it)
+			}
+			return ProcessContextRequirement(flags)
+		}
 }
