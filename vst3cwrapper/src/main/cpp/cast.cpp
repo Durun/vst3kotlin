@@ -30,6 +30,12 @@ Steinberg::IPluginBase* PLUGIN_API cast(IPluginBase* this_ptr) {  //private
 Steinberg::ISizeableStream* cast(ISizeableStream* this_ptr) {
 	return reinterpret_cast<Steinberg::ISizeableStream*>(this_ptr);
 }
+Steinberg::IPlugView* cast(IPlugView* this_ptr) {
+	return reinterpret_cast<Steinberg::IPlugView*>(this_ptr);
+}
+Steinberg::IPlugFrame* cast(IPlugFrame* this_ptr) {
+    return reinterpret_cast<Steinberg::IPlugFrame*>(this_ptr);
+}
 Steinberg::Vst::IAudioProcessor* cast(IAudioProcessor* this_ptr) {
 	return reinterpret_cast<Steinberg::Vst::IAudioProcessor*>(this_ptr);
 }
