@@ -66,6 +66,9 @@ Steinberg::Vst::IProgress* cast(IProgress* this_ptr) {
 Steinberg::Vst::IProgress::ProgressType* cast(ProgressType* this_ptr) {
 	return reinterpret_cast<Steinberg::Vst::IProgress::ProgressType*>(this_ptr);
 }
+Steinberg::Vst::IMidiMapping* cast(IMidiMapping* this_ptr) {
+    return reinterpret_cast<Steinberg::Vst::IMidiMapping*>(this_ptr);
+}
 Steinberg::Vst::INoteExpressionController* cast(INoteExpressionController* this_ptr) {
 	return reinterpret_cast<Steinberg::Vst::INoteExpressionController*>(this_ptr);
 }

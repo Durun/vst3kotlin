@@ -6,8 +6,8 @@
 #include <pluginterfaces/gui/iplugview.h>
 #include <pluginterfaces/vst/ivstaudioprocessor.h>
 #include <pluginterfaces/vst/ivstcomponent.h>
-#include <pluginterfaces/vst/ivstevents.h>
 #include <pluginterfaces/vst/ivsteditcontroller.h>
+#include <pluginterfaces/vst/ivstevents.h>
 #include <pluginterfaces/vst/ivstnoteexpression.h>
 #include <pluginterfaces/vst/ivstparameterchanges.h>
 
@@ -19,9 +19,10 @@
 #include "vst/IAudioProcessor.h"
 #include "vst/IComponent.h"
 #include "vst/IEventList.h"
-#include "vst/IProgress.h"
+#include "vst/IMidiMapping.h"
 #include "vst/INoteExpressionController.h"
 #include "vst/IParameterChanges.h"
+#include "vst/IProgress.h"
 
 Steinberg::FUID* cast(FUID* this_ptr);
 const Steinberg::FUID* cast(const FUID* this_ptr);
@@ -46,6 +47,7 @@ Steinberg::Vst::IEventList* cast(IEventList* this_ptr);
 Steinberg::Vst::Event* cast(Event* this_ptr);
 Steinberg::Vst::IProgress* cast(IProgress* this_ptr);
 Steinberg::Vst::IProgress::ProgressType* cast(ProgressType* this_ptr);
+Steinberg::Vst::IMidiMapping* cast(IMidiMapping* this_ptr);
 Steinberg::Vst::INoteExpressionController* cast(INoteExpressionController* this_ptr);
 Steinberg::Vst::IKeyswitchController* cast(IKeyswitchController* this_ptr);
 Steinberg::Vst::NoteExpressionTypeInfo* cast(NoteExpressionTypeInfo* this_ptr);
