@@ -2,6 +2,7 @@ package io.github.durun.vst3kotlin.base
 
 import cwrapper.*
 import io.github.durun.vst3kotlin.InterfaceID
+import io.github.durun.vst3kotlin.vst.AudioProcessor
 import io.github.durun.vst3kotlin.vst.Component
 import kotlinx.cinterop.*
 
@@ -55,6 +56,12 @@ actual class PluginFactory(
 	actual fun createComponent(classID: UID): Component {
 		return Component(memScoped {
 			createInstance(thisPtr, classID, InterfaceID.get<Component>())
+		})
+	}
+
+	actual fun createAudioProcessor(classID: UID): AudioProcessor {
+		return AudioProcessor(memScoped {
+			createInstance(thisPtr, classID, InterfaceID.get<AudioProcessor>())
 		})
 	}
 
