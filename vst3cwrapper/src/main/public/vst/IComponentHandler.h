@@ -57,10 +57,10 @@ typedef struct IComponentHandler {
 } IComponentHandler;
 const TUID IComponentHandler_iid = INLINE_UID_c(0x93A0BEA3, 0x0BD045DB, 0x8E890B0C, 0xC1E46AC6);
 // [IComponentHandler] member functions
-tresult PLUGIN_API beginEdit(IComponentHandler* this_ptr, ParamID id);
-tresult PLUGIN_API performEdit(IComponentHandler* this_ptr, ParamID id, ParamValue valueNormalized);
-tresult PLUGIN_API endEdit(IComponentHandler* this_ptr, ParamID id);
-tresult PLUGIN_API restartComponent(IComponentHandler* this_ptr, int32 flags);
+tresult PLUGIN_API IComponentHandler_beginEdit(IComponentHandler* this_ptr, ParamID id);
+tresult PLUGIN_API IComponentHandler_performEdit(IComponentHandler* this_ptr, ParamID id, ParamValue valueNormalized);
+tresult PLUGIN_API IComponentHandler_endEdit(IComponentHandler* this_ptr, ParamID id);
+tresult PLUGIN_API IComponentHandler_restartComponent(IComponentHandler* this_ptr, int32 flags);
 
 /**
  * inherited from [FUnknown]
@@ -71,11 +71,11 @@ typedef struct IComponentHandler2 {
 } IComponentHandler2;
 const TUID IComponentHandler2_iid = INLINE_UID_c(0xF040B4B3, 0xA36045EC, 0xABCDC045, 0xB4D5A2CC);
 // [IComponentHandler2] member functions
-tresult PLUGIN_API setDirty(IComponentHandler2* this_ptr, TBool state);
-tresult PLUGIN_API requestOpenEditor(IComponentHandler2* this_ptr, FIDString name);
-tresult PLUGIN_API requestOpenEditor_default(IComponentHandler2* this_ptr);
-tresult PLUGIN_API startGroupEdit(IComponentHandler2* this_ptr);
-tresult PLUGIN_API finishGroupEdit(IComponentHandler2* this_ptr);
+tresult PLUGIN_API IComponentHandler2_setDirty(IComponentHandler2* this_ptr, TBool state);
+tresult PLUGIN_API IComponentHandler2_requestOpenEditor(IComponentHandler2* this_ptr, FIDString name);
+tresult PLUGIN_API IComponentHandler2_requestOpenEditor_default(IComponentHandler2* this_ptr);
+tresult PLUGIN_API IComponentHandler2_startGroupEdit(IComponentHandler2* this_ptr);
+tresult PLUGIN_API IComponentHandler2_finishGroupEdit(IComponentHandler2* this_ptr);
 
 #ifdef __cplusplus
 }

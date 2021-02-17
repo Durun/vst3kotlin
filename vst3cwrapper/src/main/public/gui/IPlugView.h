@@ -36,21 +36,21 @@ typedef struct IPlugView {
 } IPlugView;
 const TUID IPlugView_iid = INLINE_UID_c(0x5BC32507, 0xD06049EA, 0xA6151B52, 0x2B755B29);
 // [IPlugView] member functions
-tresult PLUGIN_API isPlatformTypeSupported(IPlugView* this_ptr, FIDString type);
-tresult PLUGIN_API attached(IPlugView* this_ptr, void* parent, FIDString type);
-tresult PLUGIN_API removed(IPlugView* this_ptr);
-tresult PLUGIN_API onWheel(IPlugView* this_ptr, float distance);
-tresult PLUGIN_API onKeyDown(IPlugView* this_ptr, char16 key, int16 keyCode, int16 modifiers);
-tresult PLUGIN_API onKeyUp(IPlugView* this_ptr, char16 key, int16 keyCode, int16 modifiers);
-tresult PLUGIN_API getSize(IPlugView* this_ptr, ViewRect* size);
-tresult PLUGIN_API onSize(IPlugView* this_ptr, ViewRect* newSize);
-tresult PLUGIN_API onFocus(IPlugView* this_ptr, TBool state);
-tresult PLUGIN_API setFrame(IPlugView* this_ptr, IPlugFrame* frame);
-tresult PLUGIN_API canResize(IPlugView* this_ptr);
-tresult PLUGIN_API checkSizeConstraint(IPlugView* this_ptr, ViewRect* rect);
+tresult PLUGIN_API IPlugView_isPlatformTypeSupported(IPlugView* this_ptr, FIDString type);
+tresult PLUGIN_API IPlugView_attached(IPlugView* this_ptr, void* parent, FIDString type);
+tresult PLUGIN_API IPlugView_removed(IPlugView* this_ptr);
+tresult PLUGIN_API IPlugView_onWheel(IPlugView* this_ptr, float distance);
+tresult PLUGIN_API IPlugView_onKeyDown(IPlugView* this_ptr, char16 key, int16 keyCode, int16 modifiers);
+tresult PLUGIN_API IPlugView_onKeyUp(IPlugView* this_ptr, char16 key, int16 keyCode, int16 modifiers);
+tresult PLUGIN_API IPlugView_getSize(IPlugView* this_ptr, ViewRect* size);
+tresult PLUGIN_API IPlugView_onSize(IPlugView* this_ptr, ViewRect* newSize);
+tresult PLUGIN_API IPlugView_onFocus(IPlugView* this_ptr, TBool state);
+tresult PLUGIN_API IPlugView_setFrame(IPlugView* this_ptr, IPlugFrame* frame);
+tresult PLUGIN_API IPlugView_canResize(IPlugView* this_ptr);
+tresult PLUGIN_API IPlugView_checkSizeConstraint(IPlugView* this_ptr, ViewRect* rect);
 
 // [IPlugFrame] member functions
-tresult PLUGIN_API resizeView(IPlugFrame* this_ptr, IPlugView* view, ViewRect* newSize);
+tresult PLUGIN_API IPlugFrame_resizeView(IPlugFrame* this_ptr, IPlugView* view, ViewRect* newSize);
 
 
 #ifdef __cplusplus
