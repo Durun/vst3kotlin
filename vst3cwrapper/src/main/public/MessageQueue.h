@@ -26,6 +26,7 @@ static MessageQueue messageQueue = {UNLOCK, messageQueueArray};
 
 void MessageQueue_init();
 void MessageQueue_enqueue(const MessageQueueEntry *data);
+void MessageQueue_enqueue_long(long data);
 int MessageQueue_dequeue(/*out*/ MessageQueueEntry data[], const int readSize);
 
 #ifdef __cplusplus

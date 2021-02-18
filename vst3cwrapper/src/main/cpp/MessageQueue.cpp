@@ -66,6 +66,11 @@ void MessageQueue_enqueue(const MessageQueueEntry *data) {
     exit_lock();
 }
 
+void MessageQueue_enqueue_long(long data) {
+    auto ptr = reinterpret_cast<const MessageQueueEntry*>(&data);
+    MessageQueue_enqueue(ptr);
+}
+
 int MessageQueue_dequeue(/*out*/ MessageQueueEntry data[], const int readSize) {
     // check
     if (readSize < 0) {
