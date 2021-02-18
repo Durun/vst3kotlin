@@ -9,6 +9,7 @@ import kotlinx.cinterop.*
 actual class PluginFactory(
 	thisPtr: CPointer<IPluginFactory>
 ) : FUnknown(thisPtr) {
+	val ptr: CPointer<IPluginFactory> get() = thisPtr
 	private val thisPtr get() = thisRawPtr.reinterpret<IPluginFactory>()
 	private val factory2Ptr: CPointer<IPluginFactory2>? = memScoped {
 		val ptrPtr = alloc<CPointerVarOf<CPointer<IPluginFactory2>>>().ptr
@@ -58,7 +59,13 @@ actual class PluginFactory(
 			createInstance(thisPtr, classID, InterfaceID.get<Component>())
 		})
 	}
-
+/*
+	actual fun createController(classID: UID): EditController {
+		return EditController(memScoped {
+			createInstance(thisPtr, classID, InterfaceID.get<EditController>())
+		})
+	}
+*/
 	actual fun createAudioProcessor(classID: UID): AudioProcessor {
 		return AudioProcessor(memScoped {
 			createInstance(thisPtr, classID, InterfaceID.get<AudioProcessor>())
