@@ -5,7 +5,7 @@ extern "C" {
 #endif
 
 
-const int MessageQueueLength = 4;
+const int MessageQueueLength = 256; // 4KB
 
 typedef struct MessageQueueEntry {
     long data1;
