@@ -23,10 +23,6 @@ static void exit_lock() {
     locked->store(UNLOCK);
 }
 
-static void copy(const MessageQueueEntry *from, MessageQueueEntry *to) {
-    to->data1 = from->data1;
-}
-
 static int nextIndex(int i) {
     int lastIndex = MessageQueueLength - 1;
     if (i < lastIndex) {
@@ -48,30 +44,39 @@ void MessageQueue_init() {
     messageQueue.array = messageQueueArray;
 }
 
-void MessageQueue_enqueue(const MessageQueueEntry *data) {
-    enter_lock();
+void MessageQueue_enqueue(const char data[], int size) {
+    // check
+    if (size == 0) return;
+    if (size < 0) {
+        fprintf(stderr, "Illegal argument: size must be 0<= but %d\n", size);
+        exit(1);
+    }
+
     // overflow check
-    if (MessageQueueLength <= messageQueue.remainSize) {
+    enter_lock();
+    if (MessageQueueLength < messageQueue.remainSize + size) {
         fprintf(stderr, "Illegal state: MessageQueue overflow\n");
         exit(1);
     }
 
     // copy
-    auto to = &(messageQueue.array[messageQueue.nextWriteIndex]);
-    copy(data, to);
+    for (int i = 0; i < size; i++) {
+        int to = (messageQueue.nextWriteIndex + i) % MessageQueueLength;
+        messageQueue.array[to] = data[i];
+        //fprintf(stderr, "enqueue: %02d <- %c\n", to, data[i]);
+    }
 
     // increment
-    messageQueue.nextWriteIndex = nextIndex(messageQueue.nextWriteIndex);
-    messageQueue.remainSize++;
+    messageQueue.nextWriteIndex = (messageQueue.nextWriteIndex + size) % MessageQueueLength;
+    messageQueue.remainSize += size;
     exit_lock();
 }
 
-void MessageQueue_enqueue_long(long data) {
-    auto ptr = reinterpret_cast<const MessageQueueEntry*>(&data);
-    MessageQueue_enqueue(ptr);
+void MessageQueue_enqueue_byte(const char data) {
+    MessageQueue_enqueue(&data, 1);
 }
 
-int MessageQueue_dequeue(/*out*/ MessageQueueEntry data[], const int readSize) {
+int MessageQueue_dequeue(/*out*/ char data[], const int readSize) {
     // check
     if (readSize < 0) {
         fprintf(stderr, "Illegal argument: readSize must be 0<= but %d\n", readSize);
@@ -84,7 +89,8 @@ int MessageQueue_dequeue(/*out*/ MessageQueueEntry data[], const int readSize) {
     auto toRead = min(readSize, messageQueue.remainSize);
     for (int i = 0; i < toRead; i++) {
         int from = (messageQueue.nextReadIndex + i) % MessageQueueLength;
-        copy(&(messageQueue.array[from]), &(data[i]));
+        data[i] = messageQueue.array[from];
+        //fprintf(stderr, "Dequeue: %02d -> %c\n", from, data[i]);
     }
 
     // increment

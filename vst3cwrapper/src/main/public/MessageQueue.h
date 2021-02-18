@@ -7,27 +7,23 @@ extern "C" {
 
 const int MessageQueueLength = 256; // 4KB
 
-typedef struct MessageQueueEntry {
-    long data1;
-} MessageQueueEntry;
-
 const int UNLOCK = 0;
 const int LOCK = 1;
 typedef struct MessageQueue {
     int locked;  // 0=unlock, 1=lock
-    MessageQueueEntry *array;
+    char *array;
     int nextReadIndex;
     int nextWriteIndex;
     int remainSize;
 } MessageQueue;
 
-static MessageQueueEntry messageQueueArray[MessageQueueLength] = {};
+static char messageQueueArray[MessageQueueLength] = {};
 static MessageQueue messageQueue = {UNLOCK, messageQueueArray};
 
 void MessageQueue_init();
-void MessageQueue_enqueue(const MessageQueueEntry *data);
-void MessageQueue_enqueue_long(long data);
-int MessageQueue_dequeue(/*out*/ MessageQueueEntry data[], const int readSize);
+void MessageQueue_enqueue(const char data[], int size);
+void MessageQueue_enqueue_byte(const char data);
+int MessageQueue_dequeue(/*out*/ char data[], const int readSize);
 
 #ifdef __cplusplus
 }
