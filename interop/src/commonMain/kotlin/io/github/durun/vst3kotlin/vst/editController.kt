@@ -2,21 +2,21 @@ package io.github.durun.vst3kotlin.vst
 
 import io.github.durun.vst3kotlin.base.BStream
 import io.github.durun.vst3kotlin.base.FUnknown
+import io.github.durun.vst3kotlin.base.PluginBase
 import io.github.durun.vst3kotlin.gui.PlugView
 
-@OptIn(ExperimentalUnsignedTypes::class)
-public typealias ParamID = UInt
-public typealias UnitID = Int
-public typealias ParamValue = Double
+//typealias ParamID = UInt
+//typealias UnitID = Int
+//typealias ParamValue = Double
 
 data class ParameterInfo(
-	val id: ParamID,
+	val id: UInt,
 	val title: String,
 	val shortTitle: String,
 	val units: String,
 	val stepCount: Int,
-	val defaultNormalizedValue: ParamValue,
-	val unitID: UnitID,
+	val defaultNormalizedValue: Double,
+	val unitID: Int,
 	val canAutomate: Boolean,
 	val isReadOnly: Boolean,
 	val isWrapAround: Boolean,
@@ -26,13 +26,13 @@ data class ParameterInfo(
 	val isBypass: Boolean
 ) {
 	constructor(
-		id: ParamID,
+		id: UInt,
 		title: String,
 		shortTitle: String,
 		units: String,
 		stepCount: Int,
-		defaultNormalizedValue: ParamValue,
-		unitID: UnitID,
+		defaultNormalizedValue: Double,
+		unitID: Int,
 		flags: Int
 	) : this(
 		id, title, shortTitle, units, stepCount, defaultNormalizedValue, unitID,
@@ -47,9 +47,9 @@ data class ParameterInfo(
 }
 
 expect class ComponentHandler:FUnknown {
-	fun beginEdit(id: ParamID)
-	fun performEdit(id: ParamID, valueNormalized: ParamValue)
-	fun endEdit(id: ParamID)
+	fun beginEdit(id: UInt)
+	fun performEdit(id: UInt, valueNormalized: Double)
+	fun endEdit(id: UInt)
 	fun restartComponent(flags: Int)
 
 	fun setDirty(state: Boolean)
@@ -58,17 +58,17 @@ expect class ComponentHandler:FUnknown {
 	fun finishGroupEdit()
 }
 
-expect class EditController : FUnknown {
+expect class EditController : PluginBase {
 	fun setComponentState(state: BStream)
 	fun setState(state: BStream)
 	val state: BStream
 	val parameterInfo: List<ParameterInfo>
-	fun getParamStringByValue(id: ParamID, valueNormalized: ParamValue): String
-	fun getParamValueByString(id: ParamID, string: String): ParamValue
-	fun normalizedParamToPlain(id: ParamID, valueNormalized: ParamValue): ParamValue
-	fun plainParamToNormalized(id: ParamID, plainValue: ParamValue): ParamValue
-	fun getParamNormalized(id: ParamID): ParamValue
-	fun setParamNormalized(id: ParamID, value: ParamValue)
+	fun getParamStringByValue(id: UInt, valueNormalized: Double): String
+	fun getDoubleByString(id: UInt, string: String): Double
+	fun normalizedParamToPlain(id: UInt, valueNormalized: Double): Double
+	fun plainParamToNormalized(id: UInt, plainValue: Double): Double
+	fun getParamNormalized(id: UInt): Double
+	fun setParamNormalized(id: UInt, value: Double)
 	fun setComponentHandler(handler: ComponentHandler)
 	fun createView(name: String): PlugView
 }

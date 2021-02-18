@@ -4,6 +4,7 @@ import cwrapper.*
 import io.github.durun.vst3kotlin.VstInterface
 import io.github.durun.vst3kotlin.base.BStream
 import io.github.durun.vst3kotlin.base.FUnknown
+import io.github.durun.vst3kotlin.base.PluginBase
 import io.github.durun.vst3kotlin.base.kResultString
 import io.github.durun.vst3kotlin.gui.PlugView
 import kotlinx.cinterop.*
@@ -11,7 +12,7 @@ import kotlinx.cinterop.*
 actual class ComponentHandler(thisPtr: CPointer<IComponentHandler>) : FUnknown(thisPtr) {
 	val ptr: CPointer<IComponentHandler> get() = thisPtr
 	private val thisPtr: CPointer<IComponentHandler> get() = thisRawPtr.reinterpret()
-	private val this2: VstInterface<CPointer<IComponentHandler2>> = queryInterface()
+	private val this2: VstInterface<CPointer<IComponentHandler2>> = VstInterface(queryInterface(IComponentHandler2_iid).reinterpret())
 	private val thisPtr2: CPointer<IComponentHandler2> = this2.ptr.reinterpret()
 
 	override fun close() {
@@ -19,17 +20,17 @@ actual class ComponentHandler(thisPtr: CPointer<IComponentHandler>) : FUnknown(t
 		super.close()
 	}
 
-	actual fun beginEdit(id: ParamID) {
+	actual fun beginEdit(id: UInt) {
 		val result = IComponentHandler_beginEdit(thisPtr, id)
 		check(result == kResultTrue) { result.kResultString }
 	}
 
-	actual fun performEdit(id: ParamID, valueNormalized: ParamValue) {
+	actual fun performEdit(id: UInt, valueNormalized: Double) {
 		val result = IComponentHandler_performEdit(thisPtr, id, valueNormalized)
 		check(result == kResultTrue) { result.kResultString }
 	}
 
-	actual fun endEdit(id: ParamID) {
+	actual fun endEdit(id: UInt) {
 		val result = IComponentHandler_endEdit(thisPtr, id)
 		check(result == kResultTrue) { result.kResultString }
 	}
@@ -61,7 +62,7 @@ actual class ComponentHandler(thisPtr: CPointer<IComponentHandler>) : FUnknown(t
 	}
 }
 
-actual class EditController(thisPtr: CPointer<IEditController>) : FUnknown(thisPtr) {
+actual class EditController(thisPtr: CPointer<IEditController>) : PluginBase(thisPtr) {
 	private val thisPtr: CPointer<IEditController> get() = thisRawPtr.reinterpret()
 	private val this2: VstInterface<CPointer<IEditController2>> = queryInterface()
 	private val thisPtr2: CPointer<IEditController2> get() = this2.ptr.reinterpret()
@@ -98,7 +99,7 @@ actual class EditController(thisPtr: CPointer<IEditController>) : FUnknown(thisP
 		}
 
 
-	actual fun getParamStringByValue(id: ParamID, valueNormalized: ParamValue): String {
+	actual fun getParamStringByValue(id: UInt, valueNormalized: Double): String {
 		return memScoped {
 			val buf = alloc<String128Var>()
 			val str = buf.value
@@ -109,9 +110,9 @@ actual class EditController(thisPtr: CPointer<IEditController>) : FUnknown(thisP
 		}
 	}
 
-	actual fun getParamValueByString(id: ParamID, string: String): ParamValue {
+	actual fun getDoubleByString(id: UInt, string: String): Double {
 		return memScoped {
-			val buf = alloc<ParamValueVar>()
+			val buf = alloc<DoubleVar>()
 			val strPtr = string.cstr.ptr.reinterpret<TCharVar>()
 			val result = IEditController_getParamValueByString(thisPtr, id, strPtr, buf.ptr)
 			check(result == kResultTrue) { result.kResultString }
@@ -119,19 +120,19 @@ actual class EditController(thisPtr: CPointer<IEditController>) : FUnknown(thisP
 		}
 	}
 
-	actual fun normalizedParamToPlain(id: ParamID, valueNormalized: ParamValue): ParamValue {
+	actual fun normalizedParamToPlain(id: UInt, valueNormalized: Double): Double {
 		return IEditController_normalizedParamToPlain(thisPtr, id, valueNormalized)
 	}
 
-	actual fun plainParamToNormalized(id: ParamID, plainValue: ParamValue): ParamValue {
+	actual fun plainParamToNormalized(id: UInt, plainValue: Double): Double {
 		return IEditController_plainParamToNormalized(thisPtr, id, plainValue)
 	}
 
-	actual fun getParamNormalized(id: ParamID): ParamValue {
+	actual fun getParamNormalized(id: UInt): Double {
 		return IEditController_getParamNormalized(thisPtr, id)
 	}
 
-	actual fun setParamNormalized(id: ParamID, value: ParamValue) {
+	actual fun setParamNormalized(id: UInt, value: Double) {
 		val result = IEditController_setParamNormalized(thisPtr, id, value)
 		check(result == kResultTrue) { result.kResultString }
 	}
