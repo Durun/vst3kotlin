@@ -12,5 +12,13 @@ data class FactoryInfo(
 		val LicenseCheck: Boolean,
 		val ComponentNonDiscardable: Boolean,
 		val Unicode: Boolean
-	)
+	) {
+		constructor(flags: Int) : this(
+			flags == 0,
+			flags and (1 shl 0) != 0,
+			flags and (1 shl 1) != 0,
+			flags and (1 shl 2) != 0,
+			flags and (1 shl 3) != 0
+		)
+	}
 }
