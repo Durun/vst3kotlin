@@ -2,7 +2,6 @@
 
 int main() {
 	test_types();
-	test_fuid();
-	test_createInstance();
+	test_MessageQueue();
 	return 0;
 }

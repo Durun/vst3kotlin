@@ -39,6 +39,9 @@ IPlugView* cast(Steinberg::IPlugView* this_ptr) {
 Steinberg::IPlugFrame* cast(IPlugFrame* this_ptr) {
     return reinterpret_cast<Steinberg::IPlugFrame*>(this_ptr);
 }
+Steinberg::ViewRect* cast(ViewRect* this_ptr) {
+    return reinterpret_cast<Steinberg::ViewRect*>(this_ptr);
+}
 Steinberg::Vst::IAudioProcessor* cast(IAudioProcessor* this_ptr) {
 	return reinterpret_cast<Steinberg::Vst::IAudioProcessor*>(this_ptr);
 }
