@@ -30,6 +30,9 @@ static int min(int x, int y) {
 }
 
 void MessageQueue_init() {
+    messageQueue.nextReadIndex = 0;
+    messageQueue.nextWriteIndex = 0;
+    messageQueue.remainSize = 0;
     messageQueue.locked = UNLOCK;
     messageQueue.array = messageQueueArray;
 }
