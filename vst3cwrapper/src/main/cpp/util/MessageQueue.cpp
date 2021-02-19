@@ -49,6 +49,7 @@ void MessageQueue_enqueue(const char data[], int size) {
     enter_lock();
     if (MessageQueueLength < messageQueue.remainSize + size) {
         fprintf(stderr, "Illegal state: MessageQueue overflow\n");
+        exit_lock();
         exit(1);
     }
 
