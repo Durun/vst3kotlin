@@ -66,8 +66,9 @@ fun <R> ByteArray.readScope(block: ByteArrayReader.() -> R): R {
 	return ByteArrayReader(this).block()
 }
 
+@OptIn(ExperimentalUnsignedTypes::class)
 class ByteArrayReader(private val buf: ByteArray) {
-	var offset = 0
+	private var offset: Int = 0
 
 	fun readByte(): Byte {
 		val b = buf[offset]
@@ -75,31 +76,35 @@ class ByteArrayReader(private val buf: ByteArray) {
 		return b
 	}
 
+	fun readUByte(): UByte = readByte().toUByte()
+	fun readUInt(): UInt = readUIntAt(buf, offset).also { offset += 4 }
+	fun readULong(): ULong = readULongAt(buf, offset).also { offset += 8 }
+
 	fun readInt(): Int = readUInt().toInt()
 	fun readLong(): Long = readULong().toLong()
-	fun readUByte(): UByte = readByte().toUByte()
 
-	@OptIn(ExperimentalUnsignedTypes::class)
-	fun readUInt(): UInt {
-		val b0 = buf[offset + 0].toUByte().toUInt()
-		val b1 = buf[offset + 1].toUByte().toUInt()
-		val b2 = buf[offset + 2].toUByte().toUInt()
-		val b3 = buf[offset + 3].toUByte().toUInt()
-		offset += 4
-		return (b3 shl 24) or (b2 shl 16) or (b1 shl 8) or (b0 shl 0)
-	}
+	companion object {
+		fun readUIntAt(bytes: ByteArray, offsetByte: Int): UInt {
+			val b0 = bytes[offsetByte + 0].toUByte().toUInt()
+			val b1 = bytes[offsetByte + 1].toUByte().toUInt()
+			val b2 = bytes[offsetByte + 2].toUByte().toUInt()
+			val b3 = bytes[offsetByte + 3].toUByte().toUInt()
+			return (b3 shl 24) or (b2 shl 16) or (b1 shl 8) or (b0 shl 0)
+		}
 
-	@OptIn(ExperimentalUnsignedTypes::class)
-	fun readULong(): ULong {
-		val b0 = buf[offset + 0].toUByte().toULong()
-		val b1 = buf[offset + 1].toUByte().toULong()
-		val b2 = buf[offset + 2].toUByte().toULong()
-		val b3 = buf[offset + 3].toUByte().toULong()
-		val b4 = buf[offset + 4].toUByte().toULong()
-		val b5 = buf[offset + 5].toUByte().toULong()
-		val b6 = buf[offset + 6].toUByte().toULong()
-		val b7 = buf[offset + 7].toUByte().toULong()
-		offset += 8
-		return (b7 shl 56) or (b6 shl 48) or (b5 shl 40) or (b4 shl 32) or (b3 shl 24) or (b2 shl 16) or (b1 shl 8) or (b0 shl 0)
+		fun readULongAt(bytes: ByteArray, offsetByte: Int): ULong {
+			val b0 = bytes[offsetByte + 0].toUByte().toULong()
+			val b1 = bytes[offsetByte + 1].toUByte().toULong()
+			val b2 = bytes[offsetByte + 2].toUByte().toULong()
+			val b3 = bytes[offsetByte + 3].toUByte().toULong()
+			val b4 = bytes[offsetByte + 4].toUByte().toULong()
+			val b5 = bytes[offsetByte + 5].toUByte().toULong()
+			val b6 = bytes[offsetByte + 6].toUByte().toULong()
+			val b7 = bytes[offsetByte + 7].toUByte().toULong()
+			return (b7 shl 56) or (b6 shl 48) or (b5 shl 40) or (b4 shl 32) or (b3 shl 24) or (b2 shl 16) or (b1 shl 8) or (b0 shl 0)
+		}
+
+		fun readIntAt(bytes: ByteArray, offsetByte: Int): Int = readUIntAt(bytes, offsetByte).toInt()
+		fun readLongAt(bytes: ByteArray, offsetByte: Int): Long = readULongAt(bytes, offsetByte).toLong()
 	}
 }
