@@ -13,15 +13,6 @@ static void exit_lock() {
     Lock_exit(&(messageQueue.locked));
 }
 
-static int nextIndex(int i) {
-    int lastIndex = MessageQueueLength - 1;
-    if (i < lastIndex) {
-        return i + 1;
-    } else {
-        return 0;
-    }
-}
-
 static int min(int x, int y) {
     if (x <= y)
         return x;
