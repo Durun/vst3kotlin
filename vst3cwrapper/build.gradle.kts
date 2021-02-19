@@ -60,7 +60,6 @@ fun checkout(url: Any, branch: String, dir: Any) {
         Grgit.open { this.dir = dir }
     } ?: throw kotlin.IllegalStateException("Cannot clone $url")
     repository.let {
-        it.fetch()
         it.checkout { this.branch = branch }
     }
 }
