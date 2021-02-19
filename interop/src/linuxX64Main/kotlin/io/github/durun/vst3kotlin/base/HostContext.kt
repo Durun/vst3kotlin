@@ -35,6 +35,7 @@ actual class HostContext(thisPtr: CPointer<SIComponentHandler>) : FUnknown(thisP
 		vtable.pointed.FUnknown.queryInterface =
 			staticCFunction { _: COpaquePointer?, uid: TUID?, objPtr: CPointer<COpaquePointerVar>? ->
 				println("callback queryInterface: uid=${uid?.toUID()}")
+				objPtr?.pointed?.value = TODO()
 				when (uid) {
 					IComponentHandler2_iid-> kResultOk
 					else -> kNoInterface
@@ -57,6 +58,11 @@ actual class HostContext(thisPtr: CPointer<SIComponentHandler>) : FUnknown(thisP
 		vtable.pointed.endEdit =
 			staticCFunction { _: COpaquePointer?, id: UInt ->
 				println("callback endEdit: id=$id")
+				val message = Message.EndEdit.bytesOf(id)
+				memScoped {
+					val values = message.toCValues()
+					MessageQueue_enqueue(values, values.size)
+				}
 				kNotImplemented
 			}
 		vtable.pointed.restartComponent =

@@ -28,15 +28,41 @@ sealed class Message(reader: ByteArrayReader) : MessageBase(reader) {
 			}
 		}
 	}
+	class EndEdit(reader: ByteArrayReader) : Message(reader) {
+		override val type: Int = typeEndEdit
+		val id: UInt by uInt()
+		override fun toString(): String = "EndEdit(id=$id)"
+
+		companion object {
+			private fun ByteArrayBuilder.bodyBytes(id: UInt) {
+				appendUInt(id)
+			}
+			fun bytesOf(id: UInt) :ByteArray = buildByteArray{
+				appendInt(typeEndEdit)
+				bodyBytes(id)
+			}
+			fun of(id: UInt): BeginEdit {
+				return BeginEdit(ByteArrayReader(ByteArrayBuilder().apply { bodyBytes(id) }.build()))
+			}
+		}
+	}
 
 	companion object {
 		// type IDs
 		val typeBeginEdit: Int = 1
+		val typeEndEdit: Int = 2
+		val typePerformEdit: Int = 3
+		val typeRestartComponent: Int = 4
+		val typeSetDirty: Int = 5
+		val typeRequestOpenEditor: Int = 6
+		val typeStartGroupEdit: Int = 7
+		val typeFinishGroupEdit: Int = 8
 
 		inline fun <reified T : MessageBase> decode(reader: ByteArrayReader): T {
 			val typeId = reader.readInt()
 			val instance = when (typeId) {
 				typeBeginEdit -> BeginEdit(reader)
+				typeEndEdit -> EndEdit(reader)
 				else -> throw IllegalStateException("No type with typeId: $typeId")
 			}
 			check(instance is T) { "Decode failed: $instance isn't ${T::class}" }
