@@ -14,7 +14,7 @@ class PluginBaseTest {
 			plugin.openPluginFactory().use { factory ->
 				val cid = factory.classInfo.first().classId
 				factory.createComponent(cid).use { component ->
-					component.initialize()
+					component.initialize(null)
 					component.terminate()
 				}
 			}

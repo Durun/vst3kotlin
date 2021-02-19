@@ -1,6 +1,7 @@
 package io.github.durun.vst3kotlin.base
 
 import cwrapper.*
+import io.github.durun.util.ByteArrayReader
 import kotlinx.cinterop.*
 
 
@@ -35,10 +36,6 @@ actual class HostContext(thisPtr: CPointer<SIComponentHandler>) : FUnknown(thisP
 			staticCFunction { _: COpaquePointer?, uid: TUID?, objPtr: CPointer<COpaquePointerVar>? ->
 				println("callback queryInterface: uid=${uid?.toUID()}")
 				when (uid) {
-					IComponentHandler_iid-> {
-						objPtr?.pointed?.value = ptr
-						kResultOk
-					}
 					IComponentHandler2_iid-> kResultOk
 					else -> kNoInterface
 				}
@@ -46,7 +43,12 @@ actual class HostContext(thisPtr: CPointer<SIComponentHandler>) : FUnknown(thisP
 		vtable.pointed.beginEdit =
 			staticCFunction { _: COpaquePointer?, id: UInt ->
 				println("callback beginEdit: id=$id")
-				kNotImplemented
+				val message = Message.BeginEdit.bytesOf(id)
+				memScoped {
+					val values = message.toCValues()
+					MessageQueue_enqueue(values, values.size)
+				}
+				kResultOk
 			}
 		vtable.pointed.performEdit =
 			staticCFunction { _: COpaquePointer?, id: UInt, valueNormalized: Double ->
@@ -61,5 +63,16 @@ actual class HostContext(thisPtr: CPointer<SIComponentHandler>) : FUnknown(thisP
 			staticCFunction { _: COpaquePointer?, flags: Int ->
 				kNotImplemented
 			}
+	}
+
+	actual fun receiveMessages(): List<Message> {
+		return memScoped {
+			val buf = allocArray<ByteVar>(MessageQueueLength)
+			val readSize = MessageQueue_dequeue(buf, MessageQueueLength)
+			val bytes = (0 until readSize).map {
+				buf[it]
+			}.toByteArray()
+			Message.decodeAll(ByteArrayReader(bytes), readSize)
+		}
 	}
 }
