@@ -29,8 +29,12 @@ class StringDataProperty(val data: Data<String>) : ReadWriteProperty<MessageBase
 	}
 }
 
-abstract class MessageBase(bytes: ByteArray) {
+abstract class MessageBase(
+	private val reader: ByteArrayReader
+) {
 	protected abstract val type: Int
+	private var actualType: Int? = null
+
 	fun encode(): ByteArray {
 		return buildByteArray {
 			appendInt(type)
@@ -51,72 +55,66 @@ abstract class MessageBase(bytes: ByteArray) {
 	}
 
 	// register methods
-	protected fun byte(bytes: ByteArray): ReadWriteProperty<MessageBase, Byte> {
-		val value = getReader(bytes).readByte()
+	protected fun byte(): ReadWriteProperty<MessageBase, Byte> {
+		val value = reader.readByte()
 		val data = Data.BYTE(value)
 		datas.add(data)
+		debug(data)
 		return DataProperty(data)
 	}
 
-	protected fun byteArray(bytes: ByteArray, size: Int): ReadWriteProperty<MessageBase, ByteArray> {
-		val value = getReader(bytes).readBytes(size)
+	protected fun byteArray(size: Int): ReadWriteProperty<MessageBase, ByteArray> {
+		val value = reader.readBytes(size)
 		val data = Data.BYTES(value)
 		datas.add(data)
+		debug(data)
 		return DataProperty(data)
 	}
 
-	protected fun int(bytes: ByteArray): ReadWriteProperty<MessageBase, Int> {
-		val value = getReader(bytes).readInt()
+	protected fun int(): ReadWriteProperty<MessageBase, Int> {
+		val value = reader.readInt()
 		val data = Data.INT(value)
 		datas.add(data)
+		debug(data)
 		return DataProperty(data)
 	}
 
-	protected fun long(bytes: ByteArray): ReadWriteProperty<MessageBase, Long> {
-		val value = getReader(bytes).readLong()
+	protected fun long(): ReadWriteProperty<MessageBase, Long> {
+		val value = reader.readLong()
 		val data = Data.LONG(value)
 		datas.add(data)
+		debug(data)
 		return DataProperty(data)
 	}
 
-	protected fun utf8(bytes: ByteArray, sizeByte: Int): ReadWriteProperty<MessageBase, String> {
-		val value = getReader(bytes).readUtf8(sizeByte)
+	protected fun utf8(sizeByte: Int): ReadWriteProperty<MessageBase, String> {
+		val value = reader.readUtf8(sizeByte)
 		val data = Data.UTF8(value, sizeByte)
 		datas.add(data)
+		debug(data)
 		return StringDataProperty(data)
 	}
 
 	@OptIn(ExperimentalUnsignedTypes::class)
-	protected fun uInt(bytes: ByteArray): ReadWriteProperty<MessageBase, UInt> {
-		val value = getReader(bytes).readUInt()
+	protected fun uInt(): ReadWriteProperty<MessageBase, UInt> {
+		val value = reader.readUInt()
 		val data = Data.UINT(value)
 		datas.add(data)
+		debug(data)
 		return DataProperty(data)
 	}
 
 	@OptIn(ExperimentalUnsignedTypes::class)
-	protected fun uLong(bytes: ByteArray): ReadWriteProperty<MessageBase, ULong> {
-		val value = getReader(bytes).readULong()
+	protected fun uLong(): ReadWriteProperty<MessageBase, ULong> {
+		val value = reader.readULong()
 		val data = Data.ULONG(value)
 		datas.add(data)
+		debug(data)
 		return DataProperty(data)
 	}
 
-	companion object {
-		protected fun buildMessageBytes(type: Int, block: ByteArrayBuilder.() -> Unit): ByteArray {
-			return buildByteArray {
-				appendInt(type)
-				block()
-			}
-		}
-	}
-
 	private val datas: MutableList<Data<*>> = mutableListOf()
-	private var reader: ByteArrayReader? = null
-	private fun getReader(bytes: ByteArray): ByteArrayReader {
-		return reader ?: ByteArrayReader(bytes).also {
-			val type = it.readInt()    // skip type specifier
-			reader = it
-		}
+	private fun debug(v:Data<*>) {
+		//println("offset=${reader.offset} : ${v.value}")
 	}
 }

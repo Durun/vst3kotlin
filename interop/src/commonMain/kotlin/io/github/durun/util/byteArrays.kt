@@ -87,7 +87,8 @@ fun <R> ByteArray.readScope(block: ByteArrayReader.() -> R): R {
 
 @OptIn(ExperimentalUnsignedTypes::class)
 class ByteArrayReader(private val buf: ByteArray) {
-	private var offset: Int = 0
+	var offset: Int = 0
+		private set
 
 	fun readByte(): Byte {
 		val b = buf[offset]
