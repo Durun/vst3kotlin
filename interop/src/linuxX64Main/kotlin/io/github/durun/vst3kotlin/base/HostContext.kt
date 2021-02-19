@@ -3,6 +3,7 @@ package io.github.durun.vst3kotlin.base
 import cwrapper.*
 import io.github.durun.util.ByteArrayReader
 import kotlinx.cinterop.*
+import io.github.durun.vst3kotlin.GlobalMem
 
 
 fun AutofreeScope.allocComponentHandler(): SIComponentHandler {
@@ -12,7 +13,6 @@ fun AutofreeScope.allocComponentHandler(): SIComponentHandler {
 	return struct
 }
 
-const private val storeIndex = 1
 
 @OptIn(ExperimentalUnsignedTypes::class)
 actual class HostContext(thisPtr: CPointer<SIComponentHandler>) : FUnknown(thisPtr.reinterpret<IComponentHandler>()) {
@@ -36,11 +36,11 @@ actual class HostContext(thisPtr: CPointer<SIComponentHandler>) : FUnknown(thisP
 				1u
 			}
 
-		GlobalStore_write(storeIndex, ptr)
+		GlobalMem.hostContext = ptr
 		vtable.pointed.FUnknown.queryInterface =
 			staticCFunction { _: COpaquePointer?, uid: TUID?, objPtr: CPointer<COpaquePointerVar>? ->
 				println("callback queryInterface: uid=${uid?.toUID()}")
-				objPtr?.pointed?.value = GlobalStore_read(storeIndex)
+				objPtr?.pointed?.value = GlobalMem.hostContext
 				when (uid) {
 					FUnknown_iid -> kResultOk
 					IComponentHandler_iid-> kResultOk
