@@ -1,26 +1,16 @@
 #include "util/MessageQueue.h"
 
-#include <atomic>
 #include <cstdio>
 #include <cstdlib>
 
-static void enter_lock() {
-    auto locked = reinterpret_cast<std::atomic_int *>(&(messageQueue.locked));
+#include "lock.h"
 
-    int expected = UNLOCK;
-    while (locked->compare_exchange_strong(expected, LOCK) == UNLOCK)
-    // if locked=F -> expected=F, locked=T, return=T
-    // if locked=T -> expected=T, locked=T, return=F
-    {
-        // expected=T, locked=T
-        expected = UNLOCK;
-    }
-    // expected=F, locked=T
+static void enter_lock() {
+    Lock_enter(&(messageQueue.locked));
 }
 
 static void exit_lock() {
-    auto locked = reinterpret_cast<std::atomic_bool *>(&(messageQueue.locked));
-    locked->store(UNLOCK);
+    Lock_exit(&(messageQueue.locked));
 }
 
 static int nextIndex(int i) {
