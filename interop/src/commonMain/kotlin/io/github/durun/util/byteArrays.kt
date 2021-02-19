@@ -1,5 +1,7 @@
 package io.github.durun.util
 
+import kotlin.math.min
+
 
 fun buildByteArray(block: ByteArrayBuilder.() -> Unit): ByteArray {
 	return ByteArrayBuilder().apply(block).build()
@@ -13,6 +15,18 @@ class ByteArrayBuilder {
 		bytes.add(v)
 	}
 
+	fun appendBytes(v: ByteArray) {
+		v.forEach { bytes.add(it) }
+	}
+
+	fun appendUTF8(v: String, sizeByte: Int) {
+		val b = v.encodeToByteArray()
+		val padding = sizeByte - b.size
+		check(0 <= padding)
+		appendBytes(b)
+		if (0 < padding) appendBytes(ByteArray(padding))
+	}
+
 	fun appendInt(v: Int) {
 		bytes.addAll(v.toBytes())
 	}
@@ -23,6 +37,11 @@ class ByteArrayBuilder {
 
 	@OptIn(ExperimentalUnsignedTypes::class)
 	fun appendUByte(v: UByte) = appendByte(v.toByte())
+
+	@OptIn(ExperimentalUnsignedTypes::class)
+	fun appendUBytes(v: UByteArray) {
+		v.forEach { bytes.add(it.toByte()) }
+	}
 
 	@OptIn(ExperimentalUnsignedTypes::class)
 	fun appendUInt(v: UInt) {
@@ -76,7 +95,17 @@ class ByteArrayReader(private val buf: ByteArray) {
 		return b
 	}
 
+	fun readBytes(size: Int): ByteArray {
+		val endExclusive = min(offset + size, buf.size)
+		val b = buf.sliceArray(offset until endExclusive)
+		offset += size
+		return b
+	}
+
+	fun readUtf8(sizeByte: Int): String = readBytes(sizeByte).decodeToString()
+
 	fun readUByte(): UByte = readByte().toUByte()
+	fun readUBytes(size: Int): UByteArray = readBytes(size).toUByteArray()
 	fun readUInt(): UInt = readUIntAt(buf, offset).also { offset += 4 }
 	fun readULong(): ULong = readULongAt(buf, offset).also { offset += 8 }
 
