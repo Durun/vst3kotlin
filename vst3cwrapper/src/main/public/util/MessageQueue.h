@@ -1,4 +1,5 @@
 #pragma once
+#include "lock.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -7,8 +8,6 @@ extern "C" {
 
 const int MessageQueueLength = 256; // 4KB
 
-const int UNLOCK = 0;
-const int LOCK = 1;
 typedef struct MessageQueue {
     int locked;  // 0=unlock, 1=lock
     char *array;
