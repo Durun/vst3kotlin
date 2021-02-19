@@ -26,6 +26,6 @@ expect class PlugView : FUnknown {
 	fun checkSizeConstraint(rect: ViewRect): Boolean
 }
 
-expect class PlugFrame:FUnknown {
+expect class PlugFrame : FUnknown {
 	fun resizeView(view: PlugView, newSize: ViewRect)
 }
