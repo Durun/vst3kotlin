@@ -22,4 +22,26 @@ class MessageQueueTest {
 		println(read.decodeToString())
 		read shouldBe data
 	}
+
+	@Test
+	fun enqueueViaCFunction() {
+		val enqueue = staticCFunction<Unit> {
+			memScoped {
+				val data = "Hello, world!".encodeToByteArray()
+				MessageQueue_enqueue(data.toCValues().ptr, data.size)
+			}
+		}
+
+		enqueue()
+		enqueue()
+
+		val read = memScoped {
+			val bufSize = 256
+			val buf = allocArray<ByteVar>(bufSize)
+			val read = MessageQueue_dequeue(buf, bufSize)
+			buf.readBytes(read)
+		}
+		println(read.decodeToString())
+		read.decodeToString() shouldBe "Hello, world!Hello, world!"
+	}
 }
