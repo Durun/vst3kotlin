@@ -28,20 +28,15 @@ class HostContextTest {
 					s.vtable = v.ptr
 
 					val context = HostContext(s.ptr)
-					//val handler = ComponentHandler(s.ptr.reinterpret())
-					val cHandler = s.ptr.reinterpret<IComponentHandler>()
+					val handler = ComponentHandler(s.ptr.reinterpret())
 
 					factory.createComponent(cid).use { component ->
 						component.initialize(context)
 
-						//handler.beginEdit(1u)
-						//handler.beginEdit(5u)
-						//handler.endEdit(5u)
-						//handler.endEdit(1u)
-						IComponentHandler_beginEdit(cHandler, 1u)
-						IComponentHandler_beginEdit(cHandler, 5u)
-						IComponentHandler_endEdit(cHandler, 5u)
-						IComponentHandler_endEdit(cHandler, 1u)
+						handler.beginEdit(1u)
+						handler.beginEdit(5u)
+						handler.endEdit(5u)
+						handler.endEdit(1u)
 
 						component.terminate()
 					}

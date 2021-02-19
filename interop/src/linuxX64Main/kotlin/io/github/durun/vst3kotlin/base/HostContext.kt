@@ -12,10 +12,13 @@ fun AutofreeScope.allocComponentHandler(): SIComponentHandler {
 	return struct
 }
 
+const private val storeIndex = 1
+
 @OptIn(ExperimentalUnsignedTypes::class)
 actual class HostContext(thisPtr: CPointer<SIComponentHandler>) : FUnknown(thisPtr.reinterpret<IComponentHandler>()) {
 	val ptr: CPointer<IComponentHandler> get() = thisRawPtr.reinterpret()
 	var refCount: UInt = 0u
+
 
 	init {
 		val vtable = thisPtr.pointed.vtable
@@ -32,11 +35,15 @@ actual class HostContext(thisPtr: CPointer<SIComponentHandler>) : FUnknown(thisP
 				//++refCount
 				1u
 			}
+
+		GlobalStore_write(storeIndex, ptr)
 		vtable.pointed.FUnknown.queryInterface =
 			staticCFunction { _: COpaquePointer?, uid: TUID?, objPtr: CPointer<COpaquePointerVar>? ->
 				println("callback queryInterface: uid=${uid?.toUID()}")
-				objPtr?.pointed?.value = TODO()
+				objPtr?.pointed?.value = GlobalStore_read(storeIndex)
 				when (uid) {
+					FUnknown_iid -> kResultOk
+					IComponentHandler_iid-> kResultOk
 					IComponentHandler2_iid-> kResultOk
 					else -> kNoInterface
 				}
@@ -63,7 +70,7 @@ actual class HostContext(thisPtr: CPointer<SIComponentHandler>) : FUnknown(thisP
 					val values = message.toCValues()
 					MessageQueue_enqueue(values, values.size)
 				}
-				kNotImplemented
+				kResultOk
 			}
 		vtable.pointed.restartComponent =
 			staticCFunction { _: COpaquePointer?, flags: Int ->
