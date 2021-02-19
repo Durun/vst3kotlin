@@ -1,7 +1,6 @@
 package io.github.durun.vst3kotlin.vst
 
 import io.github.durun.vst3kotlin.base.BStream
-import io.github.durun.vst3kotlin.base.FUnknown
 import io.github.durun.vst3kotlin.base.PluginBase
 import io.github.durun.vst3kotlin.gui.PlugView
 
@@ -44,18 +43,6 @@ data class ParameterInfo(
 		isProgramChange = flags and (1 shl 15) != 0,
 		isBypass = flags and (1 shl 16) != 0
 	)
-}
-
-expect class ComponentHandler:FUnknown {
-	fun beginEdit(id: UInt)
-	fun performEdit(id: UInt, valueNormalized: Double)
-	fun endEdit(id: UInt)
-	fun restartComponent(flags: Int)
-
-	fun setDirty(state: Boolean)
-	fun requestOpenEditor(name: String)
-	fun startGroupEdit()
-	fun finishGroupEdit()
 }
 
 expect class EditController : PluginBase {
