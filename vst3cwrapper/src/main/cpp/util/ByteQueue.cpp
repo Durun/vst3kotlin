@@ -3,6 +3,8 @@
 #include <cstdio>
 #include <cstdlib>
 
+#include "lock.h"
+
 static void enter_lock(ByteQueue* queue) {
     Lock_enter(&(queue->locked));
 }

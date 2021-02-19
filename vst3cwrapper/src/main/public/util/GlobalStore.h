@@ -1,6 +1,5 @@
 #pragma once
 
-#include "lock.h"
 
 #ifdef __cplusplus
 extern "C" {

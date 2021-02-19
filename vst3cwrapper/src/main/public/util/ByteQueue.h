@@ -1,5 +1,4 @@
 #pragma once
-#include "lock.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -13,7 +12,7 @@ typedef struct ByteQueue {
     int nextReadIndex;
     int nextWriteIndex;
     int remainSize;
-} MessageQueue;
+} ByteQueue;
 
 ByteQueue* ByteQueue_alloc();
 void ByteQueue_init(ByteQueue* queue);

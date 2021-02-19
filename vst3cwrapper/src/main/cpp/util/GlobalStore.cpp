@@ -1,7 +1,9 @@
 #include "util/GlobalStore.h"
-#include "lock.h"
+
 #include <cstdio>
 #include <cstdlib>
+
+#include "lock.h"
 
 static void enter_lock(const int index) {
     Lock_enter(&(GlobalStore[index].locked));

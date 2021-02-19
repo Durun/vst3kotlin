@@ -1,5 +1,5 @@
 #pragma once
-#include "lock.h"
+
 #include "util/ByteQueue.h"
 
 #ifdef __cplusplus
@@ -9,7 +9,7 @@ extern "C" {
 const int MessageQueueLength = 256; // 4KB
 
 static char messageQueueArray[MessageQueueLength] = {};
-static ByteQueue messageQueue = {UNLOCK, messageQueueArray};
+static ByteQueue messageQueue = {0, messageQueueArray};
 
 void MessageQueue_init();
 void MessageQueue_enqueue(const char data[], int size);
