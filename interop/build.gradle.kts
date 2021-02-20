@@ -67,6 +67,9 @@ kotlin {
                     headers(fileTree(cwrapper.projectDir.resolve("src/main/public")))
                 }
             }
+            kotlinOptions {
+                freeCompilerArgs += "-Xopt-in=kotlin.RequiresOptIn"
+            }
         }
         binaries {
             staticLib()
