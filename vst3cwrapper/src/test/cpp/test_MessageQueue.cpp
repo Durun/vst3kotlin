@@ -3,6 +3,8 @@
 #include "stdio.h"
 
 int test_MessageQueue() {
+    fprintf(stderr, "--test_MessageQueue--\n");
+
     char data[4] = {'A', 'B', 'C', 'D'};
     char buf[MessageQueueLength];
     auto read = MessageQueue_dequeue(buf, 4);

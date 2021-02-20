@@ -3,6 +3,8 @@
 #include "util/ByteQueue.h"
 
 int test_ByteQueue() {
+    fprintf(stderr, "--test_ByteQueue--\n");
+
     auto queue = ByteQueue_alloc();
     ByteQueue_init(queue);
 
