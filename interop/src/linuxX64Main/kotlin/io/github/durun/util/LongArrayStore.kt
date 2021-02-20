@@ -6,11 +6,15 @@ import io.github.durun.io.Closeable
 import kotlinx.cinterop.*
 
 
-fun allocLongArrayStore(placement: NativeFreeablePlacement, size:Int): CPointer<LongArrayStore> {
+fun allocLongArrayStore(placement: NativePlacement, size: Int): CPointer<LongArrayStore> {
 	val struct = placement.alloc<LongArrayStore>()
 	struct.array = placement.allocArray(size)
 	LongArrayStore_init(struct.ptr, size)
 	return struct.ptr
+}
+
+fun CPointer<LongArrayStore>.free() {
+	LongArrayStore_delete(this)
 }
 
 class LongArrayStoreScope(
