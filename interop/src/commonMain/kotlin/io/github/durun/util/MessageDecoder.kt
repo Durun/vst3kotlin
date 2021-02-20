@@ -12,4 +12,6 @@ interface MessageDecoder {
 			}
 		}
 	}
+
+	fun <T : MessageBase> decodeAll(bytes: ByteArray): List<T> = decodeAll(ByteArrayReader(bytes), bytes.size)
 }
