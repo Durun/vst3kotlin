@@ -44,11 +44,11 @@ void Lock_enter(int* lock) {
         usleep(waitTime);
     }
     // expected=F, locked=T
-    fprintf(stderr, "Enter lock: %x\n", lock);
+    //fprintf(stderr, "Enter lock: %x\n", lock);
 }
 
 void Lock_exit(int* lock) {
     auto locked = reinterpret_cast<std::atomic_bool*>(lock);
     locked->store(UNLOCK);
-    fprintf(stderr, "Exit lock: %x\n", lock);
+    //fprintf(stderr, "Exit lock: %x\n", lock);
 }
