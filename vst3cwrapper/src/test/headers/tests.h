@@ -5,3 +5,4 @@ int test_MessageQueue();
 int test_GlobalStore();
 int test_ByteQueue();
 int test_LongStore();
+int test_LongArrayStore();

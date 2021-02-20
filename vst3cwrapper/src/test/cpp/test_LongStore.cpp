@@ -7,12 +7,14 @@
 int test_LongStore() {
     fprintf(stderr, "--test_LongStore--\n");
 
-    auto entry1 = LongStore_new();
+    auto entry1 = LongStore_alloc();
+    LongStore_init(entry1);
     fprintf(stderr, "New : %x\n", entry1);
 
     LongStore_enter(entry1);
 
-    auto entry2 = LongStore_new();
+    auto entry2 = LongStore_alloc();
+    LongStore_init(entry2);
     fprintf(stderr, "New : %x\n", entry2);
     LongStore_enter(entry2);
 

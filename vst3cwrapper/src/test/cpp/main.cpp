@@ -6,5 +6,6 @@ int main() {
 	test_GlobalStore();
 	test_ByteQueue();
 	test_LongStore();
+	test_LongArrayStore();
 	return 0;
 }
