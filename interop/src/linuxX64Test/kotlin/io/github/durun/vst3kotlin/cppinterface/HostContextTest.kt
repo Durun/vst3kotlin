@@ -1,4 +1,4 @@
-package io.github.durun.vst3kotlin.base
+package io.github.durun.vst3kotlin.cppinterface
 
 import cwrapper.*
 import io.github.durun.dylib.use

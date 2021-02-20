@@ -1,9 +1,10 @@
-package io.github.durun.vst3kotlin.base
+package io.github.durun.vst3kotlin.cppinterface
 
 import io.github.durun.util.ByteArrayBuilder
 import io.github.durun.util.ByteArrayReader
 import io.github.durun.util.MessageBase
 import io.github.durun.util.buildByteArray
+import io.github.durun.vst3kotlin.base.FUnknown
 
 expect class HostContext : FUnknown {
 	fun receiveMessages(): List<Message>

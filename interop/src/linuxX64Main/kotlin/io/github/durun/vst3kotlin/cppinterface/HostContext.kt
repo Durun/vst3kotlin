@@ -1,17 +1,13 @@
-package io.github.durun.vst3kotlin.base
+package io.github.durun.vst3kotlin.cppinterface
 
 import cwrapper.*
 import io.github.durun.util.ByteArrayReader
 import kotlinx.cinterop.*
 import io.github.durun.vst3kotlin.GlobalMem
+import io.github.durun.vst3kotlin.base.FUnknown
+import io.github.durun.vst3kotlin.base.toUID
 
 
-fun AutofreeScope.allocComponentHandler(): SIComponentHandler {
-	val struct = alloc<SIComponentHandler>()
-	val vtable = alloc<IComponentHandlerVTable>()
-	struct.vtable = vtable.ptr
-	return struct
-}
 
 
 @OptIn(ExperimentalUnsignedTypes::class)
