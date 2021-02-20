@@ -5,16 +5,17 @@
 
 #include "lock.h"
 
-LongStoreEntry* LongStore_new() {
+LongStoreEntry* LongStore_alloc() {
     auto ptr = malloc(sizeof(LongStoreEntry));
     if (ptr == nullptr) {
         fprintf(stderr, "Failed to allocate LongStoreEntry.");
     }
     auto entry = reinterpret_cast<LongStoreEntry*>(ptr);
+    return entry;
+}
+void LongStore_init(LongStoreEntry* entry) {
     entry->data = 0L;
     entry->locked = UNLOCK;
-    fprintf(stderr, "New LongStoreEntry: %x(lock at %x)\n", entry, &(entry->locked));
-    return entry;
 }
 void LongStore_delete(LongStoreEntry* entry) {
     Lock_enter(&(entry->locked));

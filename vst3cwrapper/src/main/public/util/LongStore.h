@@ -9,7 +9,8 @@ typedef struct LongStoreEntry {
     long data;
 } LongStoreEntry;
 
-LongStoreEntry* LongStore_new();
+LongStoreEntry* LongStore_alloc();
+void LongStore_init(LongStoreEntry* entry);
 void LongStore_delete(LongStoreEntry* entry);
 void LongStore_enter(LongStoreEntry* entry);
 void LongStore_exit(LongStoreEntry* entry);
