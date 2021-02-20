@@ -1,5 +1,3 @@
-#pragma once
-
 #include "cast.h"
 
 // [IMidiMapping] member functions
