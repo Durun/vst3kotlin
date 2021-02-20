@@ -4,7 +4,7 @@
 extern "C" {
 #endif
 
-const int ByteQueueLength = 256;  // 4KB
+const int ByteQueueLength = 4096;  // 4KB
 
 typedef struct ByteQueue {
     int locked;  // 0=unlock, 1=lock

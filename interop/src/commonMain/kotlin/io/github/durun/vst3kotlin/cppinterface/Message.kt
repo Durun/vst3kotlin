@@ -89,9 +89,10 @@ sealed class Message(reader: ByteArrayReader) : MessageBase(reader) {
 		override fun toString(): String = "RequestOpenEditor($name)"
 
 		companion object {
-			const val nameLength = 256
+			const val nameLength = 28
 			fun of(name: String): RequestOpenEditor = decode(bytes(name))
 			fun bytes(name: String): ByteArray = buildByteArray {
+				require(name.length <= nameLength) { "name mustn't exceed $nameLength length." }
 				appendInt(requestOpenEditor_type)
 				appendUTF8(name, nameLength)
 			}

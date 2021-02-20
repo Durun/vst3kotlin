@@ -6,7 +6,6 @@ import cwrapper.IPluginBase_terminate
 import cwrapper.kResultTrue
 import io.github.durun.vst3kotlin.cppinterface.HostCallback
 import kotlinx.cinterop.CPointer
-import kotlinx.cinterop.ptr
 import kotlinx.cinterop.reinterpret
 
 actual abstract class PluginBase(
@@ -14,7 +13,7 @@ actual abstract class PluginBase(
 ) : FUnknown(thisRawPtr) {
 	private val thisPtr get() = thisRawPtr.reinterpret<IPluginBase>()
 	actual fun initialize() {
-		val context = HostCallback.cClass.ptr
+		val context = HostCallback.ptr1
 		val result = IPluginBase_initialize(thisPtr, context.reinterpret())
 		check(result == kResultTrue) {
 			terminate()

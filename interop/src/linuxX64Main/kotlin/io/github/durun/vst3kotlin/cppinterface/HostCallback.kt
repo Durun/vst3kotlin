@@ -6,51 +6,81 @@ import io.github.durun.util.*
 import kotlinx.cinterop.*
 
 
-private fun allocComponentHandler(placement: NativeFreeablePlacement): SIComponentHandler {
-	val struct: SIComponentHandler = placement.alloc()
-	val vtable: IComponentHandlerVTable = placement.alloc()
-	struct.vtable = vtable.ptr
-	return struct
+private fun allocComponentHandler(): CPointer<SIComponentHandler> {
+	val ptr = SIComponentHandler_alloc()
+	checkNotNull(ptr) { "Failed to allocate SIComponentHandler" }
+	return ptr.reinterpret()
 }
 
-fun IComponentHandler.free(placement: NativeFreeablePlacement) {
-	this.vtable?.let {
-		placement.free(it.pointed.rawPtr)
-	}
-	placement.free(this.rawPtr)
+private fun allocComponentHandler2(): CPointer<SIComponentHandler2> {
+	val ptr = SIComponentHandler2_alloc()
+	checkNotNull(ptr) { "Failed to allocate SIComponentHandler" }
+	return ptr.reinterpret()
+}
+
+private fun CPointer<IComponentHandler>.free() {
+	SIComponentHandler_free(this.reinterpret())
+}
+
+private fun CPointer<IComponentHandler2>.free() {
+	SIComponentHandler2_free(this.reinterpret())
 }
 
 @kotlin.ExperimentalUnsignedTypes
 actual object HostCallback : Closeable {
 	private val store: CPointer<LongArrayStore> = allocLongArrayStore(nativeHeap, 16)
 	private val queue: CPointer<ByteQueue> = allocByteQueue(nativeHeap)
-	val cClass: IComponentHandler
+	val ptr1: CPointer<IComponentHandler>
+	val ptr2: CPointer<IComponentHandler2>
 
 	// store index
 	private const val refCount: Int = 1
-	private const val thisPtrVar: Int = 2
-	private const val beginEditId: Int = 3
+	private const val thisPtr1: Int = 2
+	private const val thisPtr2: Int = 3
+
 
 	init {
-		cClass = defineClass(refCount, thisPtrVar)
+		val ver1: CPointer<SIComponentHandler> = allocComponentHandler()
+		val ver2: CPointer<SIComponentHandler2> = allocComponentHandler2()
+		ptr1 = ver1.reinterpret()
+		ptr2 = ver2.reinterpret()
+
+		store.use {
+			it[refCount] = 0
+			it[thisPtr1] = ver1.toLong()
+			it[thisPtr2] = ver2.toLong()
+		}
+
+		val vtable1 = ver1.pointed.vtable?.pointed
+		val vtable2 = ver2.pointed.vtable?.pointed
+		checkNotNull(vtable1)
+		checkNotNull(vtable2)
+
+		vtable1.defineIComponent()
+		vtable2.defineIComponent2()
 	}
 
-	private fun defineClass(refCountIndex: Int, thisPtrIndex: Int): IComponentHandler {
-		val struct = allocComponentHandler(nativeHeap)
-		store.use {
-			it[refCountIndex] = 0
-			it[thisPtrIndex] = struct.ptr.toLong()
-		}
-		val vtable = struct.vtable?.pointed
-		checkNotNull(vtable)
-		vtable.FUnknown.addRef = define_addref()
-		vtable.FUnknown.release = define_release()
-		vtable.FUnknown.queryInterface = define_queryInterface()
-		vtable.beginEdit = define_beginEdit()
-		vtable.performEdit = define_performEdit()
-		vtable.endEdit = define_endEdit()
-		vtable.restartComponent = define_restartComponent()
-		return struct.reinterpret()
+
+	private fun IComponentHandlerVTable.defineIComponent() {
+		FUnknown.defineFUnknown()
+		beginEdit = define_beginEdit()
+		performEdit = define_performEdit()
+		endEdit = define_endEdit()
+		restartComponent = define_restartComponent()
+	}
+
+	private fun IComponentHandler2VTable.defineIComponent2() {
+		FUnknown.defineFUnknown()
+		setDirty = define_setDirty()
+		requestOpenEditor = define_requestOpenEditor()
+		startGroupEdit = define_startGroupEdit()
+		finishGroupEdit = define_finishGroupEdit()
+	}
+
+	private fun FUnknownVTable.defineFUnknown() {
+		addRef = define_addref()
+		release = define_release()
+		queryInterface = define_queryInterface()
 	}
 
 	private fun define_addref(): CPointer<CFunction<(COpaquePointer?) -> uint32>> = staticCFunction { _ ->
@@ -70,16 +100,18 @@ actual object HostCallback : Closeable {
 
 	private fun define_queryInterface(): CPointer<CFunction<(COpaquePointer?, TUID?, CPointer<COpaquePointerVar>?) -> tresult>> =
 		staticCFunction { _, uid, obj ->
-			val isOk = when (uid) {
-				FUnknown_iid -> true
-				IComponentHandler_iid -> true
-				IComponentHandler2_iid -> true
-				else -> false
+			when (uid) {
+				FUnknown_iid -> kResultOk
+				IComponentHandler_iid -> {
+					obj?.pointed?.value = store.use { it[thisPtr1] }.toCPointer()
+					kResultOk
+				}
+				IComponentHandler2_iid -> {
+					obj?.pointed?.value = store.use { it[thisPtr2] }.toCPointer()
+					kResultOk
+				}
+				else -> kNoInterface
 			}
-			if (isOk) {
-				obj?.pointed?.value = store.use { it[thisPtrVar] }.toCPointer()
-				kResultOk
-			} else kNoInterface
 		}
 
 
@@ -107,14 +139,15 @@ actual object HostCallback : Closeable {
 			kResultOk
 		}
 
-	private fun define_setDirty(): CPointer<CFunction<(COpaquePointer?, Boolean) -> tresult>> =
+	private fun define_setDirty(): CPointer<CFunction<(COpaquePointer?, TBool) -> tresult>> =
 		staticCFunction { _, state ->
-			queue.enqueue(Message.SetDirty.bytes(state))
+			queue.enqueue(Message.SetDirty.bytes(state.toBoolean()))
 			kResultOk
 		}
 
-	private fun define_requestOpenEditor(): CPointer<CFunction<(COpaquePointer?, FIDString) -> tresult>> =
+	private fun define_requestOpenEditor(): CPointer<CFunction<(COpaquePointer?, FIDString?) -> tresult>> =
 		staticCFunction { _, name ->
+			if (name == null) return@staticCFunction kInvalidArgument
 			queue.enqueue(Message.RequestOpenEditor.bytes(name.toKString()))
 			kResultOk
 		}
@@ -136,13 +169,14 @@ actual object HostCallback : Closeable {
 
 	override fun close() {
 		check(isOpen)
-		cClass.free(nativeHeap)
+		ptr1.free()
+		ptr2.free()
 		store.free()
 		queue.free()
 		isOpen = false
 	}
 
-	actual fun receiveMessages(): Sequence<Message> = sequence{
+	actual fun receiveMessages(): Sequence<Message> = sequence {
 		val bytes = queue.dequeue(ByteQueueLength)
 		val messages: List<Message> = Message.decodeAll(bytes)
 		yieldAll(messages)

@@ -32,6 +32,24 @@ typedef struct SIComponentHandler {
     IComponentHandlerVTable *vtable;
 } SIComponentHandler;
 
+SIComponentHandler *SIComponentHandler_alloc();
+void SIComponentHandler_free(SIComponentHandler *ptr);
+
+typedef struct IComponentHandler2VTable {
+    FUnknownVTable FUnknown;
+    tresult PLUGIN_API (*setDirty)(void *, TBool);
+    tresult PLUGIN_API (*requestOpenEditor)(void *, FIDString);
+    tresult PLUGIN_API (*startGroupEdit)(void *);
+    tresult PLUGIN_API (*finishGroupEdit)(void *);
+} IComponentHandler2VTable;
+
+typedef struct SIComponentHandler2 {
+    IComponentHandler2VTable *vtable;
+} SIComponentHandler2;
+
+SIComponentHandler2 *SIComponentHandler2_alloc();
+void SIComponentHandler2_free(SIComponentHandler2 *ptr);
+
 typedef struct IPluginFactoryVTable {
     FUnknownVTable FUnknown;
     tresult PLUGIN_API (*getFactoryInfo)(void *, PFactoryInfo *);
