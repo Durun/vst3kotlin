@@ -17,6 +17,8 @@ class ByteArraysTest {
 			appendBytes(byteArrayOf(-114, -51, -4, 19, -19, -8, 10))
 			appendUBytes(ubyteArrayOf(114u, 51u, 4u, 19u, 19u, 8u, 10u))
 			appendUTF8("Hello, world!", 13)
+			appendFloat(-1.14514f)
+			appendDouble(-1.145141919810)
 		}
 
 		bytes.readScope {
@@ -29,6 +31,8 @@ class ByteArraysTest {
 			readBytes(7) shouldBe byteArrayOf(-114, -51, -4, 19, -19, -8, 10)
 			readUBytes(7) shouldBe ubyteArrayOf(114u, 51u, 4u, 19u, 19u, 8u, 10u)
 			readUtf8("Hello, world!".encodeToByteArray().size) shouldBe "Hello, world!"
+			readFloat() shouldBe -1.14514f
+			readDouble() shouldBe -1.145141919810
 		}
 	}
 }

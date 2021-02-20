@@ -11,14 +11,8 @@ class ByteArrayBuilder {
 	val bytes: MutableList<Byte> = mutableListOf()
 	fun build(): ByteArray = bytes.toByteArray()
 
-	fun appendByte(v: Byte) {
-		bytes.add(v)
-	}
-
-	fun appendBytes(v: ByteArray) {
-		v.forEach { bytes.add(it) }
-	}
-
+	fun appendByte(v: Byte) = bytes.add(v)
+	fun appendBytes(v: ByteArray) = v.forEach { bytes.add(it) }
 	fun appendUTF8(v: String, sizeByte: Int) {
 		val b = v.encodeToByteArray()
 		val padding = sizeByte - b.size
@@ -27,13 +21,11 @@ class ByteArrayBuilder {
 		if (0 < padding) appendBytes(ByteArray(padding))
 	}
 
-	fun appendInt(v: Int) {
-		bytes.addAll(v.toBytes())
-	}
+	fun appendInt(v: Int) = bytes.addAll(v.toBytes())
+	fun appendLong(v: Long) = bytes.addAll(v.toBytes())
+	fun appendFloat(v: Float) = bytes.addAll(v.toBytes().also { println(it.joinToString()) })
+	fun appendDouble(v: Double) = bytes.addAll(v.toBytes())
 
-	fun appendLong(v: Long) {
-		bytes.addAll(v.toBytes())
-	}
 
 	@OptIn(ExperimentalUnsignedTypes::class)
 	fun appendUByte(v: UByte) = appendByte(v.toByte())
@@ -56,6 +48,8 @@ class ByteArrayBuilder {
 
 private fun Int.toBytes(): List<Byte> = this.toUInt().toBytes()
 private fun Long.toBytes(): List<Byte> = this.toULong().toBytes()
+private fun Float.toBytes(): List<Byte> = this.toRawBits().toBytes()
+private fun Double.toBytes(): List<Byte> = this.toRawBits().toBytes()
 
 @OptIn(ExperimentalUnsignedTypes::class)
 private fun UInt.toBytes(): List<Byte> {
@@ -112,6 +106,8 @@ class ByteArrayReader(private val buf: ByteArray) {
 
 	fun readInt(): Int = readUInt().toInt()
 	fun readLong(): Long = readULong().toLong()
+	fun readFloat(): Float = Float.fromBits(readInt())
+	fun readDouble(): Double = Double.fromBits(readLong())
 
 	companion object {
 		fun readUIntAt(bytes: ByteArray, offsetByte: Int): UInt {
