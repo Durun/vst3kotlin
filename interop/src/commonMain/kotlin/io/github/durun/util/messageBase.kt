@@ -6,6 +6,7 @@ import kotlin.reflect.KProperty
 
 sealed class Data<T>(var value: T) {
 	class BYTE(value: Byte) : Data<Byte>(value)
+	class BOOL(value: Boolean) : Data<Boolean>(value)
 	class BYTES(value: ByteArray) : Data<ByteArray>(value)
 	class INT(value: Int) : Data<Int>(value)
 	class LONG(value: Long) : Data<Long>(value)
@@ -43,6 +44,7 @@ abstract class MessageBase(
 			datas.forEach {
 				when (it) {
 					is Data.BYTE -> appendByte(it.value)
+					is Data.BOOL -> appendBool(it.value)
 					is Data.BYTES -> appendBytes(it.value)
 					is Data.INT -> appendInt(it.value)
 					is Data.LONG -> appendLong(it.value)
@@ -62,6 +64,14 @@ abstract class MessageBase(
 	protected fun byte(): ReadWriteProperty<MessageBase, Byte> {
 		val value = reader.readByte()
 		val data = Data.BYTE(value)
+		datas.add(data)
+		debug(data)
+		return DataProperty(data)
+	}
+
+	protected fun bool(): ReadWriteProperty<MessageBase, Boolean> {
+		val value = reader.readBool()
+		val data = Data.BOOL(value)
 		datas.add(data)
 		debug(data)
 		return DataProperty(data)
