@@ -8,7 +8,7 @@ class messageBaseTest {
 	fun encodeAndDecode() {
 		val messages: List<Message> = sequence {
 			yield(Message.A.of(114, "Hello!", "abcde"))
-			yield(Message.B.of(-114, -5141919810, 114u, 5141919810u))
+			yield(Message.B.of(-114, -5141919810, 114u, 5141919810u, -1.14f, 5.141919810))
 			yield(Message.A.of(514, "Helloです", "ABCDE"))
 		}.onEach { println(it) }.toList()
 
@@ -48,15 +48,19 @@ class messageBaseTest {
 			val y: Long by long()
 			val z: UInt by uInt()
 			val w: ULong by uLong()
+			val a: Float by float()
+			val b: Double by double()
 			override val type: Int = typeB
-			override fun toString(): String = "MessageB($x, $y, $z, $w)"
+			override fun toString(): String = "MessageB($x, $y, $z, $w, $a, $b)"
 
 			companion object {
-				fun of(x: Int, y: Long, z: UInt, w: ULong): B = B(buildByteArray {
+				fun of(x: Int, y: Long, z: UInt, w: ULong, a: Float, b: Double): B = B(buildByteArray {
 					appendInt(x)
 					appendLong(y)
 					appendUInt(z)
 					appendULong(w)
+					appendFloat(a)
+					appendDouble(b)
 				}.let { ByteArrayReader((it)) })
 			}
 		}

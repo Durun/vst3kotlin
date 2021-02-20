@@ -9,6 +9,8 @@ sealed class Data<T>(var value: T) {
 	class BYTES(value: ByteArray) : Data<ByteArray>(value)
 	class INT(value: Int) : Data<Int>(value)
 	class LONG(value: Long) : Data<Long>(value)
+	class FLOAT(value: Float) : Data<Float>(value)
+	class DOUBLE(value: Double) : Data<Double>(value)
 	class UTF8(value: String, val sizeByte: Int) : Data<String>(value)
 	class UBYTE @OptIn(ExperimentalUnsignedTypes::class) constructor(value: UByte) : Data<UByte>(value)
 	class UBYTES @OptIn(ExperimentalUnsignedTypes::class) constructor(value: UByteArray) : Data<UByteArray>(value)
@@ -44,6 +46,8 @@ abstract class MessageBase(
 					is Data.BYTES -> appendBytes(it.value)
 					is Data.INT -> appendInt(it.value)
 					is Data.LONG -> appendLong(it.value)
+					is Data.FLOAT -> appendFloat(it.value)
+					is Data.DOUBLE -> appendDouble(it.value)
 					is Data.UTF8 -> appendUTF8(it.value, it.sizeByte)
 					is Data.UBYTE -> appendUByte(it.value)
 					is Data.UBYTES -> appendUBytes(it.value)
@@ -82,6 +86,22 @@ abstract class MessageBase(
 	protected fun long(): ReadWriteProperty<MessageBase, Long> {
 		val value = reader.readLong()
 		val data = Data.LONG(value)
+		datas.add(data)
+		debug(data)
+		return DataProperty(data)
+	}
+
+	protected fun float(): ReadWriteProperty<MessageBase, Float> {
+		val value = reader.readFloat()
+		val data = Data.FLOAT(value)
+		datas.add(data)
+		debug(data)
+		return DataProperty(data)
+	}
+
+	protected fun double(): ReadWriteProperty<MessageBase, Double> {
+		val value = reader.readDouble()
+		val data = Data.DOUBLE(value)
 		datas.add(data)
 		debug(data)
 		return DataProperty(data)
