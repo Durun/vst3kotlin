@@ -46,6 +46,10 @@ actual object HostCallback : Closeable {
 		vtable.FUnknown.addRef = define_addref()
 		vtable.FUnknown.release = define_release()
 		vtable.FUnknown.queryInterface = define_queryInterface()
+		vtable.beginEdit = define_beginEdit()
+		vtable.performEdit = define_performEdit()
+		vtable.endEdit = define_endEdit()
+		vtable.restartComponent = define_restartComponent()
 		return struct.reinterpret()
 	}
 
@@ -79,52 +83,49 @@ actual object HostCallback : Closeable {
 		}
 
 
-	private fun beginEdit(id: UInt): CPointer<CFunction<(COpaquePointer?, UInt) -> tresult>> =
+	private fun define_beginEdit(): CPointer<CFunction<(COpaquePointer?, UInt) -> tresult>> =
 		staticCFunction { _, id ->
 			queue.enqueue(Message.BeginEdit.bytes(id))
 			kResultOk
 		}
 
-	private fun performEdit(
-		id: UInt,
-		valueNormalized: Double
-	): CPointer<CFunction<(COpaquePointer?, UInt, Double) -> tresult>> =
+	private fun define_performEdit(): CPointer<CFunction<(COpaquePointer?, UInt, Double) -> tresult>> =
 		staticCFunction { _, id, value ->
 			queue.enqueue(Message.PerformEdit.bytes(id, value))
 			kResultOk
 		}
 
-	private fun endEdit(id: UInt): CPointer<CFunction<(COpaquePointer?, UInt) -> tresult>> =
+	private fun define_endEdit(): CPointer<CFunction<(COpaquePointer?, UInt) -> tresult>> =
 		staticCFunction { _, id ->
 			queue.enqueue(Message.EndEdit.bytes(id))
 			kResultOk
 		}
 
-	private fun restartComponent(flags: Int): CPointer<CFunction<(COpaquePointer?, Int) -> tresult>> =
+	private fun define_restartComponent(): CPointer<CFunction<(COpaquePointer?, Int) -> tresult>> =
 		staticCFunction { _, flags ->
 			queue.enqueue(Message.RestartComponent.bytes(flags))
 			kResultOk
 		}
 
-	private fun setDirty(state: Boolean): CPointer<CFunction<(COpaquePointer?, Boolean) -> tresult>> =
+	private fun define_setDirty(): CPointer<CFunction<(COpaquePointer?, Boolean) -> tresult>> =
 		staticCFunction { _, state ->
 			queue.enqueue(Message.SetDirty.bytes(state))
 			kResultOk
 		}
 
-	private fun requestOpenEditor(name: String): CPointer<CFunction<(COpaquePointer?, FIDString) -> tresult>> =
+	private fun define_requestOpenEditor(): CPointer<CFunction<(COpaquePointer?, FIDString) -> tresult>> =
 		staticCFunction { _, name ->
 			queue.enqueue(Message.RequestOpenEditor.bytes(name.toKString()))
 			kResultOk
 		}
 
-	private fun startGroupEdit(): CPointer<CFunction<(COpaquePointer?) -> tresult>> =
+	private fun define_startGroupEdit(): CPointer<CFunction<(COpaquePointer?) -> tresult>> =
 		staticCFunction { _ ->
 			queue.enqueue(Message.StartGroupEdit.bytes())
 			kResultOk
 		}
 
-	private fun finishGroupEdit(): CPointer<CFunction<(COpaquePointer?) -> tresult>> =
+	private fun define_finishGroupEdit(): CPointer<CFunction<(COpaquePointer?) -> tresult>> =
 		staticCFunction { _ ->
 			queue.enqueue(Message.FinishGroupEdit.bytes())
 			kResultOk
@@ -136,6 +137,8 @@ actual object HostCallback : Closeable {
 	override fun close() {
 		check(isOpen)
 		cClass.free(nativeHeap)
+		store.free()
+		queue.free()
 		isOpen = false
 	}
 

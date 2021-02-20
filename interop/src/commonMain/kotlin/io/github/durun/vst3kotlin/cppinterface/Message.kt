@@ -22,6 +22,7 @@ sealed class Message(reader: ByteArrayReader) : MessageBase(reader) {
 		}
 	}
 
+	@kotlin.ExperimentalUnsignedTypes
 	class PerformEdit(reader: ByteArrayReader) : Message(reader) {
 		override val type: Int = performEdit_type
 		val id: UInt by uInt()
@@ -37,6 +38,7 @@ sealed class Message(reader: ByteArrayReader) : MessageBase(reader) {
 		}
 	}
 
+	@kotlin.ExperimentalUnsignedTypes
 	class EndEdit(reader: ByteArrayReader) : Message(reader) {
 		override val type: Int = endEdit_type
 		val id: UInt by uInt()
@@ -119,11 +121,18 @@ sealed class Message(reader: ByteArrayReader) : MessageBase(reader) {
 		const val startGroupEdit_type: Int = 7
 		const val finishGroupEdit_type: Int = 8
 
+		@kotlin.ExperimentalUnsignedTypes
 		override fun <T : MessageBase> decode(reader: ByteArrayReader): T {
 			val typeId = reader.readInt()
 			val instance = when (typeId) {
 				beginEdit_type -> BeginEdit(reader)
+				performEdit_type -> PerformEdit(reader)
+				endEdit_type -> EndEdit(reader)
+				restartComponent_type -> RestartComponent(reader)
+				setDirty_type -> SetDirty(reader)
+				requestOpenEditor_type -> RequestOpenEditor(reader)
 				startGroupEdit_type -> StartGroupEdit(reader)
+				finishGroupEdit_type -> FinishGroupEdit(reader)
 				else -> throw IllegalStateException("No type with typeId: $typeId")
 			}
 			//check(instance is T) { "Decode failed: $instance isn't ${T::class}" }
