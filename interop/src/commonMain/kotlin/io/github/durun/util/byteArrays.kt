@@ -12,6 +12,7 @@ class ByteArrayBuilder {
 	fun build(): ByteArray = bytes.toByteArray()
 
 	fun appendByte(v: Byte) = bytes.add(v)
+	fun appendBool(v: Boolean) = bytes.add(if (v) TRUE else ZERO)
 	fun appendBytes(v: ByteArray) = v.forEach { bytes.add(it) }
 	fun appendUTF8(v: String, sizeByte: Int) {
 		val b = v.encodeToByteArray()
@@ -43,6 +44,11 @@ class ByteArrayBuilder {
 	@OptIn(ExperimentalUnsignedTypes::class)
 	fun appendULong(v: ULong) {
 		bytes.addAll(v.toBytes())
+	}
+
+	companion object {
+		const val ZERO = (0).toByte()
+		const val TRUE = (-1).toByte()
 	}
 }
 
@@ -108,8 +114,11 @@ class ByteArrayReader(private val buf: ByteArray) {
 	fun readLong(): Long = readULong().toLong()
 	fun readFloat(): Float = Float.fromBits(readInt())
 	fun readDouble(): Double = Double.fromBits(readLong())
+	fun readBool(): Boolean = readByte() != ZERO
 
 	companion object {
+		const val ZERO = (0).toByte()
+		const val TRUE = (-1).toByte()
 		fun readUIntAt(bytes: ByteArray, offsetByte: Int): UInt {
 			val b0 = bytes[offsetByte + 0].toUByte().toUInt()
 			val b1 = bytes[offsetByte + 1].toUByte().toUInt()

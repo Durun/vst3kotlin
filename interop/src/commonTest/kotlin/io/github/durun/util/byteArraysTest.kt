@@ -19,6 +19,8 @@ class ByteArraysTest {
 			appendUTF8("Hello, world!", 13)
 			appendFloat(-1.14514f)
 			appendDouble(-1.145141919810)
+			appendBool(true)
+			appendBool(false)
 		}
 
 		bytes.readScope {
@@ -33,6 +35,8 @@ class ByteArraysTest {
 			readUtf8("Hello, world!".encodeToByteArray().size) shouldBe "Hello, world!"
 			readFloat() shouldBe -1.14514f
 			readDouble() shouldBe -1.145141919810
+			readBool() shouldBe true
+			readBool() shouldBe false
 		}
 	}
 }
