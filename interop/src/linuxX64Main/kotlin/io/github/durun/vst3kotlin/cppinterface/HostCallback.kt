@@ -2,10 +2,7 @@ package io.github.durun.vst3kotlin.cppinterface
 
 import cwrapper.*
 import io.github.durun.io.Closeable
-import io.github.durun.util.allocByteQueue
-import io.github.durun.util.allocLongArrayStore
-import io.github.durun.util.enqueue
-import io.github.durun.util.use
+import io.github.durun.util.*
 import kotlinx.cinterop.*
 
 
@@ -24,7 +21,7 @@ fun IComponentHandler.free(placement: NativeFreeablePlacement) {
 }
 
 @kotlin.ExperimentalUnsignedTypes
-object HostCallback : Closeable {
+actual object HostCallback : Closeable {
 	private val store: CPointer<LongArrayStore> = allocLongArrayStore(nativeHeap, 16)
 	private val queue: CPointer<ByteQueue> = allocByteQueue(nativeHeap)
 	val cClass: IComponentHandler
@@ -115,9 +112,9 @@ object HostCallback : Closeable {
 			kResultOk
 		}
 
-	private fun requestOpenEditor(name: String): CPointer<CFunction<(COpaquePointer?, String) -> tresult>> =
+	private fun requestOpenEditor(name: String): CPointer<CFunction<(COpaquePointer?, FIDString) -> tresult>> =
 		staticCFunction { _, name ->
-			queue.enqueue(Message.RequestOpenEditor.bytes(name))
+			queue.enqueue(Message.RequestOpenEditor.bytes(name.toKString()))
 			kResultOk
 		}
 
@@ -140,5 +137,11 @@ object HostCallback : Closeable {
 		check(isOpen)
 		cClass.free(nativeHeap)
 		isOpen = false
+	}
+
+	actual fun receiveMessages(): Sequence<Message> = sequence{
+		val bytes = queue.dequeue(ByteQueueLength)
+		val messages: List<Message> = Message.decodeAll(bytes)
+		yieldAll(messages)
 	}
 }
