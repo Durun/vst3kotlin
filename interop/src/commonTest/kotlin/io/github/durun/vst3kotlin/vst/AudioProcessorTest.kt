@@ -27,6 +27,7 @@ class AudioProcessorTest {
 		}
 	}
 
+	/*
 	@Test
 	fun getBusArrangement() {
 		Vst3Package.open(Path.of("src/commonTest/resources/vst3/hostchecker.vst3")).use { plugin ->
@@ -39,4 +40,5 @@ class AudioProcessorTest {
 			}
 		}
 	}
+	*/
 }
