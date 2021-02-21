@@ -28,5 +28,5 @@ jobs:
       - name: Upload Test Report
         uses: actions/upload-artifact@v2.2.1
         with:
-          name: nitron.jar
+          name: reports
           path: interop/build/reports
