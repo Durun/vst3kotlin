@@ -38,7 +38,7 @@ actual class AudioProcessor(thisPtr: CPointer<IAudioProcessor>) : FUnknown(thisP
 
 	actual val inputBusArrangements: List<SpeakerArrangement>
 		get() {
-			val size = queryInterface<IComponent>().usePointer {
+			val size = queryVstInterface<IComponent>(IComponent_iid).usePointer {
 				IComponent_getBusCount(it, MediaType.Audio.value, BusDirection.Input.value)
 			}
 			return (0 until size).map { i ->
@@ -84,7 +84,7 @@ actual class AudioProcessor(thisPtr: CPointer<IAudioProcessor>) : FUnknown(thisP
 
 	actual val processContextRequirement: ProcessContextRequirement
 		get() {
-			val flags = queryInterface<IProcessContextRequirements>().usePointer {
+			val flags = queryVstInterface<IProcessContextRequirements>(IProcessContextRequirements_iid).usePointer {
 				IProcessContextRequirements_getProcessContextRequirements(it)
 			}
 			return ProcessContextRequirement(flags)

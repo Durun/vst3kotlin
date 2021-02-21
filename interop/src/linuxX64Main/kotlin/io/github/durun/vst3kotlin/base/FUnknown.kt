@@ -48,19 +48,4 @@ actual abstract class FUnknown(
 			.reinterpret<I>()
 		return VstInterface(ptr)
 	}
-
-	@Deprecated("not works")
-	inline fun <reified I : CPointed> queryInterface(): VstInterface<CPointer<I>> {
-		val iid = when (I::class) {
-			IComponent::class -> IComponent_iid
-			IComponentHandler::class -> IComponentHandler_iid
-			IComponentHandler2::class -> IComponentHandler2_iid
-			IEditController::class -> IEditController_iid
-			IEditController2::class -> IEditController2_iid
-			IProcessContextRequirements::class -> IProcessContextRequirements_iid
-			else -> throw IllegalArgumentException()
-		}
-		val ptr = queryInterface(iid).reinterpret<I>()
-		return VstInterface(ptr)
-	}
 }
