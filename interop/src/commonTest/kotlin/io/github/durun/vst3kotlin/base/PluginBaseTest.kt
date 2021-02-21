@@ -3,6 +3,7 @@ package io.github.durun.vst3kotlin.base
 import io.github.durun.dylib.use
 import io.github.durun.path.Path
 import io.github.durun.vst3kotlin.Vst3Package
+import io.github.durun.vst3kotlin.cppinterface.HostCallback
 import kotlin.test.Test
 
 class PluginBaseTest {
@@ -14,7 +15,7 @@ class PluginBaseTest {
 			plugin.openPluginFactory().use { factory ->
 				val cid = factory.classInfo.first().classId
 				factory.createComponent(cid).use { component ->
-					component.initialize()
+					component.initialize(HostCallback)
 					component.terminate()
 				}
 			}

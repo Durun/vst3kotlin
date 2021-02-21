@@ -26,12 +26,14 @@ private fun CPointer<IComponentHandler2>.free() {
 	SIComponentHandler2_free(this.reinterpret())
 }
 
+
 @kotlin.ExperimentalUnsignedTypes
-actual object HostCallback : Closeable {
+actual object HostCallback : CClass, Closeable {
 	private val store: CPointer<LongArrayStore> = allocLongArrayStore(nativeHeap, 16)
 	private val queue: CPointer<ByteQueue> = allocByteQueue(nativeHeap)
 	val ptr1: CPointer<IComponentHandler>
 	val ptr2: CPointer<IComponentHandler2>
+	override val ptr: CPointer<*> get() = ptr1
 
 	// store index
 	private const val refCount: Int = 1
@@ -60,7 +62,7 @@ actual object HostCallback : Closeable {
 		vtable2.defineIComponent2()
 	}
 
-
+	@kotlin.ExperimentalUnsignedTypes
 	private fun IComponentHandlerVTable.defineIComponent() {
 		FUnknown.defineFUnknown()
 		beginEdit = define_beginEdit()
@@ -77,12 +79,14 @@ actual object HostCallback : Closeable {
 		finishGroupEdit = define_finishGroupEdit()
 	}
 
+	@kotlin.ExperimentalUnsignedTypes
 	private fun FUnknownVTable.defineFUnknown() {
 		addRef = define_addref()
 		release = define_release()
 		queryInterface = define_queryInterface()
 	}
 
+	@kotlin.ExperimentalUnsignedTypes
 	private fun define_addref(): CPointer<CFunction<(COpaquePointer?) -> uint32>> = staticCFunction { _ ->
 		// TODO: Is closed check
 		store.use {
@@ -91,6 +95,7 @@ actual object HostCallback : Closeable {
 		}
 	}
 
+	@kotlin.ExperimentalUnsignedTypes
 	private fun define_release(): CPointer<CFunction<(COpaquePointer?) -> uint32>> = staticCFunction { _ ->
 		store.use {
 			it[refCount]--
@@ -114,19 +119,21 @@ actual object HostCallback : Closeable {
 			}
 		}
 
-
+	@kotlin.ExperimentalUnsignedTypes
 	private fun define_beginEdit(): CPointer<CFunction<(COpaquePointer?, UInt) -> tresult>> =
 		staticCFunction { _, id ->
 			queue.enqueue(Message.BeginEdit.bytes(id))
 			kResultOk
 		}
 
+	@kotlin.ExperimentalUnsignedTypes
 	private fun define_performEdit(): CPointer<CFunction<(COpaquePointer?, UInt, Double) -> tresult>> =
 		staticCFunction { _, id, value ->
 			queue.enqueue(Message.PerformEdit.bytes(id, value))
 			kResultOk
 		}
 
+	@kotlin.ExperimentalUnsignedTypes
 	private fun define_endEdit(): CPointer<CFunction<(COpaquePointer?, UInt) -> tresult>> =
 		staticCFunction { _, id ->
 			queue.enqueue(Message.EndEdit.bytes(id))
