@@ -12,7 +12,7 @@ repositories {
 }
 
 dependencies {
-    implementation("io.github.durun.vst3sdk-cpp:pluginterfaces:3.7.1")
+    //implementation("io.github.durun.vst3sdk-cpp:pluginterfaces:3.7.1")
 }
 
 library {
@@ -21,11 +21,6 @@ library {
     targetMachines.add(machines.macOS.x86_64)
     targetMachines.add(machines.windows.x86_64)
 }
-
-tasks.withType<LinkExecutable> {
-    linkerArgs.add("-ldl")
-}
-
 
 val sdkDir = buildDir.resolve("sdk")
 tasks {
@@ -41,8 +36,18 @@ tasks {
 
     val copyHeaders by creating(Copy::class) {
         dependsOn(checkoutSdk)
-        from(sdkDir.resolve("pluginterfaces/base/fplatform.h"))
-        into(buildDir.resolve("headers/pluginterfaces/base"))
+        from(file(sdkDir.resolve("pluginterfaces")))
+        into(buildDir.resolve("headers/"))
+        include { it.isDirectory || it.file.extension == ".h" }
+        includeEmptyDirs = false
+    }
+
+    withType<CppCompile> {
+        dependsOn(checkoutSdk)
+        includes(sdkDir)
+    }
+    withType<LinkExecutable> {
+        linkerArgs.add("-ldl")
     }
 }
 
