@@ -57,19 +57,19 @@ actual class PluginFactory(
 
 	actual fun createComponent(classID: UID): Component {
 		return Component(memScoped {
-			createInstance(thisPtr, classID, InterfaceID.IComponent)
+			createInstance(thisPtr, classID, InterfaceID.IComponent.uid)
 		})
 	}
 
 	actual fun createAudioProcessor(classID: UID): AudioProcessor {
 		return AudioProcessor(memScoped {
-			createInstance(thisPtr, classID, InterfaceID.IAudioProcessor)
+			createInstance(thisPtr, classID, InterfaceID.IAudioProcessor.uid)
 		})
 	}
 
 	actual fun createEditController(classID: UID): EditController {
 		return EditController(memScoped {
-			createInstance(thisPtr, classID, InterfaceID.IEditController)
+			createInstance(thisPtr, classID, InterfaceID.IEditController.uid)
 		})
 	}
 
