@@ -17,6 +17,8 @@ expect class Component : PluginBase {
 	fun activateBus(mediaType: MediaType, direction: BusDirection, index: Int, state: Boolean)
 	fun setActive(state: Boolean)
 	fun getBusInfos(type: MediaType, direction: BusDirection): List<BusInfo>
+
+	fun queryEditController(): EditController
 }
 
 enum class IoMode(val value: Int) {

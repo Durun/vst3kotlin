@@ -112,4 +112,8 @@ actual class Component(
 		MediaType.NumMediaTypes.value -> MediaType.NumMediaTypes
 		else -> throw IllegalArgumentException()
 	}
+
+	actual fun queryEditController(): EditController {
+		return EditController(queryInterface(IEditController_iid).reinterpret())
+	}
 }
