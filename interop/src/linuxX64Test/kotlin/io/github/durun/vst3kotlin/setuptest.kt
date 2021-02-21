@@ -8,6 +8,7 @@ import io.github.durun.vst3kotlin.cppinterface.HostCallback
 import io.github.durun.vst3kotlin.vst.Component
 import io.github.durun.vst3kotlin.vst.EditController
 import io.github.durun.vst3kotlin.vst.connectEach
+import io.kotest.matchers.collections.shouldNotBeEmpty
 import kotlin.test.Test
 
 @ExperimentalUnsignedTypes
@@ -24,13 +25,28 @@ class SetupTest {
 				val (component, controller) = factory.setup(cid)
 
 				controller.parameterInfo
-					.forEach { println(it) }
+					.onEach { println(it) }
+					.shouldNotBeEmpty()
 				component.eventInputBusInfos
-					.forEach { println(it) }
+					.onEach { println(it) }
+					.shouldNotBeEmpty()
 				component.audioInputBusInfos
-					.forEach { println(it) }
+					.onEach { println(it) }
+					.shouldNotBeEmpty()
 				component.audioOutputBusInfos
+					.onEach { println(it) }
+					.shouldNotBeEmpty()
+
+				var gain = controller.getParamNormalized(0u)
+				/*
+				gain += 0.2
+				println("set Gain $gain")
+				controller.setParamNormalized(0u, gain)
+				controller.getParamNormalized(0u) shouldBe gain
+				println("receive messages...")
+				HostCallback.receiveMessages()
 					.forEach { println(it) }
+				*/
 
 				println("close controller...")
 				controller.close()
