@@ -3,6 +3,7 @@ package io.github.durun.vst3kotlin.base
 import cwrapper.*
 import cwrapper.FUnknown
 import io.github.durun.io.Closeable
+import io.github.durun.vst3kotlin.InterfaceID
 import io.github.durun.vst3kotlin.VstInterface
 import kotlinx.cinterop.*
 
@@ -27,7 +28,15 @@ actual abstract class FUnknown(
 				interfaceID,
 				obj.ptr
 			)
-			check(result == kResultTrue) { result.kResultString }
+			check(result == kResultTrue) {
+				when (result) {
+					kNoInterface -> {
+						val uid = interfaceID.toUID()
+						"NoInterface: ${InterfaceID.of(uid) ?: uid}"
+					}
+					else -> result.kResultString
+				}
+			}
 			val ptr = obj.value
 			checkNotNull(ptr)
 			ptr

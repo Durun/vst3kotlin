@@ -23,6 +23,6 @@ enum class InterfaceID(val uid: UID) {
 	override fun toString(): String = "${this::name}($uid)"
 
 	companion object {
-		fun of(uid: UID): InterfaceID = values().first { it.uid == uid }
+		fun of(uid: UID): InterfaceID? = values().firstOrNull { it.uid == uid }
 	}
 }
