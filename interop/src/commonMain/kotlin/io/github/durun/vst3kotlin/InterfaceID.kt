@@ -6,6 +6,7 @@ import io.github.durun.vst3kotlin.base.PluginFactory
 import io.github.durun.vst3kotlin.base.UID
 import io.github.durun.vst3kotlin.vst.AudioProcessor
 import io.github.durun.vst3kotlin.vst.Component
+import io.github.durun.vst3kotlin.vst.EditController
 
 object InterfaceID {
 	inline operator fun <reified I : FUnknown> get(version: Int = 1): UID = when (I::class) {
@@ -17,6 +18,7 @@ object InterfaceID {
 		}
 		BStream::class -> IBStream
 		AudioProcessor::class -> IAudioProcessor
+		EditController::class -> IEditController
 		Component::class -> IComponent
 		else -> throw NoSuchElementException("No interface ID: ${I::class}")
 	}

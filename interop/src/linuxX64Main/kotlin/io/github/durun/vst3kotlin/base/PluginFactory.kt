@@ -4,6 +4,7 @@ import cwrapper.*
 import io.github.durun.vst3kotlin.InterfaceID
 import io.github.durun.vst3kotlin.vst.AudioProcessor
 import io.github.durun.vst3kotlin.vst.Component
+import io.github.durun.vst3kotlin.vst.EditController
 import kotlinx.cinterop.*
 
 actual class PluginFactory(
@@ -59,16 +60,16 @@ actual class PluginFactory(
 			createInstance(thisPtr, classID, InterfaceID.get<Component>())
 		})
 	}
-/*
-	actual fun createController(classID: UID): EditController {
-		return EditController(memScoped {
-			createInstance(thisPtr, classID, InterfaceID.get<EditController>())
-		})
-	}
-*/
+
 	actual fun createAudioProcessor(classID: UID): AudioProcessor {
 		return AudioProcessor(memScoped {
 			createInstance(thisPtr, classID, InterfaceID.get<AudioProcessor>())
+		})
+	}
+
+	actual fun createEditController(classID: UID): EditController {
+		return EditController(memScoped {
+			createInstance(thisPtr, classID, InterfaceID.get<EditController>())
 		})
 	}
 
