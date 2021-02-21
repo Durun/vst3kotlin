@@ -1,6 +1,7 @@
 package io.github.durun.vst3kotlin.vst
 
 import cwrapper.*
+import io.github.durun.util.CClass
 import io.github.durun.vst3kotlin.VstInterface
 import io.github.durun.vst3kotlin.base.FUnknown
 import io.github.durun.vst3kotlin.base.kResultString
@@ -8,11 +9,10 @@ import kotlinx.cinterop.CPointer
 import kotlinx.cinterop.reinterpret
 import kotlinx.cinterop.toByte
 
-actual class ComponentHandler(thisPtr: CPointer<IComponentHandler>) : FUnknown(thisPtr) {
-	//constructor(thisPtr: CPointer<SIComponentHandler>) : this(thisPtr.reinterpret<IComponentHandler>())
-	val ptr: CPointer<IComponentHandler> get() = thisPtr
-	private val thisPtr: CPointer<IComponentHandler> get() = thisRawPtr.reinterpret()
-	private val this2: VstInterface<CPointer<IComponentHandler2>> = VstInterface(queryInterface(IComponentHandler2_iid).reinterpret())
+actual class ComponentHandler(thisPtr: CPointer<IComponentHandler>) : FUnknown(thisPtr), CClass {
+	override val ptr: CPointer<IComponentHandler> get() = thisRawPtr.reinterpret()
+	private val this2: VstInterface<CPointer<IComponentHandler2>> =
+		VstInterface(queryInterface(IComponentHandler2_iid).reinterpret())
 	private val thisPtr2: CPointer<IComponentHandler2> = this2.ptr.reinterpret()
 
 	override fun close() {
@@ -21,22 +21,22 @@ actual class ComponentHandler(thisPtr: CPointer<IComponentHandler>) : FUnknown(t
 	}
 
 	actual fun beginEdit(id: UInt) {
-		val result = IComponentHandler_beginEdit(thisPtr, id)
+		val result = IComponentHandler_beginEdit(this.ptr, id)
 		check(result == kResultTrue) { result.kResultString }
 	}
 
 	actual fun performEdit(id: UInt, valueNormalized: Double) {
-		val result = IComponentHandler_performEdit(thisPtr, id, valueNormalized)
+		val result = IComponentHandler_performEdit(this.ptr, id, valueNormalized)
 		check(result == kResultTrue) { result.kResultString }
 	}
 
 	actual fun endEdit(id: UInt) {
-		val result = IComponentHandler_endEdit(thisPtr, id)
+		val result = IComponentHandler_endEdit(this.ptr, id)
 		check(result == kResultTrue) { result.kResultString }
 	}
 
 	actual fun restartComponent(flags: Int) {
-		val result = IComponentHandler_restartComponent(thisPtr, flags)
+		val result = IComponentHandler_restartComponent(this.ptr, flags)
 		check(result == kResultTrue) { result.kResultString }
 	}
 

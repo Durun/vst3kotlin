@@ -1,5 +1,6 @@
 package io.github.durun.vst3kotlin.vst
 
+import io.github.durun.util.CClass
 import io.github.durun.vst3kotlin.base.BStream
 import io.github.durun.vst3kotlin.base.PluginBase
 import io.github.durun.vst3kotlin.gui.PlugView
@@ -50,7 +51,7 @@ enum class KnobMode(val value: Int) {
 	CircularMode(0), RelativCircularMode(1), LinearMode(2)
 }
 
-expect class EditController : PluginBase {
+expect class EditController : PluginBase, CClass {
 	// version 1
 	fun setComponentState(state: BStream)
 	fun setState(state: BStream)

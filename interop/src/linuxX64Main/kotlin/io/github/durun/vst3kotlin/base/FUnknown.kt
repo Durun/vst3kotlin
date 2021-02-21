@@ -1,6 +1,7 @@
 package io.github.durun.vst3kotlin.base
 
 import cwrapper.*
+import cwrapper.FUnknown
 import io.github.durun.io.Closeable
 import io.github.durun.vst3kotlin.VstInterface
 import kotlinx.cinterop.*
@@ -8,13 +9,13 @@ import kotlinx.cinterop.*
 actual abstract class FUnknown(
 	protected val thisRawPtr: CPointer<*>
 ) : Closeable {
-	private val thisPtr get() = thisRawPtr.reinterpret<cwrapper.FUnknown>()
+	private val ptr: CPointer<FUnknown> get() = thisRawPtr.reinterpret()
 	actual final override var isOpen: Boolean = true
 		private set
 
 	actual override fun close() {
 		check(isOpen)
-		FUnknown_release(thisPtr)
+		FUnknown_release(ptr)
 		isOpen = false
 	}
 
@@ -22,7 +23,7 @@ actual abstract class FUnknown(
 		return memScoped {
 			val obj = alloc<CPointerVar<*>>()
 			val result = IPluginFactory_queryInterface( // TODO: use FUnknown_queryInterface
-				thisPtr.reinterpret(),
+				ptr.reinterpret(),
 				interfaceID,
 				obj.ptr
 			)

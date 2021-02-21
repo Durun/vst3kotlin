@@ -1,9 +1,10 @@
 package io.github.durun.vst3kotlin.vst
 
+import io.github.durun.util.CClass
 import io.github.durun.vst3kotlin.base.FUnknown
 import io.github.durun.vstkotlin3.vst.SpeakerArrangement
 
-expect class AudioProcessor : FUnknown {
+expect class AudioProcessor : FUnknown, CClass {
 	fun setBusArrangements(inputs: List<SpeakerArrangement>, outputs: List<SpeakerArrangement>)
 	fun getBusArrangement(direction: BusDirection, index: Int): SpeakerArrangement
 	val inputBusArrangements: List<SpeakerArrangement>

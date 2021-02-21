@@ -1,8 +1,9 @@
 package io.github.durun.vst3kotlin.vst
 
+import io.github.durun.util.CClass
 import io.github.durun.vst3kotlin.base.FUnknown
 
-expect class ComponentHandler:FUnknown {
+expect class ComponentHandler : FUnknown, CClass {
 	fun beginEdit(id: UInt)
 	fun performEdit(id: UInt, valueNormalized: Double)
 	fun endEdit(id: UInt)

@@ -1,15 +1,14 @@
 package io.github.durun.vst3kotlin.vst
 
 import cwrapper.*
+import io.github.durun.util.CClass
 import io.github.durun.vst3kotlin.base.FUnknown
 import io.github.durun.vst3kotlin.base.kResultString
 import io.github.durun.vstkotlin3.vst.SpeakerArrangement
 import kotlinx.cinterop.*
 
-actual class AudioProcessor(
-	thisPtr: CPointer<IAudioProcessor>
-) : FUnknown(thisPtr) {
-	private val thisPtr: CPointer<IAudioProcessor> get() = thisRawPtr.reinterpret()
+actual class AudioProcessor(thisPtr: CPointer<IAudioProcessor>) : FUnknown(thisPtr), CClass {
+	override val ptr: CPointer<IAudioProcessor> get() = thisRawPtr.reinterpret()
 	actual fun setBusArrangements(
 		inputs: List<SpeakerArrangement>,
 		outputs: List<SpeakerArrangement>
@@ -19,7 +18,7 @@ actual class AudioProcessor(
 			val outArr = allocArray<SpeakerArrangementVar>(outputs.size)
 			inputs.forEachIndexed { i, it -> inArr[i] = it.value }
 			outputs.forEachIndexed { i, it -> outArr[i] = it.value }
-			val result = IAudioProcessor_setBusArrangements(thisPtr, inArr, inputs.size, outArr, outputs.size)
+			val result = IAudioProcessor_setBusArrangements(ptr, inArr, inputs.size, outArr, outputs.size)
 			check(result == kResultTrue) { result.kResultString }
 		}
 	}
@@ -31,7 +30,7 @@ actual class AudioProcessor(
 		TODO()
 		return memScoped {
 			val buf = alloc<SpeakerArrangementVar>()
-			val result = IAudioProcessor_getBusArrangement(thisPtr, direction.value, index, buf.ptr)
+			val result = IAudioProcessor_getBusArrangement(ptr, direction.value, index, buf.ptr)
 			check(result == kResultTrue) { result.kResultString }
 			SpeakerArrangement.of(buf.value)
 		}
@@ -50,7 +49,7 @@ actual class AudioProcessor(
 		get() = TODO("Not yet implemented")
 
 	actual fun canProcessSampleSize(sampleSize: SymbolicSampleSize): Boolean {
-		return IAudioProcessor_canProcessSampleSize(thisPtr, sampleSize.value) == kResultTrue
+		return IAudioProcessor_canProcessSampleSize(ptr, sampleSize.value) == kResultTrue
 	}
 
 	actual fun setupProcessing(setup: ProcessSetup) {
@@ -61,14 +60,14 @@ actual class AudioProcessor(
 				sampleRate = setup.sampleRate
 				symbolicSampleSize = setup.symbolicSampleSize
 			}
-			val result = IAudioProcessor_setupProcessing(thisPtr, buf.ptr)
+			val result = IAudioProcessor_setupProcessing(ptr, buf.ptr)
 			check(result == kResultTrue) { result.kResultString }
 		}
 	}
 
 	@OptIn(ExperimentalUnsignedTypes::class)
 	actual fun setProcessing(state: Boolean) {
-		IAudioProcessor_setProcessing(thisPtr, state.toByte().toUByte())
+		IAudioProcessor_setProcessing(ptr, state.toByte().toUByte())
 	}
 
 	actual fun process() {
@@ -77,11 +76,11 @@ actual class AudioProcessor(
 
 	@OptIn(ExperimentalUnsignedTypes::class)
 	actual val latencySampleSize: Int
-		get() = IAudioProcessor_getLatencySamples(thisPtr).toInt()
+		get() = IAudioProcessor_getLatencySamples(ptr).toInt()
 
 	@OptIn(ExperimentalUnsignedTypes::class)
 	actual val tailSampleSize: Int
-		get() = IAudioProcessor_getTailSamples(thisPtr).toInt()
+		get() = IAudioProcessor_getTailSamples(ptr).toInt()
 
 	actual val processContextRequirement: ProcessContextRequirement
 		get() {

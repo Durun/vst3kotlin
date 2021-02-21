@@ -1,5 +1,6 @@
 package io.github.durun.vst3kotlin.gui
 
+import io.github.durun.util.CClass
 import io.github.durun.vst3kotlin.base.FUnknown
 
 data class ViewRect(
@@ -11,7 +12,7 @@ data class ViewRect(
 
 expect class PlatformView
 
-expect class PlugView : FUnknown {
+expect class PlugView : FUnknown, CClass {
 	fun isPlatformTypeSupported(type: String): Boolean
 	fun attached(parent: PlatformView, type: String)
 	val removed: Boolean
@@ -26,6 +27,6 @@ expect class PlugView : FUnknown {
 	fun checkSizeConstraint(rect: ViewRect): Boolean
 }
 
-expect class PlugFrame : FUnknown {
+expect class PlugFrame : FUnknown, CClass {
 	fun resizeView(view: PlugView, newSize: ViewRect)
 }

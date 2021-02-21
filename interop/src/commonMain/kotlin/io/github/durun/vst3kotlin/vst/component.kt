@@ -1,10 +1,11 @@
 package io.github.durun.vst3kotlin.vst
 
+import io.github.durun.util.CClass
 import io.github.durun.vst3kotlin.base.BStream
 import io.github.durun.vst3kotlin.base.PluginBase
 import io.github.durun.vst3kotlin.base.UID
 
-expect class Component : PluginBase {
+expect class Component : PluginBase, CClass {
 	val controllerClassID: UID
 	val audioInputBusInfos: List<BusInfo>
 	val eventInputBusInfos: List<BusInfo>

@@ -1,6 +1,8 @@
 package io.github.durun.vst3kotlin.base
 
-expect class BStream : FUnknown {
+import io.github.durun.util.CClass
+
+expect class BStream : FUnknown, CClass {
 	fun read(numBytes: Int): ByteArray
 	fun write(bytes: ByteArray, numBytes: Int): Int // returns amount of written bytes
 	fun seek(pos: Long, mode: StreamSeekMode): Long // returns new sek position

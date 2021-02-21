@@ -1,5 +1,6 @@
 package io.github.durun.vst3kotlin.vst
 
+import io.github.durun.util.CClass
 import io.github.durun.vst3kotlin.base.FUnknown
 
 typealias AttrID = String
@@ -14,7 +15,7 @@ interface AttrWriteProperty<T> {
 
 interface AttrProperty<T> : AttrReadProperty<T>, AttrWriteProperty<T>
 
-expect class AttributeList : FUnknown {
+expect class AttributeList : FUnknown, CClass {
 	val int: AttrProperty<Long>
 	val float: AttrProperty<Double>
 	fun getString(id: AttrID, sizeInBytes: Int): String

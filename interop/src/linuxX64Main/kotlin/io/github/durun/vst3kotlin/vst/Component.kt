@@ -1,13 +1,13 @@
 package io.github.durun.vst3kotlin.vst
 
 import cwrapper.*
+import io.github.durun.util.CClass
 import io.github.durun.vst3kotlin.base.*
 import kotlinx.cinterop.*
 
-actual class Component(
-	thisPtr: CPointer<IComponent>
-) : PluginBase(thisPtr) {
-	private val thisPtr get() = thisRawPtr.reinterpret<IComponent>()
+actual class Component(thisPtr: CPointer<IComponent>) : PluginBase(thisPtr), CClass {
+	override val ptr: CPointer<IComponent> get() = thisRawPtr.reinterpret()
+
 	actual val controllerClassID: UID by lazy {
 		memScoped {
 			val tuid = allocArray<ByteVar>(16)
@@ -23,7 +23,7 @@ actual class Component(
 		get() = memScoped {
 			val inInfo = alloc<cwrapper.RoutingInfo>()
 			val outInfo = alloc<cwrapper.RoutingInfo>()
-			val result = IComponent_getRoutingInfo(thisPtr, inInfo.ptr, outInfo.ptr)
+			val result = IComponent_getRoutingInfo(ptr, inInfo.ptr, outInfo.ptr)
 			if (result == kNotImplemented) return null to null
 			check(result == kResultTrue) { result.kResultString }
 			inInfo.toKRoutingInfo() to outInfo.toKRoutingInfo()
@@ -32,7 +32,7 @@ actual class Component(
 		get() {
 			val streamPtr = memScoped {
 				val stream = alloc<IBStream>()
-				val result = IComponent_getState(thisPtr, stream.ptr)
+				val result = IComponent_getState(ptr, stream.ptr)
 				check(result == kResultTrue) { result.kResultString }
 				stream.ptr
 			}
@@ -44,7 +44,7 @@ actual class Component(
 	}
 
 	actual fun setIoMode(mode: IoMode) {
-		val result = IComponent_setIoMode(thisPtr, mode.value)
+		val result = IComponent_setIoMode(ptr, mode.value)
 		check(result == kResultTrue) { result.kResultString }
 	}
 
@@ -55,13 +55,13 @@ actual class Component(
 		index: Int,
 		state: Boolean
 	) {
-		val result = IComponent_activateBus(thisPtr, mediaType.value, direction.value, index, state.toByte().toUByte())
+		val result = IComponent_activateBus(ptr, mediaType.value, direction.value, index, state.toByte().toUByte())
 		check(result == kResultTrue) { result.kResultString }
 	}
 
 	@OptIn(ExperimentalUnsignedTypes::class)
 	actual fun setActive(state: Boolean) {
-		val result = IComponent_setActive(thisPtr, state.toByte().toUByte())
+		val result = IComponent_setActive(ptr, state.toByte().toUByte())
 		check(result == kResultTrue) { result.kResultString }
 	}
 
@@ -69,12 +69,12 @@ actual class Component(
 		type: MediaType,
 		direction: BusDirection
 	): List<BusInfo> {
-		val size = IComponent_getBusCount(thisPtr, type.value, direction.value)
+		val size = IComponent_getBusCount(ptr, type.value, direction.value)
 		return memScoped {
 			val infos = allocArray<cwrapper.BusInfo>(size)
 			val indice = 0 until size
 			indice.forEach { i ->
-				val result = IComponent_getBusInfo(thisPtr, type.value, direction.value, i, infos[i].ptr)
+				val result = IComponent_getBusInfo(ptr, type.value, direction.value, i, infos[i].ptr)
 				check(result == kResultTrue) { result.kResultString }
 			}
 			indice.map { infos[it].toKBusInfo() }.toList()
