@@ -133,6 +133,7 @@ sealed class Message(reader: ByteArrayReader) : MessageBase(reader) {
 		@kotlin.ExperimentalUnsignedTypes
 		override fun <T : MessageBase> decode(reader: ByteArrayReader): T {
 			val typeId = reader.readInt()
+			// println("offset=${reader.offset} : $typeId")
 			val instance = when (typeId) {
 				beginEdit_type -> BeginEdit(reader)
 				performEdit_type -> PerformEdit(reader)
