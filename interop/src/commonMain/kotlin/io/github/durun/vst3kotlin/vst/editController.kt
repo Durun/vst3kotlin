@@ -46,7 +46,12 @@ data class ParameterInfo(
 	)
 }
 
+enum class KnobMode(val value: Int) {
+	CircularMode(0), RelativCircularMode(1), LinearMode(2)
+}
+
 expect class EditController : PluginBase {
+	// version 1
 	fun setComponentState(state: BStream)
 	fun setState(state: BStream)
 	val state: BStream
@@ -73,4 +78,9 @@ expect class EditController : PluginBase {
 	fun setParamNormalized(id: UInt, value: Double)
 	fun setComponentHandler(handler: ComponentHandler)
 	fun createView(name: String): PlugView
+
+	// version 2
+	fun setKnobMode(mode: KnobMode)
+	fun openHelp(onlyCheck: Boolean)
+	fun openAboutBox(onlyCheck: Boolean)
 }

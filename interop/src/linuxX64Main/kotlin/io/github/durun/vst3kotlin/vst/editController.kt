@@ -100,6 +100,23 @@ actual class EditController(thisPtr: CPointer<IEditController>) : PluginBase(thi
 		checkNotNull(ptr)
 		return PlugView(ptr)
 	}
+
+	@kotlin.ExperimentalUnsignedTypes
+	actual fun setKnobMode(mode: KnobMode) {
+		IEditController2_setKnobMode(thisPtr2, mode.value.toUInt())
+	}
+
+	@kotlin.ExperimentalUnsignedTypes
+	actual fun openHelp(onlyCheck: Boolean) {
+		val result = IEditController2_openHelp(thisPtr2, onlyCheck.toByte().toUByte())
+		check(result == kResultTrue) { result.kResultString }
+	}
+
+	@kotlin.ExperimentalUnsignedTypes
+	actual fun openAboutBox(onlyCheck: Boolean) {
+		val result = IEditController2_openAboutBox(thisPtr2, onlyCheck.toByte().toUByte())
+		check(result == kResultTrue) { result.kResultString }
+	}
 }
 
 @kotlin.ExperimentalUnsignedTypes
