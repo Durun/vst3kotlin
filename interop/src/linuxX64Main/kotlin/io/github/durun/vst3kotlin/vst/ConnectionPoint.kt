@@ -25,3 +25,14 @@ actual class ConnectionPoint(thisPtr: CPointer<IConnectionPoint>) : FUnknown(thi
 		check(result == kResultOk) { result.kResultString }
 	}
 }
+
+fun FUnknown.connectEach(other: FUnknown) {
+	val thisPoint = this.queryInterface(IConnectionPoint_iid)
+		.reinterpret<IConnectionPoint>()
+		.let { ConnectionPoint(it) }
+	val otherPoint = other.queryInterface(IConnectionPoint_iid)
+		.reinterpret<IConnectionPoint>()
+		.let { ConnectionPoint(it) }
+	thisPoint.connect(otherPoint)
+	otherPoint.connect(thisPoint)
+}
