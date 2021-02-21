@@ -34,6 +34,13 @@ actual abstract class FUnknown(
 		}
 	}
 
+	fun <I : CPointed> queryVstInterface(interfaceID: TUID): VstInterface<CPointer<I>> {
+		val ptr = queryInterface(interfaceID)
+			.reinterpret<I>()
+		return VstInterface(ptr)
+	}
+
+	@Deprecated("not works")
 	inline fun <reified I : CPointed> queryInterface(): VstInterface<CPointer<I>> {
 		val iid = when (I::class) {
 			IComponent::class -> IComponent_iid
