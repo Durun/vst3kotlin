@@ -3,7 +3,6 @@ package io.github.durun.vst3kotlin.vst
 import cwrapper.*
 import io.github.durun.vst3kotlin.VstInterface
 import io.github.durun.vst3kotlin.base.BStream
-import io.github.durun.vst3kotlin.base.FUnknown
 import io.github.durun.vst3kotlin.base.PluginBase
 import io.github.durun.vst3kotlin.base.kResultString
 import io.github.durun.vst3kotlin.gui.PlugView
@@ -33,6 +32,7 @@ actual class EditController(thisPtr: CPointer<IEditController>) : PluginBase(thi
 			BStream(buf.ptr)
 		}
 
+	@kotlin.ExperimentalUnsignedTypes
 	actual val parameterInfo: List<ParameterInfo>
 		get() = memScoped {
 			val size = IEditController_getParameterCount(thisPtr)
@@ -46,7 +46,7 @@ actual class EditController(thisPtr: CPointer<IEditController>) : PluginBase(thi
 			}
 		}
 
-
+	@kotlin.ExperimentalUnsignedTypes
 	actual fun getParamStringByValue(id: UInt, valueNormalized: Double): String {
 		return memScoped {
 			val buf = alloc<String128Var>()
@@ -58,6 +58,7 @@ actual class EditController(thisPtr: CPointer<IEditController>) : PluginBase(thi
 		}
 	}
 
+	@kotlin.ExperimentalUnsignedTypes
 	actual fun getDoubleByString(id: UInt, string: String): Double {
 		return memScoped {
 			val buf = alloc<DoubleVar>()
@@ -68,18 +69,22 @@ actual class EditController(thisPtr: CPointer<IEditController>) : PluginBase(thi
 		}
 	}
 
+	@kotlin.ExperimentalUnsignedTypes
 	actual fun normalizedParamToPlain(id: UInt, valueNormalized: Double): Double {
 		return IEditController_normalizedParamToPlain(thisPtr, id, valueNormalized)
 	}
 
+	@kotlin.ExperimentalUnsignedTypes
 	actual fun plainParamToNormalized(id: UInt, plainValue: Double): Double {
 		return IEditController_plainParamToNormalized(thisPtr, id, plainValue)
 	}
 
+	@kotlin.ExperimentalUnsignedTypes
 	actual fun getParamNormalized(id: UInt): Double {
 		return IEditController_getParamNormalized(thisPtr, id)
 	}
 
+	@kotlin.ExperimentalUnsignedTypes
 	actual fun setParamNormalized(id: UInt, value: Double) {
 		val result = IEditController_setParamNormalized(thisPtr, id, value)
 		check(result == kResultTrue) { result.kResultString }
@@ -97,6 +102,7 @@ actual class EditController(thisPtr: CPointer<IEditController>) : PluginBase(thi
 	}
 }
 
+@kotlin.ExperimentalUnsignedTypes
 fun cwrapper.ParameterInfo.toKParameterInfo(): ParameterInfo {
 	return ParameterInfo(
 		id,

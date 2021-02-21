@@ -8,6 +8,7 @@ import io.github.durun.vst3kotlin.gui.PlugView
 //typealias UnitID = Int
 //typealias ParamValue = Double
 
+@kotlin.ExperimentalUnsignedTypes
 data class ParameterInfo(
 	val id: UInt,
 	val title: String,
@@ -49,12 +50,26 @@ expect class EditController : PluginBase {
 	fun setComponentState(state: BStream)
 	fun setState(state: BStream)
 	val state: BStream
+
+	@kotlin.ExperimentalUnsignedTypes
 	val parameterInfo: List<ParameterInfo>
+
+	@kotlin.ExperimentalUnsignedTypes
 	fun getParamStringByValue(id: UInt, valueNormalized: Double): String
+
+	@kotlin.ExperimentalUnsignedTypes
 	fun getDoubleByString(id: UInt, string: String): Double
+
+	@kotlin.ExperimentalUnsignedTypes
 	fun normalizedParamToPlain(id: UInt, valueNormalized: Double): Double
+
+	@kotlin.ExperimentalUnsignedTypes
 	fun plainParamToNormalized(id: UInt, plainValue: Double): Double
+
+	@kotlin.ExperimentalUnsignedTypes
 	fun getParamNormalized(id: UInt): Double
+
+	@kotlin.ExperimentalUnsignedTypes
 	fun setParamNormalized(id: UInt, value: Double)
 	fun setComponentHandler(handler: ComponentHandler)
 	fun createView(name: String): PlugView
