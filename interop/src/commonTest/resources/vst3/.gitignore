@@ -1,1 +1,3 @@
-*.vst3
+*
+!.gitignore
+!README.md
