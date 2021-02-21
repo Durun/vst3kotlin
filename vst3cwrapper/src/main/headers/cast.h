@@ -8,6 +8,7 @@
 #include <pluginterfaces/vst/ivstcomponent.h>
 #include <pluginterfaces/vst/ivsteditcontroller.h>
 #include <pluginterfaces/vst/ivstevents.h>
+#include <pluginterfaces/vst/ivstmessage.h>
 #include <pluginterfaces/vst/ivstnoteexpression.h>
 #include <pluginterfaces/vst/ivstparameterchanges.h>
 
@@ -16,11 +17,14 @@
 #include "base/IPluginBase.h"
 #include "base/IPluginFactory.h"
 #include "gui/IPlugView.h"
+#include "vst/IAttributeList.h"
 #include "vst/IAudioProcessor.h"
 #include "vst/IComponent.h"
 #include "vst/IComponentHandlerBusActivation.h"
+#include "vst/IConnectionPoint.h"
 #include "vst/IEditController.h"
 #include "vst/IEventList.h"
+#include "vst/IMessage.h"
 #include "vst/IMidiMapping.h"
 #include "vst/INoteExpressionController.h"
 #include "vst/IParameterChanges.h"
@@ -38,6 +42,8 @@ Steinberg::IPluginBase* PLUGIN_API cast(IPluginBase* this_ptr);
 Steinberg::ISizeableStream* cast(ISizeableStream* this_ptr);
 Steinberg::IPlugView* cast(IPlugView* this_ptr);
 IPlugView* cast(Steinberg::IPlugView* this_ptr);
+Steinberg::Vst::IAttributeList* cast(IAttributeList* this_ptr);
+IAttributeList* cast(Steinberg::Vst::IAttributeList* this_ptr);
 Steinberg::IPlugFrame* cast(IPlugFrame* this_ptr);
 Steinberg::ViewRect* cast(ViewRect* this_ptr);
 Steinberg::Vst::IAudioProcessor* cast(IAudioProcessor* this_ptr);
@@ -46,6 +52,7 @@ Steinberg::Vst::IProcessContextRequirements* cast(IProcessContextRequirements* t
 Steinberg::Vst::ProcessSetup* cast(ProcessSetup* this_ptr);
 Steinberg::Vst::ProcessData* cast(ProcessData* this_ptr);
 Steinberg::Vst::IComponent* cast(IComponent* this_ptr);
+Steinberg::Vst::IConnectionPoint* cast(IConnectionPoint* this_ptr);
 Steinberg::Vst::IEditController* cast(IEditController* this_ptr);
 Steinberg::Vst::IEditController2* cast(IEditController2* this_ptr);
 Steinberg::Vst::ParameterInfo* cast(ParameterInfo* this_ptr);
@@ -57,6 +64,7 @@ Steinberg::Vst::IEventList* cast(IEventList* this_ptr);
 Steinberg::Vst::Event* cast(Event* this_ptr);
 Steinberg::Vst::IProgress* cast(IProgress* this_ptr);
 Steinberg::Vst::IProgress::ProgressType* cast(ProgressType* this_ptr);
+Steinberg::Vst::IMessage* cast(IMessage* this_ptr);
 Steinberg::Vst::IMidiMapping* cast(IMidiMapping* this_ptr);
 Steinberg::Vst::INoteExpressionController* cast(INoteExpressionController* this_ptr);
 Steinberg::Vst::IKeyswitchController* cast(IKeyswitchController* this_ptr);

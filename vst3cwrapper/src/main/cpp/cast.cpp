@@ -36,6 +36,12 @@ Steinberg::IPlugView* cast(IPlugView* this_ptr) {
 IPlugView* cast(Steinberg::IPlugView* this_ptr) {
     return reinterpret_cast<IPlugView*>(this_ptr);
 }
+Steinberg::Vst::IAttributeList* cast(IAttributeList* this_ptr) {
+	return reinterpret_cast<Steinberg::Vst::IAttributeList*>(this_ptr);
+}
+IAttributeList* cast(Steinberg::Vst::IAttributeList* this_ptr) {
+    return reinterpret_cast<IAttributeList*>(this_ptr);
+}
 Steinberg::IPlugFrame* cast(IPlugFrame* this_ptr) {
     return reinterpret_cast<Steinberg::IPlugFrame*>(this_ptr);
 }
@@ -62,6 +68,9 @@ Steinberg::Vst::IComponent* cast(IComponent* this_ptr) {
 }
 Steinberg::Vst::IComponentHandlerBusActivation* cast(IComponentHandlerBusActivation* this_ptr) {
     return reinterpret_cast<Steinberg::Vst::IComponentHandlerBusActivation*>(this_ptr);
+}
+Steinberg::Vst::IConnectionPoint* cast(IConnectionPoint* this_ptr) {
+    return reinterpret_cast<Steinberg::Vst::IConnectionPoint*>(this_ptr);
 }
 Steinberg::Vst::IEditController* cast(IEditController* this_ptr) {
     return reinterpret_cast<Steinberg::Vst::IEditController*>(this_ptr);
@@ -92,6 +101,9 @@ Steinberg::Vst::IProgress* cast(IProgress* this_ptr) {
 }
 Steinberg::Vst::IProgress::ProgressType* cast(ProgressType* this_ptr) {
 	return reinterpret_cast<Steinberg::Vst::IProgress::ProgressType*>(this_ptr);
+}
+Steinberg::Vst::IMessage* cast(IMessage* this_ptr) {
+    return reinterpret_cast<Steinberg::Vst::IMessage*>(this_ptr);
 }
 Steinberg::Vst::IMidiMapping* cast(IMidiMapping* this_ptr) {
     return reinterpret_cast<Steinberg::Vst::IMidiMapping*>(this_ptr);
