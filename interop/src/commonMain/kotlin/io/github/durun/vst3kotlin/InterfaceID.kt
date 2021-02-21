@@ -1,28 +1,8 @@
 package io.github.durun.vst3kotlin
 
-import io.github.durun.vst3kotlin.base.BStream
-import io.github.durun.vst3kotlin.base.FUnknown
-import io.github.durun.vst3kotlin.base.PluginFactory
 import io.github.durun.vst3kotlin.base.UID
-import io.github.durun.vst3kotlin.vst.AudioProcessor
-import io.github.durun.vst3kotlin.vst.Component
-import io.github.durun.vst3kotlin.vst.EditController
 
 object InterfaceID {
-	inline operator fun <reified I : FUnknown> get(version: Int = 1): UID = when (I::class) {
-		PluginFactory::class -> when (version) {
-			1 -> IPluginFactory
-			2 -> IPluginFactory2
-			3 -> IPluginFactory3
-			else -> throw IllegalArgumentException("IPluginFactory version must be in 1-3 but: $version")
-		}
-		BStream::class -> IBStream
-		AudioProcessor::class -> IAudioProcessor
-		EditController::class -> IEditController
-		Component::class -> IComponent
-		else -> throw NoSuchElementException("No interface ID: ${I::class}")
-	}
-
 	val IPluginFactory = UID("7A4D811C52114A1FAED9D2EE0B43BF9F")
 	val IPluginFactory2 = UID("0007B650F24B4C0BA464EDB9F00B2ABB")
 	val IPluginFactory3 = UID("4555A2ABC1234E579B12291036878931")
