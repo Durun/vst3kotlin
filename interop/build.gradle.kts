@@ -76,7 +76,6 @@ kotlin {
         }
         binaries {
             staticLib()
-            sharedLib()
         }
     }
     linuxX64 { configureTarget() }

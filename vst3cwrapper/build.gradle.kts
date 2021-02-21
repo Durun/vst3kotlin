@@ -36,9 +36,9 @@ tasks {
 
     val copyHeaders by creating(Copy::class) {
         dependsOn(checkoutSdk)
-        from(file(sdkDir.resolve("pluginterfaces")))
+        from(sdkDir)
         into(buildDir.resolve("headers/"))
-        include { it.isDirectory || it.file.extension == ".h" }
+        include("**/*.h")
         includeEmptyDirs = false
     }
 
