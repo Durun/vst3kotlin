@@ -12,7 +12,7 @@ import kotlinx.cinterop.*
 
 actual class EditController(thisPtr: CPointer<IEditController>) : PluginBase(thisPtr), CClass {
 	override val ptr: CPointer<IEditController> get() = thisRawPtr.reinterpret()
-	private val this2: VstInterface<CPointer<IEditController2>> = queryInterface()
+	private val this2: VstInterface<CPointer<IEditController2>> = queryVstInterface(IEditController2_iid)
 	private val thisPtr2: CPointer<IEditController2> get() = this2.ptr.reinterpret()
 
 	actual fun setComponentState(state: BStream) {

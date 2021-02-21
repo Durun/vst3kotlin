@@ -57,26 +57,21 @@ actual class PluginFactory(
 
 	actual fun createComponent(classID: UID): Component {
 		return Component(memScoped {
-			createInstance(thisPtr, classID, InterfaceID.get<Component>())
+			createInstance(thisPtr, classID, InterfaceID.IComponent)
 		})
 	}
 
 	actual fun createAudioProcessor(classID: UID): AudioProcessor {
 		return AudioProcessor(memScoped {
-			createInstance(thisPtr, classID, InterfaceID.get<AudioProcessor>())
+			createInstance(thisPtr, classID, InterfaceID.IAudioProcessor)
 		})
 	}
 
 	actual fun createEditController(classID: UID): EditController {
 		return EditController(memScoped {
-			createInstance(thisPtr, classID, InterfaceID.get<EditController>())
+			createInstance(thisPtr, classID, InterfaceID.IEditController)
 		})
 	}
-
-	private inline fun <S : CStructVar, reified I : FUnknown> AutofreeScope.createInstance(
-		factory: CPointer<IPluginFactory>,
-		classID: UID
-	): CPointer<S> = createInstance(factory, classID, InterfaceID.get<I>())
 
 	private fun <S : CStructVar> AutofreeScope.createInstance(
 		factory: CPointer<IPluginFactory>,
