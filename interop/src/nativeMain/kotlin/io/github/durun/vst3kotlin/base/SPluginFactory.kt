@@ -1,6 +1,5 @@
 package io.github.durun.vst3kotlin.base
 
-import cwrapper.IPluginFactory_release
 import cwrapper.PFactoryInfo
 import cwrapper.SIPluginFactory
 import io.github.durun.io.Closeable
@@ -22,7 +21,7 @@ class SPluginFactory(
 			val factory = alloc<PFactoryInfo>()
 			ptr.getFactoryInfo(factory.ptr)
 			factory.run {
-				FactoryInfo(vendor.toKString(),url.toKString(), email.toKString(), FactoryInfo.Flags(flags.toInt()))
+				FactoryInfo(vendor.toKString(), url.toKString(), email.toKString(), FactoryInfo.Flags(flags.toInt()))
 			}
 		}
 	}

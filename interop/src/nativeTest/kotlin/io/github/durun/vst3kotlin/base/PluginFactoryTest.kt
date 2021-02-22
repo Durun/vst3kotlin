@@ -1,13 +1,13 @@
 package io.github.durun.vst3kotlin.base
 
 import io.github.durun.dylib.use
-import io.github.durun.path.Path
 import io.github.durun.vst3kotlin.Vst3Package
+import io.github.durun.vst3kotlin.testResources
 import io.kotest.matchers.shouldBe
 import kotlin.test.Test
 
 class PluginFactoryTest {
-	val path = Path.of("src/commonTest/resources/vst3/again.vst3")
+	val path = testResources.resolve("vst3/again.vst3")
 
 	@Test
 	fun factoryInfo() {

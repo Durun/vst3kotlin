@@ -3,7 +3,7 @@ package io.github.durun.vst3kotlin.base
 import cwrapper.*
 
 val Int.kResultString: String
-	get() = when(this) {
+	get() = when (this) {
 		kResultOk -> "kResultOK"
 		kResultTrue -> "kResultTrue"
 		kResultFalse -> "kResultFalse"

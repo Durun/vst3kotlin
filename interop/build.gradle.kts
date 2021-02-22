@@ -32,10 +32,10 @@ dependencies {
 }
 
 val cwrapperDef = file(buildDir.resolve("cinterop/cwrapper.def"))
+val os = org.gradle.internal.os.OperatingSystem.current()
 
 kotlin {
     // OS setting
-    val os = org.gradle.internal.os.OperatingSystem.current()
     when {
         os.isWindows -> mingwX64("windowsX64")
         os.isMacOsX -> macosX64()
@@ -103,21 +103,31 @@ tasks { // for compilation
 }
 
 tasks { // for testing
-    val zipPath = buildDir.resolve("vst3-samples-linux.zip")
+    // OS setting
+    val targetName = when {
+        os.isWindows -> "windowsX64"
+        os.isMacOsX -> "macosX64"
+        os.isLinux -> "linuxX64"
+        else -> throw GradleException("${os.familyName} is not supported.")
+    }
+    val zipName = "vst3samples-$targetName.zip"
+    val zipPath = buildDir.resolve(zipName)
     val downloadSamplesLinux by creating(Download::class) {
-        src("https://github.com/Durun/vst3experiment/releases/download/samples/vst3-samples-linux.zip")
+        src("https://github.com/Durun/vst3experiment/releases/download/samples/$zipName")
         dest(zipPath)
     }
     val verifySamplesLinux by creating(Verify::class) {
         dependsOn(downloadSamplesLinux)
         src(zipPath)
         algorithm("MD5")
-        checksum("7e1da79fc15fe53ce06aff13464f5c08")
+        when (zipName) {
+            "vst3samples-linuxX64.zip" -> checksum("7762726a6da2d2b2bd34ac54c7184dda")
+        }
     }
     val unzipSamplesLinux by creating(Copy::class) {
         dependsOn(verifySamplesLinux)
         from(zipTree(zipPath))
-        val destRoot = projectDir.resolve("src/commonTest/resources/vst3")
+        val destRoot = projectDir.resolve("src/linuxX64Test/resources/vst3")
         into(destRoot)
         eachFile {
             val dest =
@@ -126,7 +136,7 @@ tasks { // for testing
             copyTo(destRoot.resolve(dest))
         }
     }
-    getByName("linuxX64Test") {
+    getByName("${targetName}Test") {
         dependsOn(unzipSamplesLinux)
     }
 }

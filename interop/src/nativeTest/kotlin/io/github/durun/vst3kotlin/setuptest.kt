@@ -1,7 +1,6 @@
 package io.github.durun.vst3kotlin
 
 import io.github.durun.dylib.use
-import io.github.durun.path.Path
 import io.github.durun.vst3kotlin.base.PluginFactory
 import io.github.durun.vst3kotlin.base.UID
 import io.github.durun.vst3kotlin.cppinterface.HostCallback
@@ -13,7 +12,7 @@ import kotlin.test.Test
 
 @ExperimentalUnsignedTypes
 class SetupTest {
-	val path = Path.of("src/commonTest/resources/vst3/again.vst3")
+	val path = testResources.resolve("vst3/again.vst3")
 
 	@Test
 	fun setupSequence() {
