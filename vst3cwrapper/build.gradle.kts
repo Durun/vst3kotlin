@@ -9,25 +9,6 @@ val targetName = when {
     else -> throw GradleException("${os.familyName} is not supported.")
 }
 
-subprojects {
-    apply(plugin = "cpp-library")
-    library { linkage.set(listOf(Linkage.STATIC)) }
-}
-val windowsUtil = project("windowsUtil") {
-    library { targetMachines.add(machines.windows.x86_64) }
-}
-val unixUtil = project("unixUtil") {
-    library {
-        targetMachines.add(
-            when {
-                os.isMacOsX -> machines.macOS.x86_64
-                else -> machines.linux.x86_64
-            }
-        )
-    }
-}
-
-
 plugins {
     id("org.ajoberstar.grgit") version "4.1.0"
     `cpp-library`
@@ -39,22 +20,17 @@ repositories {
     mavenLocal()
 }
 
-dependencies {
-    //implementation("io.github.durun.vst3sdk-cpp:pluginterfaces:3.7.1")
-}
-
 library {
     linkage.set(listOf(Linkage.STATIC))
     targetMachines.add(machines.linux.x86_64)
     targetMachines.add(machines.macOS.x86_64)
     targetMachines.add(machines.windows.x86_64)
-    binaries.configureEach {
-        val osFamily = targetMachine.operatingSystemFamily
-        dependencies {
-            when {
-                osFamily.isWindows -> implementation(windowsUtil)
-                else -> implementation(unixUtil)
-            }
+
+    source {
+        from(file("src/main/cpp"))
+        when {
+            os.isWindows -> from(file("src/windowsMain/cpp"))
+            os.isUnix -> from(file("src/unixMain/cpp"))
         }
     }
 }
@@ -82,9 +58,6 @@ tasks {
     withType<CppCompile> {
         dependsOn(checkoutSdk)
         includes(sdkDir)
-    }
-    withType<LinkExecutable> {
-        //linkerArgs.add("-ldl")
     }
 
     val assemble by getting {
