@@ -5,11 +5,13 @@
 
 #include "CommonUtil/lock.h"
 
-static void enter_lock(ByteQueue* queue) {
+using namespace CommonUtil;
+
+static void enter_lock(ByteQueue *queue) {
     Lock_enter(&(queue->locked));
 }
 
-static void exit_lock(ByteQueue* queue) {
+static void exit_lock(ByteQueue *queue) {
     Lock_exit(&(queue->locked));
 }
 

@@ -5,6 +5,8 @@
 
 #include "CommonUtil/lock.h"
 
+using namespace CommonUtil;
+
 static void enter_lock(const int index) {
     Lock_enter(&(GlobalStore[index].locked));
 }
@@ -13,7 +15,7 @@ static void exit_lock(const int index) {
     Lock_exit(&(GlobalStore[index].locked));
 }
 
-void GlobalStore_write(const int index, void* data) {
+void GlobalStore_write(const int index, void *data) {
     //check
     if (index < 0 || GlobalStoreSize <= index) {
         fprintf(stderr, "Illegal argument: index must be in 0-%d but %d\n", GlobalStoreSize - 1, index);

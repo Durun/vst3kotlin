@@ -5,15 +5,18 @@
 
 #include "CommonUtil/lock.h"
 
-LongStoreEntry* LongStore_alloc() {
+using namespace CommonUtil;
+
+LongStoreEntry *LongStore_alloc() {
     auto ptr = malloc(sizeof(LongStoreEntry));
     if (ptr == nullptr) {
         fprintf(stderr, "Failed to allocate LongStoreEntry.");
     }
-    auto entry = reinterpret_cast<LongStoreEntry*>(ptr);
+    auto entry = reinterpret_cast<LongStoreEntry *>(ptr);
     return entry;
 }
-void LongStore_init(LongStoreEntry* entry) {
+
+void LongStore_init(LongStoreEntry *entry) {
     entry->data = 0L;
     entry->locked = UNLOCK;
 }

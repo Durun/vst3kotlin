@@ -5,12 +5,14 @@
 
 #include "CommonUtil/lock.h"
 
-LongArrayStore* LongArrayStore_alloc(int size) {
-    auto store = reinterpret_cast<LongArrayStore*>(malloc(sizeof(LongArrayStore)));
+using namespace CommonUtil;
+
+LongArrayStore *LongArrayStore_alloc(int size) {
+    auto store = reinterpret_cast<LongArrayStore *>(malloc(sizeof(LongArrayStore)));
     if (store == nullptr) {
         fprintf(stderr, "Failed to allocate LongArrayStore.");
     }
-    auto array = reinterpret_cast<long*>(malloc(sizeof(long) * size));
+    auto array = reinterpret_cast<long *>(malloc(sizeof(long) * size));
     if (array == nullptr) {
         fprintf(stderr, "Failed to allocate ByteQueue (size = %d bytes)", size);
     }
