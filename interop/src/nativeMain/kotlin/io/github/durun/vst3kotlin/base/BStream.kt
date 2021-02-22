@@ -4,10 +4,14 @@ import cwrapper.*
 import io.github.durun.util.CClass
 import kotlinx.cinterop.*
 
-actual class BStream(thisPtr: CPointer<IBStream>) : FUnknown(thisPtr), CClass {
+enum class StreamSeekMode(val value: Int) {
+	Set(0), Current(1), End(2)
+}
+
+class BStream(thisPtr: CPointer<IBStream>) : FUnknown(thisPtr), CClass {
 	override val ptr: CPointer<IBStream> get() = thisRawPtr.reinterpret()
 
-	actual fun read(numBytes: Int): ByteArray {
+	fun read(numBytes: int32): ByteArray {
 		return memScoped {
 			val buffer = allocArray<ByteVar>(numBytes)    // TODO: pool buffer
 			val numBytesRead = alloc<IntVar>()
@@ -17,7 +21,7 @@ actual class BStream(thisPtr: CPointer<IBStream>) : FUnknown(thisPtr), CClass {
 		}
 	}
 
-	actual fun write(bytes: ByteArray, numBytes: Int): Int {
+	fun write(bytes: ByteArray, numBytes: int32): Int {
 		return memScoped {
 			val buffer = bytes.toCValues().ptr
 			val numBytesWritten = alloc<IntVar>()
@@ -27,7 +31,7 @@ actual class BStream(thisPtr: CPointer<IBStream>) : FUnknown(thisPtr), CClass {
 		}
 	}
 
-	actual fun seek(pos: Long, mode: StreamSeekMode): Long {
+	fun seek(pos: int64, mode: StreamSeekMode): int64 {
 		return memScoped {
 			val newPos = alloc<LongVar>()
 			val result = IBStream_seek(this@BStream.ptr, pos, mode.value, newPos.ptr)
@@ -36,7 +40,7 @@ actual class BStream(thisPtr: CPointer<IBStream>) : FUnknown(thisPtr), CClass {
 		}
 	}
 
-	actual val pos: Long
+	val pos: int64
 		get() = memScoped {
 			val pos = alloc<LongVar>()
 			IBStream_tell(this@BStream.ptr, pos.ptr)
