@@ -3,7 +3,7 @@
 #include <cstdio>
 #include <cstdlib>
 
-#include "lock.h"
+#include "CommonUtil/lock.h"
 
 LongStoreEntry* LongStore_alloc() {
     auto ptr = malloc(sizeof(LongStoreEntry));

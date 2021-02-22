@@ -1,4 +1,4 @@
-#include "lock.h"
+#include "CommonUtil/lock.h"
 
 #include <time.h>
 #include <unistd.h>
@@ -8,7 +8,6 @@
 #include <cstdlib>
 
 static const int waitTime = 10;  //microseconds
-static const long tickPerSecond = 1000000 / waitTime;
 static const int timeout = 3;  // seconds
 
 void Lock_enter(int* lock) {
@@ -35,8 +34,8 @@ void Lock_enter(int* lock) {
         auto duration = now - startTime;
 
         // timer stop
-        if (timeout <= now - startTime) {
-            fprintf(stderr, "Lock Timeout %ds: %x\n", timeout, lock);
+        if (timeout <= duration) {
+            fprintf(stderr, "Lock Timeout %ds: %p\n", timeout, lock);
             exit(1);
         }
 

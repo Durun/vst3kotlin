@@ -3,7 +3,7 @@
 #include <cstdio>
 #include <cstdlib>
 
-#include "lock.h"
+#include "CommonUtil/lock.h"
 #include "util/ByteQueue.h"
 
 void MessageQueue_init() {

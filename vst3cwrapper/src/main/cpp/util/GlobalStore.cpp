@@ -3,7 +3,7 @@
 #include <cstdio>
 #include <cstdlib>
 
-#include "lock.h"
+#include "CommonUtil/lock.h"
 
 static void enter_lock(const int index) {
     Lock_enter(&(GlobalStore[index].locked));

@@ -3,7 +3,7 @@
 #include <cstdio>
 #include <cstdlib>
 
-#include "lock.h"
+#include "CommonUtil/lock.h"
 
 LongArrayStore* LongArrayStore_alloc(int size) {
     auto store = reinterpret_cast<LongArrayStore*>(malloc(sizeof(LongArrayStore)));

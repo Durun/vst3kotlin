@@ -3,7 +3,7 @@
 #include <cstdio>
 #include <cstdlib>
 
-#include "lock.h"
+#include "CommonUtil/lock.h"
 
 static void enter_lock(ByteQueue* queue) {
     Lock_enter(&(queue->locked));
