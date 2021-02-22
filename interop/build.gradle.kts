@@ -1,8 +1,14 @@
 import de.undercouch.gradle.tasks.download.Download
 import de.undercouch.gradle.tasks.download.Verify
-import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTargetWithHostTests
+import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget
 import org.jetbrains.kotlin.gradle.tasks.CInteropProcess
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+
+
+// other project reference
+evaluationDependsOn(":vst3cwrapper")
+val cwrapper = project(":vst3cwrapper")
+
 
 plugins {
     kotlin("multiplatform") version "1.4.30"
@@ -13,9 +19,8 @@ repositories {
     mavenCentral()
 }
 
-evaluationDependsOn(":vst3cwrapper")
-val cwrapper = project(":vst3cwrapper")
 dependencies {
+    // Main Dependencies
     commonMainImplementation(kotlin("stdlib-common"))
 
     // Test Dependencies
@@ -27,7 +32,48 @@ dependencies {
 }
 
 val cwrapperDef = file(buildDir.resolve("cinterop/cwrapper.def"))
-tasks {
+
+kotlin {
+    // OS setting
+    val os = org.gradle.internal.os.OperatingSystem.current()
+    when {
+        os.isWindows -> mingwX64("windowsX64")
+        os.isMacOsX -> macosX64()
+        os.isLinux -> linuxX64()
+    }
+
+    // settings for targets
+    targets.withType<KotlinNativeTarget>().all {
+        sourceSets {
+            getByName("${targetName}Main").apply {
+                kotlin.srcDir("src/nativeMain/kotlin")
+            }
+            getByName("${targetName}Test").apply {
+                kotlin.srcDir("src/nativeTest/kotlin")
+            }
+        }
+        compilations.getByName("main") {
+            cinterops {
+                create("cwrapper") {
+                    defFile = cwrapperDef
+                    includeDirs.allHeaders(
+                        cwrapper.projectDir.resolve("src/main/public"),
+                        cwrapper.buildDir.resolve("headers")
+                    )
+                    headers(fileTree(cwrapper.projectDir.resolve("src/main/public")))
+                }
+            }
+            kotlinOptions {
+                freeCompilerArgs += "-Xopt-in=kotlin.RequiresOptIn"
+            }
+        }
+        binaries {
+            staticLib()
+        }
+    }
+}
+
+tasks { // for compilation
     val cinteropDef by creating {
         doLast {
             cwrapperDef.parentFile.mkdirs()
@@ -49,7 +95,6 @@ tasks {
         dependsOn(cwrapper.tasks["createReleaseLinux"])
         dependsOn(cinteropDef)
     }
-
     withType(KotlinCompile::class).all {
         kotlinOptions {
             freeCompilerArgs += "-Xopt-in=kotlin.RequiresOptIn"
@@ -57,34 +102,7 @@ tasks {
     }
 }
 
-kotlin {
-    fun KotlinNativeTargetWithHostTests.configureTarget() {
-        compilations.getByName("main") {
-            cinterops {
-                create("cwrapper") {
-                    this.defFile = cwrapperDef
-                    includeDirs.allHeaders(
-                        cwrapper.projectDir.resolve("src/main/public"),
-                        cwrapper.buildDir.resolve("headers")
-                    )
-                    headers(fileTree(cwrapper.projectDir.resolve("src/main/public")))
-                }
-            }
-            kotlinOptions {
-                freeCompilerArgs += "-Xopt-in=kotlin.RequiresOptIn"
-            }
-        }
-        binaries {
-            staticLib()
-        }
-    }
-    linuxX64 { configureTarget() }
-    macosX64 { configureTarget() }
-    mingwX64("windowsX64") { configureTarget() }
-}
-
-// for testing
-tasks {
+tasks { // for testing
     val zipPath = buildDir.resolve("vst3-samples-linux.zip")
     val downloadSamplesLinux by creating(Download::class) {
         src("https://github.com/Durun/vst3experiment/releases/download/samples/vst3-samples-linux.zip")
