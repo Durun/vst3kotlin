@@ -1,7 +1,6 @@
 #include "CommonUtil/lock.h"
 
 #include <ctime>
-#include <unistd.h>
 #include <atomic>
 #include <cstdio>
 #include <cstdlib>
