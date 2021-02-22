@@ -23,12 +23,12 @@ actual class PlugView(thisPtr: CPointer<IPlugView>) : FUnknown(thisPtr), CClass 
 	actual val removed: Boolean get() = IPlugView_removed(this.ptr) == kResultTrue
 	actual fun onWheel(distance: Float): Boolean = IPlugView_onWheel(this.ptr, distance) == kResultTrue
 
-	actual fun onKeyDown(key: Char, keyCode: Short, modifiers: Short): Boolean {
-		return IPlugView_onKeyDown(this.ptr, key.toShort(), keyCode, modifiers) == kResultTrue
+	actual fun onKeyDown(key: Short, keyCode: Short, modifiers: Short): Boolean {
+		return IPlugView_onKeyDown(this.ptr, key, keyCode, modifiers) == kResultTrue
 	}
 
-	actual fun onKeyUp(key: Char, keyCode: Short, modifiers: Short): Boolean {
-		return IPlugView_onKeyUp(this.ptr, key.toShort(), keyCode, modifiers) == kResultTrue
+	actual fun onKeyUp(key: Short, keyCode: Short, modifiers: Short): Boolean {
+		return IPlugView_onKeyUp(this.ptr, key, keyCode, modifiers) == kResultTrue
 	}
 
 	actual val size: ViewRect

@@ -17,8 +17,8 @@ expect class PlugView : FUnknown, CClass {
 	fun attached(parent: PlatformView, type: String)
 	val removed: Boolean
 	fun onWheel(distance: Float): Boolean
-	fun onKeyDown(key: Char, keyCode: Short, modifiers: Short): Boolean
-	fun onKeyUp(key: Char, keyCode: Short, modifiers: Short): Boolean
+	fun onKeyDown(key: Short, keyCode: Short, modifiers: Short): Boolean
+	fun onKeyUp(key: Short, keyCode: Short, modifiers: Short): Boolean
 	val size: ViewRect
 	fun onSize(newSize: ViewRect)
 	fun onFocus(state: Boolean)
