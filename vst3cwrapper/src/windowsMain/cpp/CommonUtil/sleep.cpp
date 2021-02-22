@@ -2,5 +2,5 @@
 #include <Windows.h>
 
 void CommonUtil::sleep(int millisecond) {
-    Sleep(milliseconds);
+    Sleep(millisecond);
 }
