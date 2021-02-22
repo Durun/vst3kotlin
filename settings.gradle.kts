@@ -1,2 +1,5 @@
 rootProject.name = "vst3kotlin"
-include("vst3cwrapper", "interop")
+include(
+	"interop",
+	"vst3cwrapper", "vst3cwrapper:windowsUtil", "vst3cwrapper:unixUtil"
+)

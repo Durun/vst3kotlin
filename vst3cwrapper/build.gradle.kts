@@ -1,5 +1,33 @@
 import org.ajoberstar.grgit.Grgit
 
+// OS setting
+val os = org.gradle.internal.os.OperatingSystem.current()
+val targetName = when {
+    os.isWindows -> "Windows"
+    os.isMacOsX -> "Macos"
+    os.isLinux -> "Linux"
+    else -> throw GradleException("${os.familyName} is not supported.")
+}
+
+subprojects {
+    apply(plugin = "cpp-library")
+    library { linkage.set(listOf(Linkage.STATIC)) }
+}
+val windowsUtil = project("windowsUtil") {
+    library { targetMachines.add(machines.windows.x86_64) }
+}
+val unixUtil = project("unixUtil") {
+    library {
+        targetMachines.add(
+            when {
+                os.isMacOsX -> machines.macOS.x86_64
+                else -> machines.linux.x86_64
+            }
+        )
+    }
+}
+
+
 plugins {
     id("org.ajoberstar.grgit") version "4.1.0"
     `cpp-library`
@@ -20,6 +48,15 @@ library {
     targetMachines.add(machines.linux.x86_64)
     targetMachines.add(machines.macOS.x86_64)
     targetMachines.add(machines.windows.x86_64)
+    binaries.configureEach {
+        val osFamily = targetMachine.operatingSystemFamily
+        dependencies {
+            when {
+                osFamily.isWindows -> implementation(windowsUtil)
+                else -> implementation(unixUtil)
+            }
+        }
+    }
 }
 
 val sdkDir = buildDir.resolve("sdk")
@@ -47,7 +84,12 @@ tasks {
         includes(sdkDir)
     }
     withType<LinkExecutable> {
-        linkerArgs.add("-ldl")
+        //linkerArgs.add("-ldl")
+    }
+
+    val assemble by getting {
+        dependsOn(copyHeaders)
+        dependsOn("createRelease$targetName")
     }
 }
 

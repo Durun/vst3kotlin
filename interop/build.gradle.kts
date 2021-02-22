@@ -85,14 +85,15 @@ tasks { // for compilation
                 staticLibraries.mingw_x64 = vst3cwrapper.lib
                 libraryPaths.linux_x64 = ${cwrapper.buildDir.resolve("lib/main/release/linux")}
                 libraryPaths.macos_x64 = ${cwrapper.buildDir.resolve("lib/main/release/macos")}
-                libraryPaths.mingw_x64 = ${cwrapper.buildDir.resolve("lib/main/release/windows")}
+                libraryPaths.mingw_x64 = ${
+                    cwrapper.buildDir.resolve("lib/main/release/windows").toURI().toString().drop("file:/".length)
+                }
             """.trimIndent()
             )
         }
     }
     withType(CInteropProcess::class) {
-        dependsOn(cwrapper.tasks["copyHeaders"])
-        dependsOn(cwrapper.tasks["createReleaseLinux"])
+        dependsOn(cwrapper.tasks["assemble"])
         dependsOn(cinteropDef)
     }
     withType(KotlinCompile::class).all {
