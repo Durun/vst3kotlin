@@ -88,6 +88,7 @@ extern "C" {
 #ifdef _NATIVE_WCHAR_T_DEFINED
 	typedef __wchar_t char16;
 #elif defined(__MINGW32__)
+    #include <wchar.h>
 	typedef wchar_t char16;
 #elif SMTG_CPP11
 	typedef char16_t char16;
