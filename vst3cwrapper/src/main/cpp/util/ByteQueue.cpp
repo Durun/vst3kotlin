@@ -27,7 +27,7 @@ ByteQueue* ByteQueue_alloc() {
     if (queue == nullptr) {
         fprintf(stderr, "Failed to allocate ByteQueue.");
     }
-    auto array = reinterpret_cast<char*>(malloc(sizeof(char) * ByteQueueLength));
+    auto array = reinterpret_cast<char8*>(malloc(sizeof(char8) * ByteQueueLength));
     if (array == nullptr) {
         fprintf(stderr, "Failed to allocate ByteQueue (size = %d bytes)", ByteQueueLength);
     }
@@ -46,7 +46,7 @@ void ByteQueue_free(ByteQueue* queue) {
     free(queue->array);
     free(queue);
 }
-void ByteQueue_enqueue(ByteQueue* queue, const char data[], int size) {
+void ByteQueue_enqueue(ByteQueue* queue, const char8 data[], int size) {
     // check
     if (size == 0) return;
     if (size < 0) {
@@ -74,7 +74,7 @@ void ByteQueue_enqueue(ByteQueue* queue, const char data[], int size) {
     queue->remainSize += size;
     exit_lock(queue);
 }
-int ByteQueue_dequeue(ByteQueue* queue, /*out*/ char data[], const int readSize) {
+int ByteQueue_dequeue(ByteQueue* queue, /*out*/ char8 data[], const int readSize) {
     // check
     if (readSize < 0) {
         fprintf(stderr, "Illegal argument: readSize must be 0<= but %d\n", readSize);

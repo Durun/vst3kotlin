@@ -12,7 +12,7 @@ LongArrayStore *LongArrayStore_alloc(int size) {
     if (store == nullptr) {
         fprintf(stderr, "Failed to allocate LongArrayStore.");
     }
-    auto array = reinterpret_cast<long *>(malloc(sizeof(long) * size));
+    auto array = reinterpret_cast<int64 *>(malloc(sizeof(int64) * size));
     if (array == nullptr) {
         fprintf(stderr, "Failed to allocate ByteQueue (size = %d bytes)", size);
     }
@@ -35,9 +35,9 @@ void LongArrayStore_enter(LongArrayStore* store) {
 void LongArrayStore_exit(LongArrayStore* store) {
     Lock_exit(&(store->locked));
 }
-void LongArrayStore_write(LongArrayStore* store, int index, long data) {
+void LongArrayStore_write(LongArrayStore* store, int index, int64 data) {
     store->array[index] = data;
 }
-long LongArrayStore_read(const LongArrayStore* store, int index) {
+int64 LongArrayStore_read(const LongArrayStore* store, int index) {
     return store->array[index];
 }

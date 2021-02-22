@@ -11,14 +11,14 @@ void MessageQueue_init() {
     messageQueue.array = messageQueueArray;
 }
 
-void MessageQueue_enqueue(const char data[], int size) {
+void MessageQueue_enqueue(const char8 data[], int size) {
     ByteQueue_enqueue(&messageQueue, data, size);
 }
 
-void MessageQueue_enqueue_byte(const char data) {
+void MessageQueue_enqueue_byte(const char8 data) {
     MessageQueue_enqueue(&data, 1);
 }
 
-int MessageQueue_dequeue(/*out*/ char data[], const int readSize) {
+int MessageQueue_dequeue(/*out*/ char8 data[], const int readSize) {
     return ByteQueue_dequeue(&messageQueue, data, readSize);
 }

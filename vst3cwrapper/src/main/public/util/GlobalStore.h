@@ -14,8 +14,8 @@ typedef struct GlobalStoreEntry {
 
 static GlobalStoreEntry GlobalStore[GlobalStoreSize] = {};
 
-void GlobalStore_write(const int index, void* data);
-void* GlobalStore_read(const int index);
+void GlobalStore_write(int index, void* data);
+void* GlobalStore_read(int index);
 
 #ifdef __cplusplus
 }
