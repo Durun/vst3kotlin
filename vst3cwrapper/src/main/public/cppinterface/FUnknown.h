@@ -8,9 +8,9 @@ extern "C" {
 #endif
 
 typedef struct FUnknownVTable {
-    tresult PLUGIN_API (*queryInterface)(void *, const TUID, void **);
-    uint32 PLUGIN_API (*addRef)(void *);
-    uint32 PLUGIN_API (*release)(void *);
+    tresult (*queryInterface)(void *, const TUID, void **);
+    uint32 (*addRef)(void *);
+    uint32 (*release)(void *);
 } FUnknownVTable;
 
 typedef struct SFUnknown {

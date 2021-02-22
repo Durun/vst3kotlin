@@ -10,10 +10,10 @@ extern "C" {
 
 typedef struct IComponentHandlerVTable {
     FUnknownVTable FUnknown;
-    tresult PLUGIN_API (*beginEdit)(void *, ParamID);
-    tresult PLUGIN_API (*performEdit)(void *, ParamID, ParamValue);
-    tresult PLUGIN_API (*endEdit)(void *, ParamID);
-    tresult PLUGIN_API (*restartComponent)(void *, int32);
+    tresult (*beginEdit)(void *, ParamID);
+    tresult (*performEdit)(void *, ParamID, ParamValue);
+    tresult (*endEdit)(void *, ParamID);
+    tresult (*restartComponent)(void *, int32);
 } IComponentHandlerVTable;
 
 typedef struct SIComponentHandler {
@@ -22,10 +22,10 @@ typedef struct SIComponentHandler {
 
 typedef struct IComponentHandler2VTable {
     FUnknownVTable FUnknown;
-    tresult PLUGIN_API (*setDirty)(void *, TBool);
-    tresult PLUGIN_API (*requestOpenEditor)(void *, FIDString);
-    tresult PLUGIN_API (*startGroupEdit)(void *);
-    tresult PLUGIN_API (*finishGroupEdit)(void *);
+    tresult (*setDirty)(void *, TBool);
+    tresult (*requestOpenEditor)(void *, FIDString);
+    tresult (*startGroupEdit)(void *);
+    tresult (*finishGroupEdit)(void *);
 } IComponentHandler2VTable;
 
 typedef struct SIComponentHandler2 {

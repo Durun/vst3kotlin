@@ -10,10 +10,10 @@ extern "C" {
 
 typedef struct IPluginFactoryVTable {
     FUnknownVTable FUnknown;
-    tresult PLUGIN_API (*getFactoryInfo)(void *, PFactoryInfo *);
-    int32 PLUGIN_API (*countClasses)(void *);
-    tresult PLUGIN_API (*getClassInfo)(void *, int32, PClassInfo *);
-    tresult PLUGIN_API (*createInstance)(void *, FIDString, FIDString, void **);
+    tresult (*getFactoryInfo)(void *, PFactoryInfo *);
+    int32 (*countClasses)(void *);
+    tresult (*getClassInfo)(void *, int32, PClassInfo *);
+    tresult (*createInstance)(void *, FIDString, FIDString, void **);
 } IPluginFactoryVTable;
 
 typedef struct SIPluginFactory {
