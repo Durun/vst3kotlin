@@ -5,6 +5,7 @@
 #include <atomic>
 #include <cstdio>
 #include <cstdlib>
+#include "CommonUtil/sleep.h"
 
 static const int waitTime = 10;  //microseconds
 static const int timeout = 3;  // seconds
@@ -39,7 +40,7 @@ void CommonUtil::Lock_enter(int *lock) {
         }
 
         // sleep
-        usleep(waitTime);
+        CommonUtil::sleep(waitTime);
     }
     // expected=F, locked=T
     //fprintf(stderr, "Enter lock: %x\n", lock);
