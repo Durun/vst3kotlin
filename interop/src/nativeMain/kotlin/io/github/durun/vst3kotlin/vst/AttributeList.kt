@@ -2,6 +2,7 @@ package io.github.durun.vst3kotlin.vst
 
 import cwrapper.*
 import io.github.durun.util.CClass
+import io.github.durun.vst3kotlin.Adapter
 import io.github.durun.vst3kotlin.base.FUnknown
 import io.github.durun.vst3kotlin.base.kResultString
 import kotlinx.cinterop.*
@@ -45,7 +46,7 @@ actual class AttributeList(
 	actual fun getString(id: AttrID, sizeInBytes: Int): String {
 		return memScoped {
 			val buf = allocArray<ShortVar>(sizeInBytes)
-			val result = IAttributeList_getString(ptr, id, buf, sizeInBytes.toUInt())
+			val result = Adapter.IAttributeList.getString(ptr, id, buf, sizeInBytes.toUInt())
 			check(result == kResultOk) { result.kResultString }
 			buf.toKStringFromUtf16()
 		}
