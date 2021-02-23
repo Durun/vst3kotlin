@@ -41,8 +41,6 @@ jobs:
         uses: actions/setup-java@v1
         with:
           java-version: 15
-      - name: Set up cmake
-        uses: jwlawson/actions-setup-cmake@v1.7
       - name: Build
         run: ./gradlew interop:linkReleaseStaticMacosX64 --info
       - name: Generate test report
