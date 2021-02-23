@@ -46,4 +46,4 @@ jobs:
         uses: actions/upload-artifact@v2.2.1
         with:
           name: reports-windowsX64
-          path: interop\build\reports
+          path: interop/build/reports
