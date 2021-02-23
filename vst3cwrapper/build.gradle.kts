@@ -1,5 +1,14 @@
 import org.ajoberstar.grgit.Grgit
 
+// OS setting
+val os = org.gradle.internal.os.OperatingSystem.current()
+val targetName = when {
+    os.isWindows -> "Windows"
+    os.isMacOsX -> "Macos"
+    os.isLinux -> "Linux"
+    else -> throw GradleException("${os.familyName} is not supported.")
+}
+
 plugins {
     id("org.ajoberstar.grgit") version "4.1.0"
     `cpp-library`
@@ -11,17 +20,20 @@ repositories {
     mavenLocal()
 }
 
-dependencies {
-    implementation("io.github.durun.vst3sdk-cpp:pluginterfaces:3.7.1")
-}
-
 library {
     linkage.set(listOf(Linkage.STATIC))
     targetMachines.add(machines.linux.x86_64)
     targetMachines.add(machines.macOS.x86_64)
     targetMachines.add(machines.windows.x86_64)
-}
 
+    source {
+        from(file("src/main/cpp"))
+        when {
+            os.isWindows -> from(file("src/windowsMain/cpp"))
+            os.isUnix -> from(file("src/unixMain/cpp"))
+        }
+    }
+}
 
 val sdkDir = buildDir.resolve("sdk")
 tasks {
@@ -37,8 +49,23 @@ tasks {
 
     val copyHeaders by creating(Copy::class) {
         dependsOn(checkoutSdk)
-        from(sdkDir.resolve("pluginterfaces/base/fplatform.h"))
-        into(buildDir.resolve("headers/pluginterfaces/base"))
+        from(sdkDir)
+        into(buildDir.resolve("headers/"))
+        include("**/*.h")
+        includeEmptyDirs = false
+    }
+
+    withType<CppCompile> {
+        dependsOn(checkoutSdk)
+        includes(sdkDir)
+        when {
+            os.isWindows -> compilerArgs.add("/GS-")
+        }
+    }
+
+    val assemble by getting {
+        dependsOn(copyHeaders)
+        dependsOn("createRelease$targetName")
     }
 }
 
@@ -56,7 +83,6 @@ fun checkout(url: Any, branch: String, dir: Any) {
         Grgit.open { this.dir = dir }
     } ?: throw kotlin.IllegalStateException("Cannot clone $url")
     repository.let {
-        it.fetch()
         it.checkout { this.branch = branch }
     }
 }

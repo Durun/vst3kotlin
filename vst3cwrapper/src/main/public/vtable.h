@@ -4,12 +4,8 @@
 extern "C" {
 #endif
 
-typedef void (*VirtualFunctionPointer)();
-
 typedef struct VTable {
-    int d;
-    int i;
-    VirtualFunctionPointer func_ptr;
+    void* func_ptr;
 } VTable;
 
 #ifdef __cplusplus

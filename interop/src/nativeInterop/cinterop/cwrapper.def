@@ -1,6 +1,0 @@
-staticLibraries.linux_x64 = libvst3cwrapper.a
-staticLibraries.macos_x64 = libvst3cwrapper.a
-staticLibraries.mingw_x64 = vst3cwrapper.lib
-libraryPaths.linux_x64 = ../vst3cwrapper/build/lib/main/release/linux/
-libraryPaths.macos_x64 = ../vst3cwrapper/build/lib/main/release/macos/
-libraryPaths.mingw_x64 = ../vst3cwrapper/build/lib/main/release/windows/
