@@ -125,7 +125,7 @@ tasks { // for testing
         algorithm("MD5")
         when (zipName) {
             "vst3samples-linuxX64.zip" -> checksum("7762726a6da2d2b2bd34ac54c7184dda")
-            "vst3samples-windowsX64.zip" -> checksum("ac255d32910318badaa30a97b1a0b3e5")
+            "vst3samples-windowsX64.zip" -> checksum("0f2d5aa9999f2fd40270bafa459502c4")
         }
     }
     val unzipSamples by creating(Copy::class) {
