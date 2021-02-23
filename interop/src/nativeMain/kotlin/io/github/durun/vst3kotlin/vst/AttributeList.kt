@@ -1,17 +1,15 @@
 package io.github.durun.vst3kotlin.vst
 
 import cwrapper.*
-import io.github.durun.util.CClass
+import io.github.durun.vst3kotlin.cppinterface.CClass
 import io.github.durun.vst3kotlin.Adapter
 import io.github.durun.vst3kotlin.base.FUnknown
 import io.github.durun.vst3kotlin.base.kResultString
 import kotlinx.cinterop.*
 
 class AttributeList(
-	ptr: CPointer<IAttributeList>
-) : FUnknown(ptr), CClass {
-	override val ptr: CPointer<IAttributeList> get() = thisRawPtr.reinterpret()
-
+	override val ptr: CPointer<IAttributeList>
+) : FUnknown() {
 	val int: AttrProperty<Long> = object : AttrProperty<Long> {
 		override fun get(id: AttrID): Long {
 			return memScoped {

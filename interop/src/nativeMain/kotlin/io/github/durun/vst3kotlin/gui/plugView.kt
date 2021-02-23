@@ -1,7 +1,7 @@
 package io.github.durun.vst3kotlin.gui
 
 import cwrapper.*
-import io.github.durun.util.CClass
+import io.github.durun.vst3kotlin.cppinterface.CClass
 import io.github.durun.vst3kotlin.Adapter
 import io.github.durun.vst3kotlin.base.FUnknown
 import io.github.durun.vst3kotlin.base.kResultString
@@ -9,9 +9,9 @@ import kotlinx.cinterop.*
 
 class PlatformView(val ptr: COpaquePointer)
 
-class PlugView(thisPtr: CPointer<IPlugView>) : FUnknown(thisPtr), CClass {
-    override val ptr: CPointer<IPlugView> get() = thisRawPtr.reinterpret()
-
+class PlugView(
+    override val ptr: CPointer<IPlugView>
+) : FUnknown() {
     fun isPlatformTypeSupported(type: String): Boolean {
         return IPlugView_isPlatformTypeSupported(this.ptr, type) == kResultTrue
     }
@@ -76,9 +76,9 @@ class PlugView(thisPtr: CPointer<IPlugView>) : FUnknown(thisPtr), CClass {
 
 }
 
-class PlugFrame(thisPtr: CPointer<IPlugFrame>) : FUnknown(thisPtr), CClass {
-    override val ptr: CPointer<IPlugFrame> get() = thisRawPtr.reinterpret()
-
+class PlugFrame(
+    override val ptr: CPointer<IPlugFrame>
+) : FUnknown() {
     fun resizeView(view: PlugView, newSize: ViewRect) {
         memScoped {
             val rect = alloc<cwrapper.ViewRect>()

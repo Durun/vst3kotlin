@@ -8,10 +8,9 @@ import io.github.durun.vst3kotlin.vst.EditController
 import kotlinx.cinterop.*
 
 class PluginFactory(
-	thisPtr: CPointer<IPluginFactory>
-) : FUnknown(thisPtr) {
-	val ptr: CPointer<IPluginFactory> get() = thisPtr
-	private val thisPtr get() = thisRawPtr.reinterpret<IPluginFactory>()
+	override val ptr: CPointer<IPluginFactory>
+) : FUnknown() {
+	private val thisPtr get() = ptr.reinterpret<IPluginFactory>()
 	private val factory2Ptr: CPointer<IPluginFactory2>? = memScoped {
 		val ptrPtr = alloc<CPointerVarOf<CPointer<IPluginFactory2>>>().ptr
 		val result = IPluginFactory_queryInterface(thisPtr, IPluginFactory2_iid, ptrPtr.reinterpret())

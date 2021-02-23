@@ -33,7 +33,7 @@ actual object HostCallback : CClass, Closeable {
 	private val queue: CPointer<ByteQueue> = allocByteQueue(nativeHeap)
 	val ptr1: CPointer<IComponentHandler>
 	val ptr2: CPointer<IComponentHandler2>
-	override val ptr: CPointer<*> get() = ptr1
+	override val ptr: CPointer<IComponentHandler> get() = ptr1
 
 	// store index
 	private const val refCount: Int = 1

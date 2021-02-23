@@ -1,16 +1,18 @@
 package io.github.durun.vst3kotlin.vst
 
 import cwrapper.*
-import io.github.durun.util.CClass
+import io.github.durun.vst3kotlin.cppinterface.CClass
 import io.github.durun.vst3kotlin.VstInterface
 import io.github.durun.vst3kotlin.base.FUnknown
 import io.github.durun.vst3kotlin.base.kResultString
 import kotlinx.cinterop.CPointer
+import kotlinx.cinterop.CStructVar
 import kotlinx.cinterop.reinterpret
 import kotlinx.cinterop.toByte
 
-class ComponentHandler(thisPtr: CPointer<IComponentHandler>) : FUnknown(thisPtr), CClass {
-	override val ptr: CPointer<IComponentHandler> get() = thisRawPtr.reinterpret()
+class ComponentHandler(
+	override val ptr: CPointer<IComponentHandler>
+) : FUnknown() {
 	private val this2: VstInterface<CPointer<IComponentHandler2>> =
 		VstInterface(queryInterface(IComponentHandler2_iid).reinterpret())
 	private val thisPtr2: CPointer<IComponentHandler2> = this2.ptr.reinterpret()

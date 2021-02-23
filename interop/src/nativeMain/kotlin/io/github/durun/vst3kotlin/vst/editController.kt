@@ -1,7 +1,7 @@
 package io.github.durun.vst3kotlin.vst
 
 import cwrapper.*
-import io.github.durun.util.CClass
+import io.github.durun.vst3kotlin.cppinterface.CClass
 import io.github.durun.vst3kotlin.VstInterface
 import io.github.durun.vst3kotlin.base.BStream
 import io.github.durun.vst3kotlin.base.PluginBase
@@ -9,8 +9,9 @@ import io.github.durun.vst3kotlin.base.kResultString
 import io.github.durun.vst3kotlin.gui.PlugView
 import kotlinx.cinterop.*
 
-class EditController(thisPtr: CPointer<IEditController>) : PluginBase(thisPtr), CClass {
-    override val ptr: CPointer<IEditController> get() = thisRawPtr.reinterpret()
+class EditController(
+    override val ptr: CPointer<IEditController>
+) : PluginBase() {
     private val this2: VstInterface<CPointer<IEditController2>> = queryVstInterface(IEditController2_iid)
     private val thisPtr2: CPointer<IEditController2> get() = this2.ptr.reinterpret()
 

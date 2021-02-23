@@ -1,17 +1,17 @@
 package io.github.durun.vst3kotlin.vst
 
 import cwrapper.*
-import io.github.durun.util.CClass
+import io.github.durun.vst3kotlin.cppinterface.CClass
 import io.github.durun.vst3kotlin.base.*
 import kotlinx.cinterop.*
 
-class Component(thisPtr: CPointer<IComponent>) : PluginBase(thisPtr), CClass {
-    override val ptr: CPointer<IComponent> get() = thisRawPtr.reinterpret()
-
+class Component(
+    override val ptr: CPointer<IComponent>
+) : PluginBase() {
     val controllerClassID: UID by lazy {
         memScoped {
             val tuid = allocArray<ByteVar>(16)
-            val result = IComponent_getControllerClassId(thisPtr, tuid)
+            val result = IComponent_getControllerClassId(ptr, tuid)
 			check(result == kResultTrue) { result.kResultString }
             tuid.toUID()
         }
@@ -41,7 +41,7 @@ class Component(thisPtr: CPointer<IComponent>) : PluginBase(thisPtr), CClass {
         }
 
     fun setState(state: BStream) {
-        val result = IComponent_setState(this.ptr, state.ptr)
+        val result = IComponent_setState(ptr, state.ptr)
         check(result == kResultTrue) { result.kResultString }
     }
 
