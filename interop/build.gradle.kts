@@ -129,6 +129,7 @@ tasks { // for testing
         when (zipName) {
             "vst3samples-linuxX64.zip" -> checksum("7762726a6da2d2b2bd34ac54c7184dda")
             "vst3samples-windowsX64.zip" -> checksum("0f2d5aa9999f2fd40270bafa459502c4")
+            "vst3samples-macosX64.zip" -> checksum("b143d6fd79cbf345212f08a9d0659d57")
         }
     }
     val unzipSamples by creating(Copy::class) {
