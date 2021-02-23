@@ -115,12 +115,12 @@ tasks { // for testing
     }
     val zipName = "vst3samples-$targetName.zip"
     val zipPath = buildDir.resolve(zipName)
-    val downloadSamplesLinux by creating(Download::class) {
+    val downloadSamples by creating(Download::class) {
         src("https://github.com/Durun/vst3experiment/releases/download/samples/$zipName")
         dest(zipPath)
     }
-    val verifySamplesLinux by creating(Verify::class) {
-        dependsOn(downloadSamplesLinux)
+    val verifySamples by creating(Verify::class) {
+        dependsOn(downloadSamples)
         src(zipPath)
         algorithm("MD5")
         when (zipName) {
@@ -128,10 +128,10 @@ tasks { // for testing
             "vst3samples-windowsX64.zip" -> checksum("ac255d32910318badaa30a97b1a0b3e5")
         }
     }
-    val unzipSamplesLinux by creating(Copy::class) {
-        dependsOn(verifySamplesLinux)
+    val unzipSamples by creating(Copy::class) {
+        dependsOn(verifySamples)
         from(zipTree(zipPath))
-        val destRoot = projectDir.resolve("src/linuxX64Test/resources/vst3")
+        val destRoot = projectDir.resolve("src/${targetName}Test/resources/vst3")
         into(destRoot)
         eachFile {
             val dest =
@@ -141,6 +141,6 @@ tasks { // for testing
         }
     }
     getByName("${targetName}Test") {
-        dependsOn(unzipSamplesLinux)
+        dependsOn(unzipSamples)
     }
 }
