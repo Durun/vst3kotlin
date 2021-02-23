@@ -61,10 +61,11 @@ actual class AttributeList(
 
 	actual fun getBinary(id: AttrID, size: Int): ByteArray {
 		return memScoped {
-			val buf = allocArray<ShortVar>(size)
-			val result = IAttributeList_getString(ptr, id, buf, size.toUInt())
+			val buf = allocArray<ByteVar>(size)
+			val readSize = alloc<UIntVar>()
+			val result = IAttributeList_getBinary(ptr, id, buf.reinterpret(), readSize.ptr)
 			check(result == kResultOk) { result.kResultString }
-			buf.readBytes(size)
+			buf.readBytes(readSize.value.toInt())
 		}
 	}
 
