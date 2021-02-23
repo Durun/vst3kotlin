@@ -10,14 +10,14 @@ import kotlinx.cinterop.CPointer
 import kotlinx.cinterop.reinterpret
 import kotlinx.cinterop.toKString
 
-actual class VstMessage(
+class VstMessage(
 	thisPtr: CPointer<IMessage>
 ) : FUnknown(thisPtr), CClass {
 	override val ptr: CPointer<IMessage> get() = thisRawPtr.reinterpret()
 
-	actual var messageID: String
+	var messageID: String
 		get() = (IMessage_getMessageID(this.ptr) ?: throw IllegalStateException()).toKString()
 		set(value) = IMessage_setMessageID(this.ptr, value)
-	actual val attributes: AttributeList
+	val attributes: AttributeList
 		get() = AttributeList(IMessage_getAttributes(this.ptr) ?: throw IllegalStateException())
 }
