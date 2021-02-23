@@ -2,6 +2,7 @@ package io.github.durun.vst3kotlin.gui
 
 import cwrapper.*
 import io.github.durun.util.CClass
+import io.github.durun.vst3kotlin.Adapter
 import io.github.durun.vst3kotlin.base.FUnknown
 import io.github.durun.vst3kotlin.base.kResultString
 import kotlinx.cinterop.*
@@ -24,11 +25,11 @@ actual class PlugView(thisPtr: CPointer<IPlugView>) : FUnknown(thisPtr), CClass 
 	actual fun onWheel(distance: Float): Boolean = IPlugView_onWheel(this.ptr, distance) == kResultTrue
 
 	actual fun onKeyDown(key: Short, keyCode: Short, modifiers: Short): Boolean {
-		return IPlugView_onKeyDown(this.ptr, key, keyCode, modifiers) == kResultTrue
+		return Adapter.IPlugView.onKeyDown(this.ptr, key, keyCode, modifiers) == kResultTrue
 	}
 
 	actual fun onKeyUp(key: Short, keyCode: Short, modifiers: Short): Boolean {
-		return IPlugView_onKeyUp(this.ptr, key, keyCode, modifiers) == kResultTrue
+		return Adapter.IPlugView.onKeyUp(this.ptr, key, keyCode, modifiers) == kResultTrue
 	}
 
 	actual val size: ViewRect
