@@ -76,8 +76,8 @@ kotlin {
 tasks { // for compilation
     val cinteropDef by creating {
         fun File.unixPath() = when {
-            this.isAbsolute -> this.toURI().toString().drop("file:".length)
-            else -> this.toURI().toString().drop("file:/".length)
+            os.isWindows -> this.toURI().toString().drop("file:/".length)
+            else -> this.path
         }
         doLast {
             cwrapperDef.parentFile.mkdirs()
