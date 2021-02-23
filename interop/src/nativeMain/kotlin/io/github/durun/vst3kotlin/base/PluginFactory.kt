@@ -107,7 +107,7 @@ actual class PluginFactory(
 	@OptIn(ExperimentalUnsignedTypes::class)
 	private fun PClassInfo.toKClassInfo(info2: PClassInfo2? = null, info3: PClassInfoW? = null): ClassInfo {
 		return ClassInfo(
-			classId = UID((info3?.cid ?: info2?.cid ?: cid).readBytes(16)),
+			classId = (info3?.cid ?: info2?.cid ?: cid).toUID(),
 			cardinality = info3?.cardinality ?: info2?.cardinality ?: cardinality,
 			category = (info3?.category ?: info2?.category ?: category).toKString().toVstClassCategory(),
 			name = info3?.name?.toKStringFromUtf16() ?: (info2?.name ?: name).toKString(),

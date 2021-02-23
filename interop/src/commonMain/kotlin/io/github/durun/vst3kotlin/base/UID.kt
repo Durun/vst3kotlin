@@ -4,7 +4,7 @@ import io.github.durun.util.decodeAsBigEndian
 import io.github.durun.util.encodeBigEndian
 
 data class UID(
-	val bytes: ByteArray
+	val bytes: ByteArray	// big endian
 ) {
 	constructor(id: String) : this(id.decodeAsBigEndian())
 
