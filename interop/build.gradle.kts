@@ -19,12 +19,12 @@ repositories {
     mavenCentral()
 }
 
+val kotestVersion = "4.4.1"
 dependencies {
     // Main Dependencies
     commonMainImplementation(kotlin("stdlib-common"))
 
     // Test Dependencies
-    val kotestVersion = "4.4.0"
     commonTestImplementation(kotlin("test-common"))
     commonTestImplementation(kotlin("test-annotations-common"))
     commonTestImplementation("io.kotest:kotest-assertions-core:$kotestVersion")
@@ -52,6 +52,12 @@ kotlin {
             getByName("${targetName}Test").apply {
                 kotlin.srcDir("src/nativeTest/kotlin")
                 if (os.isUnix) kotlin.srcDir("src/unixTest/kotlin")
+                dependencies {
+                    implementation(kotlin("test-common"))
+                    implementation(kotlin("test-annotations-common"))
+                    implementation("io.kotest:kotest-assertions-core:$kotestVersion")
+                    implementation("io.kotest:kotest-property:$kotestVersion")
+                }
             }
         }
         compilations.getByName("main") {
