@@ -7,9 +7,9 @@ import io.github.durun.vst3kotlin.base.kResultString
 import io.github.durun.vstkotlin3.vst.SpeakerArrangement
 import kotlinx.cinterop.*
 
-actual class AudioProcessor(thisPtr: CPointer<IAudioProcessor>) : FUnknown(thisPtr), CClass {
+class AudioProcessor(thisPtr: CPointer<IAudioProcessor>) : FUnknown(thisPtr), CClass {
 	override val ptr: CPointer<IAudioProcessor> get() = thisRawPtr.reinterpret()
-	actual fun setBusArrangements(
+	fun setBusArrangements(
 		inputs: List<SpeakerArrangement>,
 		outputs: List<SpeakerArrangement>
 	) {
@@ -23,7 +23,7 @@ actual class AudioProcessor(thisPtr: CPointer<IAudioProcessor>) : FUnknown(thisP
 		}
 	}
 
-	actual fun getBusArrangement(
+	fun getBusArrangement(
 		direction: BusDirection,
 		index: Int
 	): SpeakerArrangement {
@@ -36,7 +36,7 @@ actual class AudioProcessor(thisPtr: CPointer<IAudioProcessor>) : FUnknown(thisP
 		}
 	}
 
-	actual val inputBusArrangements: List<SpeakerArrangement>
+	val inputBusArrangements: List<SpeakerArrangement>
 		get() {
 			val size = queryVstInterface<IComponent>(IComponent_iid).usePointer {
 				IComponent_getBusCount(it, MediaType.Audio.value, BusDirection.Input.value)
@@ -45,14 +45,14 @@ actual class AudioProcessor(thisPtr: CPointer<IAudioProcessor>) : FUnknown(thisP
 				getBusArrangement(BusDirection.Input, i)
 			}
 		}
-	actual val outputBusArrangements: List<SpeakerArrangement>
+	val outputBusArrangements: List<SpeakerArrangement>
 		get() = TODO("Not yet implemented")
 
-	actual fun canProcessSampleSize(sampleSize: SymbolicSampleSize): Boolean {
+	fun canProcessSampleSize(sampleSize: SymbolicSampleSize): Boolean {
 		return IAudioProcessor_canProcessSampleSize(ptr, sampleSize.value) == kResultTrue
 	}
 
-	actual fun setupProcessing(setup: ProcessSetup) {
+	fun setupProcessing(setup: ProcessSetup) {
 		memScoped {
 			val buf = cValue<cwrapper.ProcessSetup> {
 				maxSamplesPerBlock = setup.maxSamplesPerBlock
@@ -66,23 +66,24 @@ actual class AudioProcessor(thisPtr: CPointer<IAudioProcessor>) : FUnknown(thisP
 	}
 
 	@OptIn(ExperimentalUnsignedTypes::class)
-	actual fun setProcessing(state: Boolean) {
+	fun setProcessing(state: Boolean) {
 		IAudioProcessor_setProcessing(ptr, state.toByte().toUByte())
 	}
 
-	actual fun process() {
+	fun process() {
 		TODO()
 	}
 
 	@OptIn(ExperimentalUnsignedTypes::class)
-	actual val latencySampleSize: Int
+	val latencySampleSize: Int
 		get() = IAudioProcessor_getLatencySamples(ptr).toInt()
 
 	@OptIn(ExperimentalUnsignedTypes::class)
-	actual val tailSampleSize: Int
+	val tailSampleSize: Int
 		get() = IAudioProcessor_getTailSamples(ptr).toInt()
 
-	actual val processContextRequirement: ProcessContextRequirement
+	@ExperimentalUnsignedTypes
+	val processContextRequirement: ProcessContextRequirement
 		get() {
 			val flags = queryVstInterface<IProcessContextRequirements>(IProcessContextRequirements_iid).usePointer {
 				IProcessContextRequirements_getProcessContextRequirements(it)
