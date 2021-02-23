@@ -75,21 +75,23 @@ kotlin {
 
 tasks { // for compilation
     val cinteropDef by creating {
+        fun File.unixPath() = this.toURI().toString().drop("file:/".length)
         doLast {
             cwrapperDef.parentFile.mkdirs()
             if (!cwrapperDef.exists()) cwrapperDef.createNewFile()
-            cwrapperDef.writeText(
-                """
+            val unixStyleText = """
                 staticLibraries.linux_x64 = libvst3cwrapper.a
                 staticLibraries.macos_x64 = libvst3cwrapper.a
                 staticLibraries.mingw_x64 = vst3cwrapper.lib
-                libraryPaths.linux_x64 = ${cwrapper.buildDir.resolve("lib/main/release/linux")}
-                libraryPaths.macos_x64 = ${cwrapper.buildDir.resolve("lib/main/release/macos")}
-                libraryPaths.mingw_x64 = ${
-                    cwrapper.buildDir.resolve("lib/main/release/windows").toURI().toString().drop("file:/".length)
-                }
+                libraryPaths.linux_x64 = ${cwrapper.buildDir.resolve("lib/main/release/linux").unixPath()}
+                libraryPaths.macos_x64 = ${cwrapper.buildDir.resolve("lib/main/release/macos").unixPath()}
+                libraryPaths.mingw_x64 = ${cwrapper.buildDir.resolve("lib/main/release/windows").unixPath()}
             """.trimIndent()
-            )
+            val text = when {
+                os.isWindows -> unixStyleText.replace("\n", "\r\n")
+                else -> unixStyleText
+            }
+            cwrapperDef.writeText(text)
         }
     }
     withType(CInteropProcess::class) {
