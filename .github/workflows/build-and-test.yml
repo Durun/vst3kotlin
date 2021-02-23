@@ -24,9 +24,26 @@ jobs:
       - name: Build
         run: ./gradlew interop:linkReleaseStaticLinuxX64 --info
       - name: Test
-        run: ./gradlew interop:allTests
+        run: ./gradlew interop:allTests || true
       - name: Upload Test Report
         uses: actions/upload-artifact@v2.2.1
         with:
-          name: reports
+          name: reports-linuxX64
           path: interop/build/reports
+  testOnWindows:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up JDK 15
+        uses: actions/setup-java@v1
+        with:
+          java-version: 15
+      - name: Build library
+        run: .\gradlew interop:linkReleaseStaticWindowsX64 --info
+      - name: Test
+        run: .\gradlew interop:allTests || true
+      - name: Upload Test Report
+        uses: actions/upload-artifact@v2.2.1
+        with:
+          name: reports-windowsX64
+          path: interop\build\reports
