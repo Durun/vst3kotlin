@@ -3,7 +3,7 @@ package io.github.durun.util
 import io.kotest.matchers.shouldBe
 import kotlin.test.Test
 
-@OptIn(ExperimentalUnsignedTypes::class)
+@kotlin.ExperimentalUnsignedTypes
 class ByteArraysTest {
 	@Test
 	fun buildByteArray() {

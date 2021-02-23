@@ -41,7 +41,8 @@ class Component(thisPtr: CPointer<IComponent>) : PluginBase(thisPtr), CClass {
         }
 
     fun setState(state: BStream) {
-        TODO()
+        val result = IComponent_setState(this.ptr, state.ptr)
+        check(result == kResultTrue) { result.kResultString }
     }
 
     fun setIoMode(mode: IoMode) {

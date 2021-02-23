@@ -27,7 +27,6 @@ class AudioProcessor(thisPtr: CPointer<IAudioProcessor>) : FUnknown(thisPtr), CC
 		direction: BusDirection,
 		index: Int
 	): SpeakerArrangement {
-		TODO()
 		return memScoped {
 			val buf = alloc<SpeakerArrangementVar>()
 			val result = IAudioProcessor_getBusArrangement(ptr, direction.value, index, buf.ptr)
