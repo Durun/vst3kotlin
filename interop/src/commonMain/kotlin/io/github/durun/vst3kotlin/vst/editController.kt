@@ -1,10 +1,5 @@
 package io.github.durun.vst3kotlin.vst
 
-import io.github.durun.util.CClass
-import io.github.durun.vst3kotlin.base.BStream
-import io.github.durun.vst3kotlin.base.PluginBase
-import io.github.durun.vst3kotlin.gui.PlugView
-
 //typealias ParamID = UInt
 //typealias UnitID = Int
 //typealias ParamValue = Double
@@ -49,39 +44,4 @@ data class ParameterInfo(
 
 enum class KnobMode(val value: Int) {
 	CircularMode(0), RelativCircularMode(1), LinearMode(2)
-}
-
-expect class EditController : PluginBase, CClass {
-	// version 1
-	fun setComponentState(state: BStream)
-	fun setState(state: BStream)
-	val state: BStream
-
-	@kotlin.ExperimentalUnsignedTypes
-	val parameterInfo: List<ParameterInfo>
-
-	@kotlin.ExperimentalUnsignedTypes
-	fun getParamStringByValue(id: UInt, valueNormalized: Double): String
-
-	@kotlin.ExperimentalUnsignedTypes
-	fun getDoubleByString(id: UInt, string: String): Double
-
-	@kotlin.ExperimentalUnsignedTypes
-	fun normalizedParamToPlain(id: UInt, valueNormalized: Double): Double
-
-	@kotlin.ExperimentalUnsignedTypes
-	fun plainParamToNormalized(id: UInt, plainValue: Double): Double
-
-	@kotlin.ExperimentalUnsignedTypes
-	fun getParamNormalized(id: UInt): Double
-
-	@kotlin.ExperimentalUnsignedTypes
-	fun setParamNormalized(id: UInt, value: Double)
-	fun setComponentHandler(handler: ComponentHandler)
-	fun createView(name: String): PlugView
-
-	// version 2
-	fun setKnobMode(mode: KnobMode)
-	fun openHelp(onlyCheck: Boolean)
-	fun openAboutBox(onlyCheck: Boolean)
 }
