@@ -47,9 +47,11 @@ kotlin {
         sourceSets {
             getByName("${targetName}Main").apply {
                 kotlin.srcDir("src/nativeMain/kotlin")
+                if (os.isUnix) kotlin.srcDir("src/unixMain/kotlin")
             }
             getByName("${targetName}Test").apply {
                 kotlin.srcDir("src/nativeTest/kotlin")
+                if (os.isUnix) kotlin.srcDir("src/unixTest/kotlin")
             }
         }
         compilations.getByName("main") {
