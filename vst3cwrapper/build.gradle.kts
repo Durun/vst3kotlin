@@ -58,6 +58,9 @@ tasks {
     withType<CppCompile> {
         dependsOn(checkoutSdk)
         includes(sdkDir)
+        when {
+            os.isWindows -> compilerArgs.add("/GS-")
+        }
     }
 
     val assemble by getting {
