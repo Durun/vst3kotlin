@@ -8,9 +8,9 @@ import io.github.durun.util.CClass
 import kotlinx.cinterop.CPointer
 import kotlinx.cinterop.reinterpret
 
-actual abstract class PluginBase(thisRawPtr: CPointer<*>) : FUnknown(thisRawPtr) {
+abstract class PluginBase(thisRawPtr: CPointer<*>) : FUnknown(thisRawPtr) {
 	private val ptr: CPointer<IPluginBase> get() = thisRawPtr.reinterpret()
-	actual fun initialize(context: CClass) {
+	fun initialize(context: CClass) {
 		val result = IPluginBase_initialize(ptr, context.ptr.reinterpret())
 		check(result == kResultTrue) {
 			terminate()
@@ -18,7 +18,7 @@ actual abstract class PluginBase(thisRawPtr: CPointer<*>) : FUnknown(thisRawPtr)
 		}
 	}
 
-	actual fun terminate() {
+	fun terminate() {
 		val result = IPluginBase_terminate(ptr)
 		check(result == kResultTrue) { "${result.kResultString} on terminate" }
 	}
