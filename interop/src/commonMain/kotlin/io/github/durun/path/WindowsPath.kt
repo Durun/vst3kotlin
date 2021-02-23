@@ -13,8 +13,6 @@ private constructor(
             path.checkIsValidPath()
             val drive = path.replace(absolutePattern, "$1").takeIf { path.matches(absolutePattern) }?.toUpperCase()
             val body = path.replace(absolutePattern, "$2")
-            println(drive)
-            println(body)
             require(drive != null || path.matches(relativePattern)) { "Invalid Windows path: $path" }
             return WindowsPath(
                 drive = drive,
