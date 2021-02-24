@@ -1,10 +1,10 @@
 package io.github.durun.io
 
+/**
+ * [Closeable] is not thread-safe.
+ * If you want to manage thread-safely, wrap with [RefCounted]
+ */
 interface Closeable {
-	/**
-	 * Not thread-safe
-	 */
-	@Deprecated("isOpen is not thread-safe")
 	val isOpen: Boolean
 	fun close()
 }
