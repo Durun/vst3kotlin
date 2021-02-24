@@ -1,18 +1,22 @@
 package io.github.durun.vst3kotlin.vst
 
 import cwrapper.*
-import io.github.durun.vst3kotlin.cppinterface.CClass
 import io.github.durun.vst3kotlin.base.*
 import kotlinx.cinterop.*
 
 class Component(
     override val ptr: CPointer<IComponent>
 ) : PluginBase() {
+    override fun close() {
+        terminate()
+        super.close()
+    }
+
     val controllerClassID: UID by lazy {
         memScoped {
             val tuid = allocArray<ByteVar>(16)
             val result = IComponent_getControllerClassId(ptr, tuid)
-			check(result == kResultTrue) { result.kResultString }
+            check(result == kResultTrue) { result.kResultString }
             tuid.toUID()
         }
     }
