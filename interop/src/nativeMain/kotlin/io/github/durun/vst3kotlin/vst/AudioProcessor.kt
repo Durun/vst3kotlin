@@ -1,15 +1,15 @@
 package io.github.durun.vst3kotlin.vst
 
 import cwrapper.*
-import io.github.durun.vst3kotlin.cppinterface.CClass
 import io.github.durun.vst3kotlin.base.FUnknown
 import io.github.durun.vst3kotlin.base.kResultString
-import io.github.durun.vstkotlin3.vst.SpeakerArrangement
 import kotlinx.cinterop.*
 
 class AudioProcessor(
     override val ptr: CPointer<IAudioProcessor>
 ) : FUnknown() {
+
+    @ExperimentalUnsignedTypes
     fun setBusArrangements(
         inputs: List<SpeakerArrangement>,
         outputs: List<SpeakerArrangement>
@@ -24,6 +24,7 @@ class AudioProcessor(
         }
     }
 
+    @ExperimentalUnsignedTypes
     private fun getBusArrangement(
         direction: BusDirection,
         index: Int
@@ -36,6 +37,7 @@ class AudioProcessor(
         }
     }
 
+    @ExperimentalUnsignedTypes
     val inputBusArrangements: List<SpeakerArrangement>
         get() {
             val size = queryVstInterface<IComponent>(IComponent_iid).usePointer {
@@ -45,6 +47,8 @@ class AudioProcessor(
                 getBusArrangement(BusDirection.Input, i)
             }
         }
+
+    @ExperimentalUnsignedTypes
     val outputBusArrangements: List<SpeakerArrangement>
         get() {
             val size = queryVstInterface<IComponent>(IComponent_iid).usePointer {
