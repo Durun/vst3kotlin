@@ -2,15 +2,12 @@ package io.github.durun.vst3kotlin.vst
 
 import cwrapper.*
 import io.github.durun.vst3kotlin.base.*
+import io.github.durun.vst3kotlin.gui.PlugView
 import kotlinx.cinterop.*
 
 class Component(
     override val ptr: CPointer<IComponent>
 ) : PluginBase() {
-    override fun close() {
-        terminate()
-        super.close()
-    }
 
     val controllerClassID: UID by lazy {
         memScoped {
@@ -118,5 +115,9 @@ class Component(
 
     fun queryEditController(): EditController {
         return EditController(queryInterface(IEditController_iid).reinterpret())
+    }
+
+    fun queryPlugView(): PlugView {
+        return PlugView(queryInterface(IPlugView_iid).reinterpret())
     }
 }

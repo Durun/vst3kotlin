@@ -6,11 +6,14 @@ import cwrapper.IPluginBase_terminate
 import cwrapper.kResultTrue
 import io.github.durun.vst3kotlin.cppinterface.CClass
 import kotlinx.cinterop.CPointer
-import kotlinx.cinterop.CStructVar
 import kotlinx.cinterop.reinterpret
 
 abstract class PluginBase : FUnknown() {
 	private val thisPtr: CPointer<IPluginBase> get() = ptr.reinterpret()
+	override fun close() {
+		terminate()
+		super.close()
+	}
 
 	fun initialize(context: CClass) {
 		val result = IPluginBase_initialize(thisPtr, context.ptr.reinterpret())
