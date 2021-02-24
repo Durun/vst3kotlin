@@ -21,8 +21,8 @@ enum class ProcessMode(val value: Int) {
 }
 
 data class ProcessSetup(
-	val processMode: Int,
-	val symbolicSampleSize: Int,
+	val processMode: ProcessMode,
+	val sampleSize: SymbolicSampleSize,
 	val maxSamplesPerBlock: Int,
 	val sampleRate: Double
 )
