@@ -77,6 +77,16 @@ kotlin {
         }
         binaries {
             staticLib()
+            executable(listOf(DEBUG))
+        }
+
+        binaries.getTest("DEBUG").apply {
+            val klibDir = compilations["main"].output.classesDirs.singleFile.parentFile
+            freeCompilerArgs += listOf(
+                "-Xcoverage",
+                "-Xlibrary-to-cover=$klibDir/interop.klib",
+                "-Xlibrary-to-cover=$klibDir/interop-cinterop-cwrapper.klib"
+            )
         }
     }
 }
@@ -154,5 +164,23 @@ tasks { // for testing
     }
     getByName("${targetName}Test") {
         dependsOn(unzipSamples)
+    }
+}
+
+
+tasks.create("createCoverageReport") {
+    dependsOn("linuxX64Test")
+
+    description = "Create coverage report"
+
+    doLast {
+        val testDebugBinary =
+            kotlin.targets["linuxX64"].let { it as KotlinNativeTarget }.binaries.getTest("DEBUG").outputFile
+        exec {
+            commandLine("llvm-profdata", "merge", "$testDebugBinary.profraw", "-o", "$testDebugBinary.profdata")
+        }
+        exec {
+            commandLine("llvm-cov", "show", "$testDebugBinary", "-instr-profile", "$testDebugBinary.profdata")
+        }
     }
 }
