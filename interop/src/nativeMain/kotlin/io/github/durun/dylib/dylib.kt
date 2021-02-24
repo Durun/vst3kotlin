@@ -11,6 +11,7 @@ expect class Dylib: Closeable {
         fun open(libPath: Path): Dylib
     }
 
+    val name:String
     override fun close()
     fun <T : CPointed> getAddress(name: String): CPointer<T>
     fun <T : Function<*>> getFunction(name: String): CPointer<CFunction<T>>

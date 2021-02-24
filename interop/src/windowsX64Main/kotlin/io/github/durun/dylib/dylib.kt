@@ -11,6 +11,7 @@ import platform.windows.LoadLibrary
 
 actual class Dylib
 private constructor(
+    actual val name: String,
     private val handle: HMODULE
 ) : Closeable {
     actual companion object {
@@ -18,7 +19,8 @@ private constructor(
             val handle = memScoped {
                 LoadLibrary!!(libName.wcstr.ptr)
             } ?: throw IllegalArgumentException("Load failed: $libName")
-            return Dylib(handle)
+            val name = Path.of(libName).nameWithoutExtension
+            return Dylib(name, handle)
         }
 
         actual fun open(libPath: Path): Dylib {
