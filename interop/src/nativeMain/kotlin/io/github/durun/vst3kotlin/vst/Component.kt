@@ -54,18 +54,14 @@ class Component(
         check(result == kResultTrue) { result.kResultString }
     }
 
-    @OptIn(ExperimentalUnsignedTypes::class)
-    fun activateBus(
-        mediaType: MediaType,
-        direction: BusDirection,
-        index: Int,
-        state: Boolean
-    ) {
-        val result = IComponent_activateBus(ptr, mediaType.value, direction.value, index, state.toByte().toUByte())
+    @kotlin.ExperimentalUnsignedTypes
+    fun activate(bus: BusInfo, state: Boolean) {
+        val result =
+            IComponent_activateBus(ptr, bus.mediaType.value, bus.direction.value, bus.index, state.toByte().toUByte())
         check(result == kResultTrue) { result.kResultString }
     }
 
-    @OptIn(ExperimentalUnsignedTypes::class)
+    @kotlin.ExperimentalUnsignedTypes
     fun setActive(state: Boolean) {
         val result = IComponent_setActive(ptr, state.toByte().toUByte())
         check(result == kResultTrue) { result.kResultString }
@@ -83,7 +79,7 @@ class Component(
                 val result = IComponent_getBusInfo(ptr, type.value, direction.value, i, infos[i].ptr)
                 check(result == kResultTrue) { result.kResultString }
             }
-            indice.map { infos[it].toKBusInfo() }.toList()
+            indice.map { infos[it].toKBusInfo(it) }.toList()
         }
     }
 
@@ -92,8 +88,9 @@ class Component(
     }
 
     @OptIn(ExperimentalUnsignedTypes::class)
-    private fun cwrapper.BusInfo.toKBusInfo(): BusInfo {
+    private fun cwrapper.BusInfo.toKBusInfo(index: Int): BusInfo {
         return BusInfo(
+            index = index,
             mediaType = mediaType.toMediaType(),
             direction = when (direction) {
                 BusDirection.Input.value -> BusDirection.Input

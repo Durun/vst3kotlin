@@ -17,6 +17,7 @@ enum class BusType(val value: Int) {
 }
 
 data class BusInfo(
+    val index: Int,
     val mediaType: MediaType,
     val direction: BusDirection,
     val channelCount: Int,
