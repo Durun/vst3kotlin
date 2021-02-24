@@ -32,8 +32,9 @@ private constructor(
     override var isOpen: Boolean = true
         private set
     actual override fun close() {
-        isOpen=false
+        check(isOpen)
         FreeLibrary(handle)
+        isOpen = false
     }
 
     actual fun <T : CPointed> getAddress(name: String): CPointer<T> {
