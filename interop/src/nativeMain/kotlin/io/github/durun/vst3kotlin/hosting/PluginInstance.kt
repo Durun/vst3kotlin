@@ -10,19 +10,19 @@ import io.github.durun.vst3kotlin.vst.Component
 import io.github.durun.vst3kotlin.vst.IoMode
 import io.github.durun.vst3kotlin.vst.SymbolicSampleSize
 
-class AudioInstance
+class PluginInstance
 private constructor(
 	val component: Component,
 	val processor: AudioProcessor
 ) : Closeable {
 	companion object {
-		fun create(from: PluginFactory, classID: UID, hostContext: CClass = HostCallback): AudioInstance {
+		fun create(from: PluginFactory, classID: UID, hostContext: CClass = HostCallback): PluginInstance {
 			val component = from.createComponent(classID)
 			component.setIoMode(IoMode.Advanced)
 			component.initialize(hostContext)
 			val processor = from.createAudioProcessor(classID)
 			check(processor.canProcessSampleSize(SymbolicSampleSize.Sample32)) { "AudioProcessor can't process 32bit samples (cid=$classID)" }
-			return AudioInstance(component, processor)
+			return PluginInstance(component, processor)
 		}
 	}
 
