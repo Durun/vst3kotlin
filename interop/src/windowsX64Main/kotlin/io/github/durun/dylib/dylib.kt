@@ -22,7 +22,7 @@ actual class Dylib(val handle: HMODULE) : Closeable {
 		actual fun open(lib: Path): Dylib {
 			check(access("$lib", F_OK) == 0) { "Not exists: $lib" }
 			return if (lib.isAbsolute) open("$lib")
-			else open("./$lib")
+			else open(".\\$lib")
 		}
 	}
 
