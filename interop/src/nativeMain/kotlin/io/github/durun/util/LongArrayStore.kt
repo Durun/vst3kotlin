@@ -1,7 +1,7 @@
 package io.github.durun.util
 
 import cwrapper.*
-import io.github.durun.dylib.use
+import io.github.durun.io.use
 import io.github.durun.io.Closeable
 import kotlinx.cinterop.*
 
