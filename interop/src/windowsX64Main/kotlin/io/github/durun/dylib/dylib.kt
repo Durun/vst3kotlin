@@ -1,7 +1,9 @@
 package io.github.durun.dylib
 
 import io.github.durun.io.Closeable
+import io.github.durun.path.Files
 import io.github.durun.path.Path
+import io.github.durun.path.exists
 import kotlinx.cinterop.*
 import platform.posix.*
 import platform.windows.FreeLibrary
@@ -12,6 +14,7 @@ import platform.windows.LoadLibrary
 actual class Dylib(val handle: HMODULE) : Closeable {
 	actual companion object {
 		actual fun open(lib: String): Dylib {
+			check(Files.exists(lib)) { "Not exists: $lib" }
 			val handle = memScoped {
 				LoadLibrary!!(lib.wcstr.ptr)
 			}
@@ -20,7 +23,7 @@ actual class Dylib(val handle: HMODULE) : Closeable {
 		}
 
 		actual fun open(lib: Path): Dylib {
-			check(access("$lib", F_OK) == 0) { "Not exists: $lib" }
+			check(lib.exists()) { "Not exists: $lib" }
 			return if (lib.isAbsolute) open("$lib")
 			else open(".\\$lib")
 		}
