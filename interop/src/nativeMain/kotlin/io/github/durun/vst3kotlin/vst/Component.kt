@@ -48,7 +48,10 @@ class Component(
 
     fun setIoMode(mode: IoMode) {
         val result = IComponent_setIoMode(ptr, mode.value)
-        check(result == kResultTrue) { result.kResultString }
+        check(result == kResultTrue) {
+            if (result == kNotImplemented) "$mode is not implemented."
+            else result.kResultString
+        }
     }
 
     @kotlin.ExperimentalUnsignedTypes
