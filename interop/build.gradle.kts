@@ -19,12 +19,12 @@ repositories {
     mavenCentral()
 }
 
+val kotestVersion = "4.4.1"
 dependencies {
     // Main Dependencies
     commonMainImplementation(kotlin("stdlib-common"))
 
     // Test Dependencies
-    val kotestVersion = "4.4.0"
     commonTestImplementation(kotlin("test-common"))
     commonTestImplementation(kotlin("test-annotations-common"))
     commonTestImplementation("io.kotest:kotest-assertions-core:$kotestVersion")
@@ -47,9 +47,17 @@ kotlin {
         sourceSets {
             getByName("${targetName}Main").apply {
                 kotlin.srcDir("src/nativeMain/kotlin")
+                if (os.isUnix) kotlin.srcDir("src/unixMain/kotlin")
             }
             getByName("${targetName}Test").apply {
                 kotlin.srcDir("src/nativeTest/kotlin")
+                if (os.isUnix) kotlin.srcDir("src/unixTest/kotlin")
+                dependencies {
+                    implementation(kotlin("test-common"))
+                    implementation(kotlin("test-annotations-common"))
+                    implementation("io.kotest:kotest-assertions-core:$kotestVersion")
+                    implementation("io.kotest:kotest-property:$kotestVersion")
+                }
             }
         }
         compilations.getByName("main") {
@@ -129,6 +137,7 @@ tasks { // for testing
         when (zipName) {
             "vst3samples-linuxX64.zip" -> checksum("7762726a6da2d2b2bd34ac54c7184dda")
             "vst3samples-windowsX64.zip" -> checksum("0f2d5aa9999f2fd40270bafa459502c4")
+            "vst3samples-macosX64.zip" -> checksum("b143d6fd79cbf345212f08a9d0659d57")
         }
     }
     val unzipSamples by creating(Copy::class) {
