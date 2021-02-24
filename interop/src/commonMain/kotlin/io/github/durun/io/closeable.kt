@@ -4,6 +4,7 @@ interface Closeable {
 	/**
 	 * Not thread-safe
 	 */
+	@Deprecated("isOpen is not thread-safe")
 	val isOpen: Boolean
 	fun close()
 }
