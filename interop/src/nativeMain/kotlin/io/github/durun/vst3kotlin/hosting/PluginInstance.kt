@@ -12,13 +12,13 @@ private constructor(
 	val component: Component,
 	val processor: AudioProcessor,
 	val controller: EditController,
-	val plugView: PlugView
+	val plugView: PlugView?
 ) : Closeable {
 	companion object {
 		@kotlin.ExperimentalUnsignedTypes
 		fun create(from: PluginFactory, classID: UID, hostContext: HostCallback = HostCallback): PluginInstance {
 			val component = from.createComponent(classID)
-			component.setIoMode(IoMode.Advanced)
+			runCatching { component.setIoMode(IoMode.Advanced) }
 			component.initialize(hostContext)
 			val processor = from.createAudioProcessor(classID)
 			check(processor.canProcessSampleSize(SymbolicSampleSize.Sample32)) { "AudioProcessor can't process 32bit samples (cid=$classID)" }
@@ -45,7 +45,7 @@ private constructor(
 				ProcessSetup(ProcessMode.Realtime, SymbolicSampleSize.Sample32, 512, 48000.0)
 			)
 			component.setActive(true)
-			val plugView = component.queryPlugView()
+			val plugView = runCatching { component.queryPlugView() }.getOrNull()
 			processor.setProcessing(true)
 			return PluginInstance(component, processor, controller, plugView)
 		}
