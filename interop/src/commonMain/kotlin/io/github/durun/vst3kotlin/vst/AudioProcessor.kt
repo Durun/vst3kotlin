@@ -1,30 +1,14 @@
 package io.github.durun.vst3kotlin.vst
 
-import io.github.durun.util.CClass
-import io.github.durun.vst3kotlin.base.FUnknown
-import io.github.durun.vstkotlin3.vst.SpeakerArrangement
-
-expect class AudioProcessor : FUnknown, CClass {
-	fun setBusArrangements(inputs: List<SpeakerArrangement>, outputs: List<SpeakerArrangement>)
-	fun getBusArrangement(direction: BusDirection, index: Int): SpeakerArrangement
-	val inputBusArrangements: List<SpeakerArrangement>
-	val outputBusArrangements: List<SpeakerArrangement>
-	fun canProcessSampleSize(sampleSize: SymbolicSampleSize): Boolean
-	fun setupProcessing(setup: ProcessSetup)
-	fun setProcessing(state: Boolean)
-	fun process()// TODO
-	val latencySampleSize: Int
-	val tailSampleSize: Int
-	val processContextRequirement: ProcessContextRequirement
-}
 
 class ComponentFlag
-@OptIn(ExperimentalUnsignedTypes::class)
+
+@ExperimentalUnsignedTypes
 constructor(val value: UInt) {
-	@OptIn(ExperimentalUnsignedTypes::class)
+	@ExperimentalUnsignedTypes
 	val distributable: Boolean = value and 1u != 0u
 
-	@OptIn(ExperimentalUnsignedTypes::class)
+	@ExperimentalUnsignedTypes
 	val simpleModeSupported: Boolean = value and (1u shl 1) != 0u
 }
 
@@ -56,7 +40,7 @@ data class ProcessContextRequirement(
 	val NeedFrameRate: Boolean,             // kSmpteValid
 	val NeedTransportState: Boolean,        // kPlaying, kCycleActive, kRecording
 ) {
-	@OptIn(ExperimentalUnsignedTypes::class)
+	@ExperimentalUnsignedTypes
 	constructor(flags: UInt) : this(
 		NeedSystemTime = flags and (1u shl 0) != 0u,
 		NeedContinousTimeSamples = flags and (1u shl 1) != 0u,

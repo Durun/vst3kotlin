@@ -7,11 +7,10 @@ import io.github.durun.vst3kotlin.vst.Component
 import io.github.durun.vst3kotlin.vst.EditController
 import kotlinx.cinterop.*
 
-actual class PluginFactory(
-	thisPtr: CPointer<IPluginFactory>
-) : FUnknown(thisPtr) {
-	val ptr: CPointer<IPluginFactory> get() = thisPtr
-	private val thisPtr get() = thisRawPtr.reinterpret<IPluginFactory>()
+class PluginFactory(
+	override val ptr: CPointer<IPluginFactory>
+) : FUnknown() {
+	private val thisPtr get() = ptr.reinterpret<IPluginFactory>()
 	private val factory2Ptr: CPointer<IPluginFactory2>? = memScoped {
 		val ptrPtr = alloc<CPointerVarOf<CPointer<IPluginFactory2>>>().ptr
 		val result = IPluginFactory_queryInterface(thisPtr, IPluginFactory2_iid, ptrPtr.reinterpret())
@@ -25,7 +24,8 @@ actual class PluginFactory(
 		ptrPtr.pointed.value
 	}
 
-	actual val factoryInfo: FactoryInfo by lazy {
+	@ExperimentalUnsignedTypes
+	val factoryInfo: FactoryInfo by lazy {
 		memScoped {
 			val infoPtr = alloc<PFactoryInfo>().ptr
 			IPluginFactory_getFactoryInfo(thisPtr, infoPtr)
@@ -33,7 +33,8 @@ actual class PluginFactory(
 		}
 	}
 
-	actual val classInfo: List<ClassInfo> by lazy {
+	@ExperimentalUnsignedTypes
+	val classInfo: List<ClassInfo> by lazy {
 		val nClass = IPluginFactory_countClasses(thisPtr)
 		memScoped {
 			val infoPtr = alloc<PClassInfo>().ptr
@@ -49,25 +50,25 @@ actual class PluginFactory(
 		createInstance(thisPtr, classID, interfaceID)
 	}
 
-	actual override fun close() {
+	override fun close() {
 		super.close()
 		factory2Ptr?.let { IPluginFactory_release(it.reinterpret()) }
 		factory3Ptr?.let { IPluginFactory_release(it.reinterpret()) }
 	}
 
-	actual fun createComponent(classID: UID): Component {
+	fun createComponent(classID: UID): Component {
 		return Component(memScoped {
 			createInstance(thisPtr, classID, InterfaceID.IComponent.uid)
 		})
 	}
 
-	actual fun createAudioProcessor(classID: UID): AudioProcessor {
+	fun createAudioProcessor(classID: UID): AudioProcessor {
 		return AudioProcessor(memScoped {
 			createInstance(thisPtr, classID, InterfaceID.IAudioProcessor.uid)
 		})
 	}
 
-	actual fun createEditController(classID: UID): EditController {
+	fun createEditController(classID: UID): EditController {
 		return EditController(memScoped {
 			createInstance(thisPtr, classID, InterfaceID.IEditController.uid)
 		})
@@ -88,7 +89,7 @@ actual class PluginFactory(
 		return interfacePtr
 	}
 
-	@OptIn(ExperimentalUnsignedTypes::class)
+	@ExperimentalUnsignedTypes
 	private fun PFactoryInfo.toKFactoryInfo(): FactoryInfo {
 		return FactoryInfo(
 			vendor = vendor.toKString(),
@@ -104,7 +105,7 @@ actual class PluginFactory(
 		)
 	}
 
-	@OptIn(ExperimentalUnsignedTypes::class)
+	@ExperimentalUnsignedTypes
 	private fun PClassInfo.toKClassInfo(info2: PClassInfo2? = null, info3: PClassInfoW? = null): ClassInfo {
 		return ClassInfo(
 			classId = (info3?.cid ?: info2?.cid ?: cid).toUID(),

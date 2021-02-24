@@ -1,18 +1,16 @@
 package io.github.durun.vst3kotlin.vst
 
 import cwrapper.*
-import io.github.durun.util.CClass
+import io.github.durun.vst3kotlin.cppinterface.CClass
 import io.github.durun.vst3kotlin.Adapter
 import io.github.durun.vst3kotlin.base.FUnknown
 import io.github.durun.vst3kotlin.base.kResultString
 import kotlinx.cinterop.*
 
-actual class AttributeList(
-	ptr: CPointer<IAttributeList>
-) : FUnknown(ptr), CClass {
-	override val ptr: CPointer<IAttributeList> get() = thisRawPtr.reinterpret()
-
-	actual val int: AttrProperty<Long> = object : AttrProperty<Long> {
+class AttributeList(
+	override val ptr: CPointer<IAttributeList>
+) : FUnknown() {
+	val int: AttrProperty<Long> = object : AttrProperty<Long> {
 		override fun get(id: AttrID): Long {
 			return memScoped {
 				val buf: LongVar = alloc()
@@ -27,7 +25,7 @@ actual class AttributeList(
 			check(result == kResultOk) { result.kResultString }
 		}
 	}
-	actual val float: AttrProperty<Double> = object : AttrProperty<Double> {
+	val float: AttrProperty<Double> = object : AttrProperty<Double> {
 		override fun get(id: AttrID): Double {
 			return memScoped {
 				val buf: DoubleVar = alloc()
@@ -43,7 +41,8 @@ actual class AttributeList(
 		}
 	}
 
-	actual fun getString(id: AttrID, sizeInBytes: Int): String {
+	@ExperimentalUnsignedTypes
+	fun getString(id: AttrID, sizeInBytes: Int): String {
 		return memScoped {
 			val buf = allocArray<ShortVar>(sizeInBytes)
 			val result = Adapter.IAttributeList.getString(ptr, id, buf, sizeInBytes.toUInt())
@@ -52,14 +51,15 @@ actual class AttributeList(
 		}
 	}
 
-	actual fun setString(id: AttrID, value: String) {
+	fun setString(id: AttrID, value: String) {
 		memScoped {
 			val result = IAttributeList_setString(ptr, id, value.utf16.ptr.reinterpret())
 			check(result == kResultOk) { result.kResultString }
 		}
 	}
 
-	actual fun getBinary(id: AttrID, size: Int): ByteArray {
+	@ExperimentalUnsignedTypes
+	fun getBinary(id: AttrID, size: Int): ByteArray {
 		return memScoped {
 			val buf = allocArray<ByteVar>(size)
 			val readSize = alloc<UIntVar>()
@@ -69,7 +69,8 @@ actual class AttributeList(
 		}
 	}
 
-	actual fun setBinary(id: AttrID, value: ByteArray) {
+	@ExperimentalUnsignedTypes
+	fun setBinary(id: AttrID, value: ByteArray) {
 		memScoped {
 			val result = IAttributeList_setBinary(ptr, id, value.toCValues().ptr, value.size.toUInt())
 			check(result == kResultOk) { result.kResultString }

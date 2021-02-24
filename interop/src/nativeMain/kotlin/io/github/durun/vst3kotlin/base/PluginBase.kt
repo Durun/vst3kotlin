@@ -4,22 +4,24 @@ import cwrapper.IPluginBase
 import cwrapper.IPluginBase_initialize
 import cwrapper.IPluginBase_terminate
 import cwrapper.kResultTrue
-import io.github.durun.util.CClass
+import io.github.durun.vst3kotlin.cppinterface.CClass
 import kotlinx.cinterop.CPointer
+import kotlinx.cinterop.CStructVar
 import kotlinx.cinterop.reinterpret
 
-actual abstract class PluginBase(thisRawPtr: CPointer<*>) : FUnknown(thisRawPtr) {
-	private val ptr: CPointer<IPluginBase> get() = thisRawPtr.reinterpret()
-	actual fun initialize(context: CClass) {
-		val result = IPluginBase_initialize(ptr, context.ptr.reinterpret())
+abstract class PluginBase : FUnknown() {
+	private val thisPtr: CPointer<IPluginBase> get() = ptr.reinterpret()
+
+	fun initialize(context: CClass) {
+		val result = IPluginBase_initialize(thisPtr, context.ptr.reinterpret())
 		check(result == kResultTrue) {
 			terminate()
 			"${result.kResultString} on initialize"
 		}
 	}
 
-	actual fun terminate() {
-		val result = IPluginBase_terminate(ptr)
+	fun terminate() {
+		val result = IPluginBase_terminate(thisPtr)
 		check(result == kResultTrue) { "${result.kResultString} on terminate" }
 	}
 }
