@@ -1,11 +1,9 @@
 package io.github.durun.vst3kotlin.vst
 
 import cwrapper.*
-import io.github.durun.vst3kotlin.cppinterface.CClass
 import io.github.durun.vst3kotlin.base.FUnknown
 import io.github.durun.vst3kotlin.base.kResultString
 import kotlinx.cinterop.CPointer
-import kotlinx.cinterop.CStructVar
 import kotlinx.cinterop.reinterpret
 
 class ConnectionPoint(
@@ -36,4 +34,6 @@ fun FUnknown.connectEach(other: FUnknown) {
         .let { ConnectionPoint(it) }
     thisPoint.connect(otherPoint)
     otherPoint.connect(thisPoint)
+    thisPoint.close()
+    otherPoint.close()
 }
