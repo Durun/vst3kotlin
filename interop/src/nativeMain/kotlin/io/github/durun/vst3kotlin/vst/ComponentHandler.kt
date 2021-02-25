@@ -1,12 +1,10 @@
 package io.github.durun.vst3kotlin.vst
 
 import cwrapper.*
-import io.github.durun.vst3kotlin.cppinterface.CClass
 import io.github.durun.vst3kotlin.VstInterface
 import io.github.durun.vst3kotlin.base.FUnknown
 import io.github.durun.vst3kotlin.base.kResultString
 import kotlinx.cinterop.CPointer
-import kotlinx.cinterop.CStructVar
 import kotlinx.cinterop.reinterpret
 import kotlinx.cinterop.toByte
 
@@ -45,7 +43,7 @@ class ComponentHandler(
 		check(result == kResultTrue) { result.kResultString }
 	}
 
-	@OptIn(ExperimentalUnsignedTypes::class)
+	@kotlin.ExperimentalUnsignedTypes
 	fun setDirty(state: Boolean) {
 		val result = IComponentHandler2_setDirty(thisPtr2, state.toByte().toUByte())
 		check(result == kResultTrue) { result.kResultString }

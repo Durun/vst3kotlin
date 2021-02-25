@@ -1,7 +1,6 @@
 package io.github.durun.vst3kotlin.gui
 
 import cwrapper.*
-import io.github.durun.vst3kotlin.cppinterface.CClass
 import io.github.durun.vst3kotlin.Adapter
 import io.github.durun.vst3kotlin.base.FUnknown
 import io.github.durun.vst3kotlin.base.kResultString
@@ -51,7 +50,7 @@ class PlugView(
         }
     }
 
-    @OptIn(ExperimentalUnsignedTypes::class)
+    @kotlin.ExperimentalUnsignedTypes
     fun onFocus(state: Boolean) {
         val result = IPlugView_onFocus(this.ptr, state.toByte().toUByte())
         check(result == kResultTrue) { result.kResultString }

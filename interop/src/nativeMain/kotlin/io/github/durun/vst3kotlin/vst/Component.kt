@@ -67,6 +67,7 @@ class Component(
         check(result == kResultTrue) { result.kResultString }
     }
 
+    @kotlin.ExperimentalUnsignedTypes
     fun getBusInfos(
         type: MediaType,
         direction: BusDirection
@@ -87,7 +88,7 @@ class Component(
         return RoutingInfo(mediaType.toMediaType(), busIndex, channel)
     }
 
-    @OptIn(ExperimentalUnsignedTypes::class)
+    @kotlin.ExperimentalUnsignedTypes
     private fun cwrapper.BusInfo.toKBusInfo(index: Int): BusInfo {
         return BusInfo(
             index = index,

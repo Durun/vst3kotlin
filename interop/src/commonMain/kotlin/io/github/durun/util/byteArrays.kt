@@ -28,20 +28,20 @@ class ByteArrayBuilder {
 	fun appendDouble(v: Double) = bytes.addAll(v.toBytes())
 
 
-	@OptIn(ExperimentalUnsignedTypes::class)
+	@kotlin.ExperimentalUnsignedTypes
 	fun appendUByte(v: UByte) = appendByte(v.toByte())
 
-	@OptIn(ExperimentalUnsignedTypes::class)
+	@kotlin.ExperimentalUnsignedTypes
 	fun appendUBytes(v: UByteArray) {
 		v.forEach { bytes.add(it.toByte()) }
 	}
 
-	@OptIn(ExperimentalUnsignedTypes::class)
+	@kotlin.ExperimentalUnsignedTypes
 	fun appendUInt(v: UInt) {
 		bytes.addAll(v.toBytes())
 	}
 
-	@OptIn(ExperimentalUnsignedTypes::class)
+	@kotlin.ExperimentalUnsignedTypes
 	fun appendULong(v: ULong) {
 		bytes.addAll(v.toBytes())
 	}
@@ -57,7 +57,7 @@ private fun Long.toBytes(): List<Byte> = this.toULong().toBytes()
 private fun Float.toBytes(): List<Byte> = this.toRawBits().toBytes()
 private fun Double.toBytes(): List<Byte> = this.toRawBits().toBytes()
 
-@OptIn(ExperimentalUnsignedTypes::class)
+@kotlin.ExperimentalUnsignedTypes
 private fun UInt.toBytes(): List<Byte> {
 	return listOf(
 		(this shr 0).toByte(),
@@ -67,7 +67,7 @@ private fun UInt.toBytes(): List<Byte> {
 	)
 }
 
-@OptIn(ExperimentalUnsignedTypes::class)
+@kotlin.ExperimentalUnsignedTypes
 private fun ULong.toBytes(): List<Byte> {
 	return listOf(
 		(this shr 0).toByte(),
@@ -85,7 +85,7 @@ fun <R> ByteArray.readScope(block: ByteArrayReader.() -> R): R {
 	return ByteArrayReader(this).block()
 }
 
-@OptIn(ExperimentalUnsignedTypes::class)
+@kotlin.ExperimentalUnsignedTypes
 class ByteArrayReader(private val buf: ByteArray) {
 	var offset: Int = 0
 		private set

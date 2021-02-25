@@ -13,10 +13,10 @@ sealed class Data<T>(var value: T) {
 	class FLOAT(value: Float) : Data<Float>(value)
 	class DOUBLE(value: Double) : Data<Double>(value)
 	class UTF8(value: String, val sizeByte: Int) : Data<String>(value)
-	class UBYTE @OptIn(ExperimentalUnsignedTypes::class) constructor(value: UByte) : Data<UByte>(value)
-	class UBYTES @OptIn(ExperimentalUnsignedTypes::class) constructor(value: UByteArray) : Data<UByteArray>(value)
-	class UINT @OptIn(ExperimentalUnsignedTypes::class) constructor(value: UInt) : Data<UInt>(value)
-	class ULONG @OptIn(ExperimentalUnsignedTypes::class) constructor(value: ULong) : Data<ULong>(value)
+	class UBYTE @kotlin.ExperimentalUnsignedTypes constructor(value: UByte) : Data<UByte>(value)
+	class UBYTES @kotlin.ExperimentalUnsignedTypes constructor(value: UByteArray) : Data<UByteArray>(value)
+	class UINT @kotlin.ExperimentalUnsignedTypes constructor(value: UInt) : Data<UInt>(value)
+	class ULONG @kotlin.ExperimentalUnsignedTypes constructor(value: ULong) : Data<ULong>(value)
 }
 
 class DataProperty<T>(val data: Data<T>) : ReadWriteProperty<MessageBase, T> {
@@ -125,7 +125,7 @@ abstract class MessageBase(
 		return StringDataProperty(data)
 	}
 
-	@OptIn(ExperimentalUnsignedTypes::class)
+	@kotlin.ExperimentalUnsignedTypes
 	protected fun uInt(): ReadWriteProperty<MessageBase, UInt> {
 		val value = reader.readUInt()
 		val data = Data.UINT(value)
@@ -134,7 +134,7 @@ abstract class MessageBase(
 		return DataProperty(data)
 	}
 
-	@OptIn(ExperimentalUnsignedTypes::class)
+	@kotlin.ExperimentalUnsignedTypes
 	protected fun uLong(): ReadWriteProperty<MessageBase, ULong> {
 		val value = reader.readULong()
 		val data = Data.ULONG(value)
@@ -144,7 +144,7 @@ abstract class MessageBase(
 	}
 
 	private val datas: MutableList<Data<*>> = mutableListOf()
-	private fun debug(v:Data<*>) {
+	private fun debug(v: Data<*>) {
 		//println("offset=${reader.offset} : ${v.value}")
 	}
 }
