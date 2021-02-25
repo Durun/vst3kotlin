@@ -17,8 +17,8 @@ class Window(
                     windowClass.name.ptr,
                     name.wcstr.ptr,
                     (DwStyle.VISIBLE + DwStyle.CAPTION + DwStyle.SYSMENU).value,
-                    0, 0,
-                    480, 320,
+                    CW_USEDEFAULT, CW_USEDEFAULT,
+                    CW_USEDEFAULT, CW_USEDEFAULT,
                     parent, menu, instance, null
                 )
                 checkNotNull(hwnd)
