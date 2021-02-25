@@ -5,7 +5,7 @@ import io.github.durun.vst3kotlin.base.VstClassCategory
 import io.github.durun.vst3kotlin.testResources
 import kotlin.test.Test
 
-class PluginInterfaceTest {
+class PluginInstanceTest {
 	@Test
 	fun setup() {
 		val path = testResources.resolve("vst3/again.vst3")
