@@ -8,6 +8,10 @@ import kotlinx.cinterop.*
 
 class PlatformView(val ptr: COpaquePointer)
 
+enum class ViewType(val value: String) {
+    Editor("editor")
+}
+
 class PlugView(
     override val ptr: CPointer<IPlugView>
 ) : FUnknown() {

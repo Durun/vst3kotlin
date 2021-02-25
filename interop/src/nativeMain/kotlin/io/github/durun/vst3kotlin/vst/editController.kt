@@ -1,12 +1,12 @@
 package io.github.durun.vst3kotlin.vst
 
 import cwrapper.*
-import io.github.durun.vst3kotlin.cppinterface.CClass
 import io.github.durun.vst3kotlin.VstInterface
 import io.github.durun.vst3kotlin.base.BStream
 import io.github.durun.vst3kotlin.base.PluginBase
 import io.github.durun.vst3kotlin.base.kResultString
 import io.github.durun.vst3kotlin.gui.PlugView
+import io.github.durun.vst3kotlin.gui.ViewType
 import kotlinx.cinterop.*
 
 class EditController(
@@ -96,8 +96,8 @@ class EditController(
         check(result == kResultTrue) { result.kResultString }
     }
 
-    fun createView(name: String): PlugView {
-        val ptr = IEditController_createView(ptr, name)
+    fun createView(type: ViewType): PlugView {
+        val ptr = IEditController_createView(ptr, type.value)
         checkNotNull(ptr)
         return PlugView(ptr)
     }
