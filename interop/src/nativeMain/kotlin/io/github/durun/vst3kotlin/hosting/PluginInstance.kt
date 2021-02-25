@@ -5,6 +5,7 @@ import io.github.durun.vst3kotlin.base.PluginFactory
 import io.github.durun.vst3kotlin.base.UID
 import io.github.durun.vst3kotlin.cppinterface.HostCallback
 import io.github.durun.vst3kotlin.gui.PlugView
+import io.github.durun.vst3kotlin.gui.ViewType
 import io.github.durun.vst3kotlin.vst.*
 
 class PluginInstance
@@ -45,7 +46,13 @@ private constructor(
 				ProcessSetup(ProcessMode.Realtime, SymbolicSampleSize.Sample32, 512, 48000.0)
 			)
 			component.setActive(true)
-			val plugView = runCatching { component.queryPlugView() }.getOrNull()
+			val plugView = runCatching {
+				val view = controller.createView(ViewType.Editor)
+				val rect = view.size
+				val resize = view.canResize
+				println("rect=$rect, canResize=$resize")    // TODO
+				view
+			}.getOrNull()
 			processor.setProcessing(true)
 			return PluginInstance(component, processor, controller, plugView)
 		}
