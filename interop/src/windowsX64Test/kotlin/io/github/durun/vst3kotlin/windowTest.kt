@@ -36,8 +36,8 @@ class WindowTest {
             PluginInstance.create(module.factory, clazz.classId).use {
                 it.plugView?.apply {
                     println(size)
-                    val width = size.left - size.right
-                    val height = size.top - size.bottom
+                    val width = size.right - size.left
+                    val height = size.bottom - size.top
                     window.resize(width, height)
                     println("resized: $width*$height")
                     attached(PlatformView(window.hwnd), "HWND")
