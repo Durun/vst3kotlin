@@ -1,6 +1,7 @@
 package io.github.durun.vst3kotlin.base
 
 import cwrapper.*
+import io.github.durun.log.logger
 import io.github.durun.vst3kotlin.InterfaceID
 import io.github.durun.vst3kotlin.vst.AudioProcessor
 import io.github.durun.vst3kotlin.vst.Component
@@ -10,6 +11,7 @@ import kotlinx.cinterop.*
 class PluginFactory(
 	override val ptr: CPointer<IPluginFactory>
 ) : FUnknown() {
+	private val log by logger()
 	private val thisPtr get() = ptr.reinterpret<IPluginFactory>()
 	private val factory2Ptr: CPointer<IPluginFactory2>? = memScoped {
 		val ptrPtr = alloc<CPointerVarOf<CPointer<IPluginFactory2>>>().ptr
@@ -85,7 +87,11 @@ class PluginFactory(
 		val bufPtr: CPointer<COpaquePointerVar> = buf.ptr.reinterpret()
 		val result = IPluginFactory_createInstance(factory, cid, iid, bufPtr)
 		val interfacePtr = buf.value
-		checkNotNull(interfacePtr) { "${result.kResultString}: classID=$classID, interfaceID=$interfaceID" }
+		checkNotNull(interfacePtr) {
+			log.warn { "Failed to createInstance (${result.kResultString})" }
+			"${result.kResultString}: classID=$classID, interfaceID=$interfaceID"
+		}
+		log.info { "Success to createInstance (${InterfaceID.of(iid.pointed.tuid.toUID())})" }
 		return interfacePtr
 	}
 

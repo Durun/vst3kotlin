@@ -3,6 +3,7 @@ package io.github.durun.vst3kotlin.hosting
 import cwrapper.IPluginFactory
 import io.github.durun.dylib.Dylib
 import io.github.durun.io.Closeable
+import io.github.durun.log.logger
 import io.github.durun.path.Path
 import io.github.durun.vst3kotlin.base.PluginFactory
 import kotlinx.cinterop.CFunction
@@ -22,7 +23,9 @@ private constructor(
     val libPath: Path,
     private val lib: Dylib
 ) : Closeable {
+    private val log by logger()
     companion object {
+        private val log by logger()
         fun of(path: Path): Module {
             val (libPath, lib) = runCatching {
                 val libPath = ModuleUtil.libPathOf(path)
@@ -30,6 +33,7 @@ private constructor(
             }.recoverCatching {
                 path to Dylib.open(path)
             }.getOrThrow()
+            log.info { "Open Module $libPath" }
             return Module(libPath, lib)
         }
     }
@@ -47,12 +51,14 @@ private constructor(
         }.onFailure {
             throw Exception("Failed to call entry function", it)
         }
+        Companion.log.info { "Succes Entry $libPath" }
         // Get Plugin factory
         val factoryPtr = runCatching {
             ModuleUtil.factoryGetterOf(lib).invoke()
         }.onFailure {
             throw Exception("Failed to call 'GetPluginFactory'", it)
         }.getOrThrow()
+        Companion.log.info { "Succes GetPluginFactory $libPath" }
         factory = PluginFactory(factoryPtr)
     }
 
@@ -60,5 +66,6 @@ private constructor(
         isOpen = false
         ModuleUtil.exitFuncOf(lib)
         lib.close()
+        log.info { "Closed Module $libPath" }
     }
 }
