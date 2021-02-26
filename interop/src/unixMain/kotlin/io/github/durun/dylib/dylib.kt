@@ -21,7 +21,8 @@ private constructor(
 
 		actual fun open(libPath: Path): Dylib {
 			check(libPath.exists()) { "Not exist: $libPath" }
-			return open(Path.of(".").resolve(libPath).toString())
+			val openPath = if (libPath.isAbsolute) libPath else Path.of(".").resolve(libPath)
+			return open(openPath.toString())
 		}
 	}
 
