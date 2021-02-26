@@ -1,6 +1,6 @@
 package io.github.durun.vst3kotlin.vst
 
-import io.github.durun.dylib.use
+import io.github.durun.io.use
 import io.github.durun.vst3kotlin.Vst3Package
 import io.github.durun.vst3kotlin.base.UID
 import io.github.durun.vst3kotlin.testResources

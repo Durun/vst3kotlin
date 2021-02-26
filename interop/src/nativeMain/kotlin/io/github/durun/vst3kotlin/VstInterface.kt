@@ -1,7 +1,7 @@
 package io.github.durun.vst3kotlin
 
 import cwrapper.FUnknown_release
-import io.github.durun.dylib.use
+import io.github.durun.io.use
 import io.github.durun.io.Closeable
 import kotlinx.cinterop.CPointer
 import kotlinx.cinterop.reinterpret

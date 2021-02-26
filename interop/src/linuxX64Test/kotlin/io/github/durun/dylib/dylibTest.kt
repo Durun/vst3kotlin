@@ -1,5 +1,6 @@
 package io.github.durun.dylib
 
+import io.github.durun.io.use
 import io.kotest.matchers.shouldBe
 import kotlinx.cinterop.*
 import kotlin.test.Test

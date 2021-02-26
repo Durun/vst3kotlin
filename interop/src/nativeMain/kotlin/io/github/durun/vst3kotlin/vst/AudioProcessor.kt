@@ -67,9 +67,9 @@ class AudioProcessor(
         memScoped {
             val buf = cValue<cwrapper.ProcessSetup> {
                 maxSamplesPerBlock = setup.maxSamplesPerBlock
-                processMode = setup.processMode
+                processMode = setup.processMode.value
                 sampleRate = setup.sampleRate
-                symbolicSampleSize = setup.symbolicSampleSize
+                symbolicSampleSize = setup.sampleSize.value
             }
             val result = IAudioProcessor_setupProcessing(ptr, buf.ptr)
             check(result == kResultTrue) { result.kResultString }
