@@ -25,5 +25,6 @@ enum class InterfaceID(val uid: UID) {
 
 	companion object {
 		fun of(uid: UID): InterfaceID? = values().firstOrNull { it.uid == uid }
+        fun nameOf(uid: UID):String = of(uid)?.toString() ?: uid.toString()
 	}
 }
