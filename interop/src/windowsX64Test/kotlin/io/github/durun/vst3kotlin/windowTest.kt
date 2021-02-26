@@ -4,6 +4,7 @@ import cwrapper.kPlatformTypeHWND
 import io.github.durun.io.use
 import io.github.durun.path.Path
 import io.github.durun.vst3kotlin.base.VstClassCategory
+import io.github.durun.vst3kotlin.cppinterface.HostCallback
 import io.github.durun.vst3kotlin.gui.PlatformView
 import io.github.durun.vst3kotlin.hosting.Module
 import io.github.durun.vst3kotlin.hosting.PluginInstance
@@ -54,6 +55,12 @@ class WindowTest {
     private fun loop() {
         do {
             val msg = Window.getMessageForAll()
+
+            HostCallback.receiveMessages()
+                .forEach {
+                    println(it)
+                }
+
         } while (msg.message.toInt() != WM_QUIT)
     }
 }
