@@ -64,6 +64,7 @@ private constructor(
 
     override fun close() {
         isOpen = false
+        factory.close()
         ModuleUtil.exitFuncOf(lib)
         lib.close()
         log.info { "Closed Module $libPath" }

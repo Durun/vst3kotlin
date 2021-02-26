@@ -90,7 +90,6 @@ class PlugFrame(
             check(result == kResultTrue) { result.kResultString }
         }
     }
-
 }
 
 private fun cwrapper.ViewRect.toKViewRect(): ViewRect {
