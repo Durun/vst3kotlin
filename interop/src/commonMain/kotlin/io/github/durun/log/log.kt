@@ -30,7 +30,7 @@ var LogLevel: Log.Level = Log.Level.INFO
 
 class Logger(val tag: String?) {
     private fun log(message: String, level: Log.Level, tag: String?) {
-        println("[$level] $message @ $tag")
+        println("[$level] $tag - $message")
     }
 
     fun error(message: () -> Any?) {
