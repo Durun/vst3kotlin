@@ -6,6 +6,7 @@ import io.github.durun.io.Closeable
 import io.github.durun.log.logger
 import io.github.durun.path.Path
 import io.github.durun.vst3kotlin.base.PluginFactory
+import io.github.durun.vst3kotlin.base.UID
 import kotlinx.cinterop.CFunction
 import kotlinx.cinterop.CPointer
 import kotlinx.cinterop.invoke
@@ -82,5 +83,18 @@ private constructor(
         }
         lib.close()
         log.info { "Closed Module $libPath" }
+    }
+
+    val classes: List<ModuleClass> by lazy {
+        factory.classInfo.map { ModuleClass(it.classId) }
+    }
+
+    inner class ModuleClass
+    constructor(
+        val classID: UID
+    ) {
+        fun createInstance(): PluginInstance {
+            return PluginInstance.create(factory, classID)
+        }
     }
 }
