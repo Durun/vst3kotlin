@@ -47,11 +47,17 @@ private constructor(
     init {
         // Initialize module
         runCatching {
-            ModuleUtil.entryFuncOf(lib).invoke()
+            ModuleUtil.entryFuncOf(lib)
         }.onFailure {
-            throw Exception("Failed to call entry function", it)
+            Companion.log.warn { "Entry function was not found. Ignored it.: $lib" }
+        }.getOrNull()?.runCatching {
+            this.invoke()
+        }?.onFailure {
+            Companion.log.error { "Failed to call entry function: $lib" }
+            throw Exception("Failed to call entry function: $lib")
+        }?.onSuccess {
+            Companion.log.info { "Succes Entry $libPath" }
         }
-        Companion.log.info { "Succes Entry $libPath" }
         // Get Plugin factory
         val factoryPtr = runCatching {
             ModuleUtil.factoryGetterOf(lib).invoke()
@@ -65,7 +71,15 @@ private constructor(
     override fun close() {
         isOpen = false
         factory.close()
-        ModuleUtil.exitFuncOf(lib)
+        runCatching {
+            ModuleUtil.exitFuncOf(lib)
+        }.onFailure {
+            Companion.log.warn { "Exit function was not found. Ignored it.: $lib" }
+        }.getOrNull()?.runCatching {
+            this.invoke()
+        }?.onFailure {
+            Companion.log.error { "Failed to call exit function: $lib" }
+        }
         lib.close()
         log.info { "Closed Module $libPath" }
     }
