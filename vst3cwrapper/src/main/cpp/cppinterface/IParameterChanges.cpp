@@ -118,12 +118,7 @@ uint32 SIParamValueQueue_addRef(void *this_ptr) {
 uint32 SIParamValueQueue_release(void *this_ptr) {
     auto ptr = reinterpret_cast<SIParamValueQueue *>(this_ptr);
     ptr->refCount--;
-    if (ptr->refCount <= 0) {
-        //SIParamValueQueue_free(ptr);
-        return 0;
-    } else {
-        return ptr->refCount;
-    }
+    return ptr->refCount;
 }
 
 uint32 SIParameterChanges_addRef(void *this_ptr) {
