@@ -33,6 +33,14 @@ private constructor(
             controller.setComponentHandler(ComponentHandler(hostContext.ptr))
             component.connectEach(controller)
             // set buses  // TODO: implement audio buffer
+            processor.setupProcessing(
+                ProcessSetup(
+                    processMode = ProcessMode.Realtime,
+                    sampleSize = SymbolicSampleSize.Sample32,
+                    maxSamplesPerBlock = 2048,
+                    sampleRate = 48000.0
+                )
+            )
             component.audioInputBusInfos.forEach { bus ->
                 component.activate(bus, true)
             }
