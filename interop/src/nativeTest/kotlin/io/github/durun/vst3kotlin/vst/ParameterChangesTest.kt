@@ -1,6 +1,7 @@
 package io.github.durun.vst3kotlin.vst
 
 import cwrapper.*
+import io.github.durun.io.use
 import io.kotest.matchers.shouldBe
 import kotlinx.cinterop.*
 import kotlin.test.Test
@@ -81,6 +82,41 @@ class ParameterChangesTest {
             outGain.value shouldBe gain
         }
         FUnknown_release(params.reinterpret())
+    }
+
+    @Test
+    fun testByKotlinInterface() {
+        // test data
+        val paramID = 114u
+        val offset = 5
+        val gain = 0.9
+
+        val params = allocIParameterChanges()
+        memScoped {
+            val index = alloc<IntVar>()
+            val id = alloc<UIntVar>().apply { this.value = paramID }
+            IParameterChanges_addParameterData(params, id.ptr, index.ptr)
+
+            val queue = IParameterChanges_getParameterData(params, index.value)!!
+
+            val qIndex = alloc<IntVar>()
+            IParamValueQueue_addPoint(queue, offset, gain, qIndex.ptr)
+
+            val outOffset = alloc<IntVar>()
+            val outGain = alloc<ParamValueVar>()
+            IParamValueQueue_getPoint(queue, qIndex.value, outOffset.ptr, outGain.ptr)
+        }
+
+        ParameterChanges(params).use { p ->
+            val q = p[0]
+            checkNotNull(q)
+            q.use {
+                q.parameterID shouldBe paramID
+                q.points[0].sampleOffset shouldBe offset
+                q.points[0].value shouldBe gain
+                println("close queue...")
+            }
+        }
     }
 
     private fun allocIParameterChanges(): CPointer<IParameterChanges> {
