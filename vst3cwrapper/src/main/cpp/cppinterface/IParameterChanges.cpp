@@ -91,7 +91,7 @@ IParamValueQueue *SIParameterChanges_addParameterData(
     SIParamValueQueue *paramPtr = &(ptr->_params[newIndex]);
     SIParamValueQueue_init(paramPtr);
     paramPtr->_id = *id;
-    return reinterpret_cast<IParamValueQueue *>(paramPtr);
+    return cast(paramPtr);
 }
 
 void SIParamValueQueue_init(SIParamValueQueue *ptr) {
@@ -105,7 +105,7 @@ void SIParameterChanges_init(SIParameterChanges *ptr) {
     ptr->refCount = 1;
     ptr->_paramCount = 0;
     for (int i = 0; i < MaxParamValueQueue; ++i) {
-        SIParamValueQueue_init(reinterpret_cast<SIParamValueQueue *>(&(ptr->_params[i])));
+        SIParamValueQueue_init(&(ptr->_params[i]));
     }
 }
 
