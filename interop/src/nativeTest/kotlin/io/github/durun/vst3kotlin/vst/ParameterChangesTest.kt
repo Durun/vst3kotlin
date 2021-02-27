@@ -38,6 +38,57 @@ class ParameterChangesTest {
         }
     }
 
+    @Test
+    fun testViaCInterface() {
+        // test data
+        val paramID = 114u
+        val offset = 5
+        val gain = 0.9
+
+        val params = allocIParameterChanges()
+        memScoped {
+            val index = alloc<IntVar>()
+            val id = alloc<UIntVar>().apply { this.value = paramID }
+            SIParameterChanges_addParameterData(params, id.ptr, index.ptr)
+            SIParameterChanges_getParameterCount(params) shouldBe 1
+
+            val queue = SIParameterChanges_getParameterData(params, index.value)!!
+            queue.reinterpret<SIParamValueQueue>().pointed.apply {
+                _pointCount shouldBe 0
+                _id shouldBe paramID
+            }
+
+            val qIndex = alloc<IntVar>()
+            SIParamValueQueue_addPoint(queue, offset, gain, qIndex.ptr)
+            SIParamValueQueue_getPointCount(queue) shouldBe 1
+
+            val outOffset = alloc<IntVar>()
+            val outGain = alloc<ParamValueVar>()
+            SIParamValueQueue_getPoint(queue, qIndex.value, outOffset.ptr, outGain.ptr)
+            outOffset.value shouldBe offset
+            outGain.value shouldBe gain
+        }
+
+        // read data
+        println("getParameterCount...")
+        IParameterChanges_getParameterCount(params) shouldBe 1
+        println("getParameterData...")
+        val queue = IParameterChanges_getParameterData(params, 0)
+        checkNotNull(queue)
+        println("getPointCount...")
+        IParamValueQueue_getPointCount(queue) shouldBe 1
+        println("getParameterId...")
+        IParamValueQueue_getParameterId(queue) shouldBe paramID
+        memScoped {
+            val outOffset = alloc<IntVar>()
+            val outGain = alloc<ParamValueVar>()
+            println("getPoint...")
+            IParamValueQueue_getPoint(queue, 0, outOffset.ptr, outGain.ptr)
+            outOffset.value shouldBe offset
+            outGain.value shouldBe gain
+        }
+    }
+
     private fun allocIParameterChanges(): CPointer<IParameterChanges> {
         val struct: CPointer<SIParameterChanges> = SIParameterChanges_alloc()
             ?: throw Exception("Failed to allocate SIParameterChanges")
