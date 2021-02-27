@@ -48,4 +48,5 @@ int test_ByteQueue() {
 
     ByteQueue_free(queue);
     ByteQueue_free(queue2);
+    return 0;
 }

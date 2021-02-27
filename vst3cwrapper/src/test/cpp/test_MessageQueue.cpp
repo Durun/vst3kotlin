@@ -38,4 +38,5 @@ int test_MessageQueue() {
     for (int i = 0; i < MessageQueueLength; i++) {
         assert(buf[i] == 'F');
     }
+    return 0;
 }

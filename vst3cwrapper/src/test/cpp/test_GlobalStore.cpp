@@ -12,4 +12,5 @@ int test_GlobalStore() {
 
     GlobalStore_write(GlobalStoreSize - 1, (void*)0xABCDEF);
     assert(GlobalStore_read(GlobalStoreSize - 1) == (void*)0xABCDEF);
+    return 0;
 }
