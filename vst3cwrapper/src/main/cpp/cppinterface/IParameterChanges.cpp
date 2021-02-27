@@ -119,7 +119,7 @@ uint32 SIParamValueQueue_release(void *this_ptr) {
     auto ptr = reinterpret_cast<SIParamValueQueue *>(this_ptr);
     ptr->refCount--;
     if (ptr->refCount <= 0) {
-        SIParamValueQueue_free(ptr);
+        //SIParamValueQueue_free(ptr);
         return 0;
     } else {
         return ptr->refCount;
