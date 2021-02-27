@@ -18,28 +18,27 @@ void SIComponentHandler2_free(SIComponentHandler2 *ptr) {
     Struct_free(ptr);
 }
 
-SIParameterChanges *SIParameterChanges_alloc() {
+SIParameterChanges *SIParameterChanges_alloc(int32 maxParams, int32 maxPoints) {
     auto ptr = alloc<SIParameterChanges>();
-    auto params = allocArray<SIParamValueQueue>(MaxParamValueQueue);
-    ptr->_params = params;
+    ptr->_params = allocArray<SIParamValueQueue>(maxParams);
+    ptr->maxParams = maxParams;
     if (ptr->_params == nullptr) { exit(1); }
 
-    for (int i = 0; i < MaxParamValueQueue; ++i) {
-        params[i]._sampleOffset = allocArray<int32>(MaxPointPerFrame);
-        params[i]._value = allocArray<ParamValue>(MaxPointPerFrame);
-        if (params[i]._sampleOffset == nullptr) { exit(1); }
-        if (params[i]._value == nullptr) { exit(1); }
+    for (int i = 0; i < maxParams; ++i) {
+        ptr->_params[i].maxPoints = maxPoints;
+        ptr->_params[i]._sampleOffset = allocArray<int32>(maxPoints);
+        ptr->_params[i]._value = allocArray<ParamValue>(maxPoints);
+        if (ptr->_params[i]._sampleOffset == nullptr) { exit(1); }
+        if (ptr->_params[i]._value == nullptr) { exit(1); }
     }
     return ptr;
 }
 
-void SIParamValueQueue_free(SIParamValueQueue *ptr) {
-    free(ptr->_sampleOffset);
-    free(ptr->_value);
-    free(ptr);
-}
-
 void SIParameterChanges_free(SIParameterChanges *ptr) {
-    SIParamValueQueue_free(reinterpret_cast<SIParamValueQueue *>(ptr->_params));
+    for (int i = 0; i < ptr->maxParams; ++i) {
+        free(ptr->_params[i]._sampleOffset);
+        free(ptr->_params[i]._value);
+    }
+    free(ptr->_params);
     free(ptr);
 }

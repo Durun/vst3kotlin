@@ -6,7 +6,7 @@
 
 int test_IParameterChanges() {
     fprintf(stderr, "--test_IParameterChanges--\n");
-    auto sParams = SIParameterChanges_alloc();
+    auto sParams = SIParameterChanges_alloc(8, 8);
 
     fprintf(stderr, "init IParameterChanges...\n");
     SIParameterChanges_init(sParams);

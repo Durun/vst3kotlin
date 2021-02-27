@@ -12,10 +12,6 @@ extern "C" {
 #define nullptr (0)
 #endif
 
-const int32 MaxPointPerFrame = 32;
-const int32 MaxParamValueQueue = 32;
-
-
 uint32 SIParamValueQueue_addRef(void *this_ptr);
 uint32 SIParamValueQueue_release(void *this_ptr);
 ParamID SIParamValueQueue_getParameterId(IParamValueQueue *this_ptr);
@@ -49,6 +45,7 @@ typedef struct SIParamValueQueue {
     const IParamValueQueueVTable *vtable;
     int32 refCount;
 
+    int32 maxPoints;
     int32 _pointCount;
     ParamID _id;
     int32 *_sampleOffset;
@@ -85,14 +82,13 @@ typedef struct SIParameterChanges {
     const IParameterChangesVTable *vtable;
     int32 refCount;
 
+    int32 maxParams;
     int32 _paramCount;
     SIParamValueQueue *_params;
 } SIParameterChanges;
 
 // managing functions
-SIParamValueQueue *SIParamValueQueue_alloc();
-SIParameterChanges *SIParameterChanges_alloc();
-void SIParamValueQueue_free(SIParamValueQueue *ptr);
+SIParameterChanges *SIParameterChanges_alloc(int32 maxParams, int32 maxPoints);
 void SIParameterChanges_free(SIParameterChanges *ptr);
 void SIParamValueQueue_init(SIParamValueQueue *ptr);
 void SIParameterChanges_init(SIParameterChanges *ptr);

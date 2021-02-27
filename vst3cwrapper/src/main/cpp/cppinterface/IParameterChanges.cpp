@@ -60,7 +60,7 @@ tresult SIParamValueQueue_getPoint(
 tresult SIParamValueQueue_addPoint(
         IParamValueQueue *this_ptr, int32 sampleOffset, ParamValue value, int32 *index/*out*/) {
     SIParamValueQueue *ptr = cast(this_ptr);
-    if (MaxPointPerFrame <= ptr->_pointCount) return kOutOfMemory;
+    if (ptr->maxPoints <= ptr->_pointCount) return kOutOfMemory;
     int32 newIndex = ptr->_pointCount;
     *index = newIndex;
     ptr->_sampleOffset[newIndex] = sampleOffset;
@@ -83,7 +83,7 @@ IParamValueQueue *SIParameterChanges_getParameterData(IParameterChanges *this_pt
 IParamValueQueue *SIParameterChanges_addParameterData(
         IParameterChanges *this_ptr, const ParamID *id, int32 *index/*out*/) {
     auto ptr = cast(this_ptr);
-    if (MaxParamValueQueue <= ptr->_paramCount) return reinterpret_cast<IParamValueQueue *>(kOutOfMemory);
+    if (ptr->maxParams <= ptr->_paramCount) return reinterpret_cast<IParamValueQueue *>(kOutOfMemory);
 
     auto newIndex = ptr->_paramCount;
     *index = newIndex;
@@ -104,7 +104,7 @@ void SIParameterChanges_init(SIParameterChanges *ptr) {
     ptr->vtable = &IParameterChangesVTable_def;
     ptr->refCount = 1;
     ptr->_paramCount = 0;
-    for (int i = 0; i < MaxParamValueQueue; ++i) {
+    for (int i = 0; i < ptr->maxParams; ++i) {
         SIParamValueQueue_init(&(ptr->_params[i]));
     }
 }
