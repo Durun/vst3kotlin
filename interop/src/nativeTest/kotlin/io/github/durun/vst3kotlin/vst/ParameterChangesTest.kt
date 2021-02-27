@@ -83,8 +83,60 @@ class ParameterChangesTest {
         FUnknown_release(params.reinterpret())
     }
 
+    @Test
+    fun readViaKotlinInterface() {
+        // test data
+        val paramID = 114u
+        val offset = 5
+        val gain = 0.9
+
+        val params = allocIParameterChanges()
+        memScoped {
+            val index = alloc<IntVar>()
+            val id = alloc<UIntVar>().apply { this.value = paramID }
+            IParameterChanges_addParameterData(params, id.ptr, index.ptr)
+
+            val queue = IParameterChanges_getParameterData(params, index.value)!!
+
+            val qIndex = alloc<IntVar>()
+            IParamValueQueue_addPoint(queue, offset, gain, qIndex.ptr)
+
+            val outOffset = alloc<IntVar>()
+            val outGain = alloc<ParamValueVar>()
+            IParamValueQueue_getPoint(queue, qIndex.value, outOffset.ptr, outGain.ptr)
+        }
+        // read
+        val kParams = params.toKInterface()
+        val paramMap = kParams.toMap().mapValues { (_, v) -> v.toMap() }
+        println(kParams.toMap().mapValues { (_, v) -> v.toMap() })
+        paramMap shouldBe mapOf(
+            paramID to mapOf(offset to gain)
+        )
+    }
+
+    @Test
+    @kotlin.ExperimentalStdlibApi
+    fun writeViaKotlinInterface() {
+        val data = buildMap<ParamID, Map<Int, ParamValue>> {
+            put(3u, buildMap {
+                put(0, 0.0)
+                put(1, 0.1)
+            })
+            put(5u, buildMap {
+                put(10, 0.6)
+                put(20, 0.7)
+                put(30, 0.8)
+            })
+        }
+        val params = data.toParameterChanges()
+        memScoped {
+            val cParams = params.placeToCInterface(this)
+            cParams.toKInterface().toMap() shouldBe data
+        }
+    }
+
     private fun allocIParameterChanges(): CPointer<IParameterChanges> {
-        val struct: CPointer<SIParameterChanges> = SIParameterChanges_alloc()
+        val struct: CPointer<SIParameterChanges> = SIParameterChanges_alloc(16, 16)
             ?: throw Exception("Failed to allocate SIParameterChanges")
         SIParameterChanges_init(struct)
         return struct.reinterpret()
