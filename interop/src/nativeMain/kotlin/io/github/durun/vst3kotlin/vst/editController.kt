@@ -96,10 +96,9 @@ class EditController(
         check(result == kResultTrue) { result.kResultString }
     }
 
-    fun createView(type: ViewType): PlugView {
-        val ptr = IEditController_createView(ptr, type.value)
-        checkNotNull(ptr)
-        return PlugView(ptr)
+    fun createView(type: ViewType): PlugView? {
+        return IEditController_createView(ptr, type.value)
+            ?.let { PlugView(it) }
     }
 
     @kotlin.ExperimentalUnsignedTypes

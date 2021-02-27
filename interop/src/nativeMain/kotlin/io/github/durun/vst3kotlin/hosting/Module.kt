@@ -5,7 +5,9 @@ import io.github.durun.dylib.Dylib
 import io.github.durun.io.Closeable
 import io.github.durun.log.logger
 import io.github.durun.path.Path
+import io.github.durun.vst3kotlin.base.ClassInfo
 import io.github.durun.vst3kotlin.base.PluginFactory
+import io.github.durun.vst3kotlin.base.UID
 import kotlinx.cinterop.CFunction
 import kotlinx.cinterop.CPointer
 import kotlinx.cinterop.invoke
@@ -47,11 +49,17 @@ private constructor(
     init {
         // Initialize module
         runCatching {
-            ModuleUtil.entryFuncOf(lib).invoke()
+            ModuleUtil.entryFuncOf(lib)
         }.onFailure {
-            throw Exception("Failed to call entry function", it)
+            Companion.log.warn { "Entry function was not found. Ignored it.: $lib" }
+        }.getOrNull()?.runCatching {
+            this.invoke()
+        }?.onFailure {
+            Companion.log.error { "Failed to call entry function: $lib" }
+            throw Exception("Failed to call entry function: $lib")
+        }?.onSuccess {
+            Companion.log.info { "Succes Entry $libPath" }
         }
-        Companion.log.info { "Succes Entry $libPath" }
         // Get Plugin factory
         val factoryPtr = runCatching {
             ModuleUtil.factoryGetterOf(lib).invoke()
@@ -64,8 +72,32 @@ private constructor(
 
     override fun close() {
         isOpen = false
-        ModuleUtil.exitFuncOf(lib)
+        factory.close()
+        runCatching {
+            ModuleUtil.exitFuncOf(lib)
+        }.onFailure {
+            Companion.log.warn { "Exit function was not found. Ignored it.: $lib" }
+        }.getOrNull()?.runCatching {
+            this.invoke()
+        }?.onFailure {
+            Companion.log.error { "Failed to call exit function: $lib" }
+        }
         lib.close()
         log.info { "Closed Module $libPath" }
+    }
+
+    @ExperimentalUnsignedTypes
+    val classes: List<ModuleClass> by lazy {
+        factory.classInfo.map { ModuleClass(it) }
+    }
+
+    inner class ModuleClass
+    constructor(
+        val info: ClassInfo
+    ) {
+        @ExperimentalUnsignedTypes
+        fun createInstance(): PluginInstance {
+            return PluginInstance.create(factory, info.classId)
+        }
     }
 }
