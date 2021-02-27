@@ -8,7 +8,11 @@
 extern "C" {
 #endif
 
-const int32 MaxPointPerFrame = 16;
+#ifndef nullptr
+#define nullptr (0)
+#endif
+
+const int32 MaxPointPerFrame = 32;
 const int32 MaxParamValueQueue = 32;
 
 
