@@ -36,6 +36,7 @@ class ParameterChangesTest {
             outOffset.value shouldBe offset
             outGain.value shouldBe gain
         }
+        SIParameterChanges_free(params.reinterpret())
     }
 
     @Test
@@ -79,6 +80,7 @@ class ParameterChangesTest {
             outOffset.value shouldBe offset
             outGain.value shouldBe gain
         }
+        FUnknown_release(params.reinterpret())
     }
 
     private fun allocIParameterChanges(): CPointer<IParameterChanges> {
