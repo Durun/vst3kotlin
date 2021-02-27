@@ -1,44 +1,85 @@
 package io.github.durun.vst3kotlin.vst
 
+import cwrapper.*
+import cwrapper.ProcessContext
+import cwrapper.ProcessData
 import io.github.durun.io.use
-import io.github.durun.vst3kotlin.Vst3Package
 import io.github.durun.vst3kotlin.base.VstClassCategory
+import io.github.durun.vst3kotlin.hosting.Module
 import io.github.durun.vst3kotlin.testResources
-import io.kotest.matchers.shouldBe
+import kotlinx.cinterop.*
 import kotlin.test.Test
 
 class AudioProcessorTest {
-	val path = testResources.resolve("vst3/hostchecker.vst3")
+    val path = testResources.resolve("vst3/again.vst3")
 
-	@Test
-	fun getInfo() {
-		Vst3Package.open(path).use { plugin ->
-			plugin.openPluginFactory().use { factory ->
-				val cid = factory.classInfo.first { it.category == VstClassCategory.AudioEffect }.classId
-				factory.createAudioProcessor(cid).use { proc ->
-					println(proc.latencySampleSize)
-					println(proc.tailSampleSize)
-					println(proc.processContextRequirement)
-					proc.latencySampleSize shouldBe 256
-					proc.tailSampleSize shouldBe 256
-					proc.processContextRequirement shouldBe ProcessContextRequirement(0b11111111111u)
-				}
-			}
-		}
-	}
+    @Test
+    fun processWithoutParameters() {
+        memScoped {
+            val framePos = 0L
+            val duration = 256
+            val context = alloc<ProcessContext>()
+                .apply {
+                    tempo = 120.0
+                    val beatPerSecond = tempo / 60
+                    sampleRate = 48000.0
+                    projectTimeSamples = framePos
+                    projectTimeMusic = framePos / sampleRate * beatPerSecond
+                    timeSigDenominator = 4
+                    timeSigNumerator = 4
+                    state = kPlaying or kProjectTimeMusicValid or kTempoValid or kTimeSigValid
+                }
+            val input = alloc<AudioBusBuffers>()
+                .apply {
+                    channelBuffers32 = allocArray<CPointerVar<Sample32Var>>(1)
+                        .also {
+                            it[0] = allocArray<FloatVarOf<Sample32>>(duration).also {
+                                (0 until duration).forEach { i -> it[i] = 0.1f }
+                            }
+                        }
+                    numChannels = 1
+                    silenceFlags = 0u
 
-	/*
-	@Test
-	fun getBusArrangement() {
-		Vst3Package.open(testResources.resolve("vst3/hostchecker.vst3")).use { plugin ->
-			plugin.openPluginFactory().use { factory ->
-				val cid = factory.classInfo.first { it.category == VstClassCategory.AudioEffect }.classId
-				factory.createAudioProcessor(cid).use { proc ->
-					println(proc.inputBusArrangements)
-					println(proc.outputBusArrangements)
-				}
-			}
-		}
-	}
-	*/
+                }
+            val output = alloc<AudioBusBuffers>()
+                .apply {
+                    channelBuffers32 = allocArray<CPointerVar<Sample32Var>>(1)
+                        .also { it[0] = allocArray(duration) }
+                    numChannels = 1
+                    silenceFlags = 0u
+
+                }
+            val data = alloc<ProcessData>()
+                .apply {
+                    processContext = context.ptr
+                    processMode = ProcessMode.Realtime.value
+                    symbolicSampleSize = SymbolicSampleSize.Sample32.value
+                    numSamples = duration
+                    numInputs = 1
+                    numOutputs = 1
+                    inputs = input.ptr
+                    outputs = output.ptr
+                }
+
+
+            Module.of(path).use {
+                val clazz = it.classes.find { it.info.category == VstClassCategory.AudioEffect }!!
+                clazz.createInstance().use { instance ->
+                    instance.controller.apply {
+                        println(this.parameterInfo.joinToString("\n"))
+                    }
+                    instance.processor.apply {
+                        println(inputBusArrangements)
+                        println(outputBusArrangements)
+                        println(processContextRequirement)
+                    }
+                    instance.processor.process(data)
+                }
+            }
+
+            println((0 until duration).joinToString { input.channelBuffers32?.get(0)?.get(it).toString() })
+            println((0 until duration).joinToString { output.channelBuffers32?.get(0)?.get(it).toString() })
+
+        }
+    }
 }
