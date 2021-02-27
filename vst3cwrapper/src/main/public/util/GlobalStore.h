@@ -14,6 +14,7 @@ typedef struct GlobalStoreEntry {
 
 static GlobalStoreEntry GlobalStore[GlobalStoreSize] = {};
 
+void GlobalStore_init(int index);
 void GlobalStore_write(int index, void* data);
 void* GlobalStore_read(int index);
 
