@@ -49,24 +49,16 @@ class ParameterChangesTest {
         memScoped {
             val index = alloc<IntVar>()
             val id = alloc<UIntVar>().apply { this.value = paramID }
-            SIParameterChanges_addParameterData(params, id.ptr, index.ptr)
-            SIParameterChanges_getParameterCount(params) shouldBe 1
+            IParameterChanges_addParameterData(params, id.ptr, index.ptr)
 
-            val queue = SIParameterChanges_getParameterData(params, index.value)!!
-            queue.reinterpret<SIParamValueQueue>().pointed.apply {
-                _pointCount shouldBe 0
-                _id shouldBe paramID
-            }
+            val queue = IParameterChanges_getParameterData(params, index.value)!!
 
             val qIndex = alloc<IntVar>()
-            SIParamValueQueue_addPoint(queue, offset, gain, qIndex.ptr)
-            SIParamValueQueue_getPointCount(queue) shouldBe 1
+            IParamValueQueue_addPoint(queue, offset, gain, qIndex.ptr)
 
             val outOffset = alloc<IntVar>()
             val outGain = alloc<ParamValueVar>()
-            SIParamValueQueue_getPoint(queue, qIndex.value, outOffset.ptr, outGain.ptr)
-            outOffset.value shouldBe offset
-            outGain.value shouldBe gain
+            IParamValueQueue_getPoint(queue, qIndex.value, outOffset.ptr, outGain.ptr)
         }
 
         // read data
