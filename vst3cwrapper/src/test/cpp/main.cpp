@@ -7,5 +7,6 @@ int main() {
 	test_ByteQueue();
 	test_LongStore();
 	test_LongArrayStore();
+    test_IParameterChanges();
 	return 0;
 }
