@@ -6,25 +6,14 @@ import io.github.durun.io.Closeable
 import io.github.durun.vst3kotlin.cppinterface.CClass
 import kotlinx.cinterop.*
 
-class FloatAudioBusBuffer(
+abstract class AudioBusBuffer<T : CPointed>(
 	val length: Int,
 	val numChannels: Int,
-	private val placement: NativeFreeablePlacement = nativeHeap
+	protected val placement: NativeFreeablePlacement
 ) : Closeable, CClass {
-	val channels: CArrayPointer<CArrayPointerVar<Sample32Var>> =
-		placement.allocArray<CArrayPointerVar<Sample32Var>>(numChannels)
-			.apply {
-				(0 until numChannels).forEach { i ->
-					this[i] = placement.allocArray(length)
-				}
-			}
-	override val ptr: CPointer<AudioBusBuffers> = placement.alloc<AudioBusBuffers>()
-		.apply {
-			this.numChannels = this@FloatAudioBusBuffer.numChannels
-			silenceFlags = 0u
-			channelBuffers32 = channels
-		}.ptr
-	override var isOpen: Boolean = true
+	abstract val channels: CArrayPointer<CArrayPointerVar<T>>
+	abstract override val ptr: CPointer<AudioBusBuffers>
+	final override var isOpen: Boolean = true
 		private set
 
 	override fun close() {
@@ -36,4 +25,24 @@ class FloatAudioBusBuffer(
 		placement.free(ptr)
 		isOpen = false
 	}
+}
+
+class FloatAudioBusBuffer(
+	length: Int,
+	numChannels: Int,
+	placement: NativeFreeablePlacement = nativeHeap
+) : AudioBusBuffer<Sample32Var>(length, numChannels, placement) {
+	override val channels: CArrayPointer<CArrayPointerVar<Sample32Var>> =
+		placement.allocArray<CArrayPointerVar<Sample32Var>>(numChannels)
+			.apply {
+				(0 until numChannels).forEach { i ->
+					this[i] = placement.allocArray(length)
+				}
+			}
+	override val ptr: CPointer<AudioBusBuffers> = placement.alloc<AudioBusBuffers>()
+		.also {
+			it.numChannels = this.numChannels
+			it.silenceFlags = 0u
+			it.channelBuffers32 = channels
+		}.ptr
 }
