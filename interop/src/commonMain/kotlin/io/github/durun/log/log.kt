@@ -34,27 +34,27 @@ class Logger(val tag: String?) {
     }
 
     fun error(message: () -> Any?) {
-        if (Log.Level.ERROR.importance <= LogLevel.importance)
+        if (LogLevel.importance <= Log.Level.ERROR.importance)
             log("${message()}", Log.Level.ERROR, tag)
     }
 
     fun warn(message: () -> Any?) {
-        if (Log.Level.WARN.importance <= LogLevel.importance)
+        if (LogLevel.importance <= Log.Level.WARN.importance)
             log("${message()}", Log.Level.WARN, tag)
     }
 
     fun info(message: () -> Any?) {
-        if (Log.Level.INFO.importance <= LogLevel.importance)
+        if (LogLevel.importance <= Log.Level.INFO.importance)
             log("${message()}", Log.Level.INFO, tag)
     }
 
     fun debug(message: () -> Any?) {
-        if (Log.Level.DEBUG.importance <= LogLevel.importance)
+        if (LogLevel.importance <= Log.Level.DEBUG.importance)
             log("${message()}", Log.Level.DEBUG, tag)
     }
 
     fun verbose(message: () -> Any?) {
-        if (Log.Level.VERBOSE.importance <= LogLevel.importance)
+        if (LogLevel.importance <= Log.Level.VERBOSE.importance)
             log("${message()}", Log.Level.VERBOSE, tag)
     }
 
