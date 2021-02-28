@@ -38,17 +38,17 @@ data class FrameRate(
 
 @kotlin.ExperimentalUnsignedTypes
 fun ProcessContext.processContextOf(
-	playing: Boolean,
-	cycleActive: Boolean,
-	recording: Boolean,
+	playing: Boolean = false,
+	cycleActive: Boolean = false,
+	recording: Boolean = false,
 	sampleRate: Double,
 	projectTimeSamples: TSamples,
 	systemTime: Long? = null,
 	continousTimeSamples: TSamples? = null,
-	projectTimeMusic: TQuarterNotes? = null,
+	tempo: Double? = null,
+	projectTimeMusic: TQuarterNotes? = tempo?.let { projectTimeSamples / sampleRate * (it / 60) },
 	barPositionMusic: TQuarterNotes? = null,
 	cycleStartEndMusic: Pair<TQuarterNotes, TQuarterNotes>? = null,
-	tempo: Double? = null,
 	timeSig: Fraction? = null,
 	chord: Chord? = null,
 	smpteOffsetSubframes: Int? = null,
