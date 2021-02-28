@@ -11,7 +11,7 @@ val cwrapper = project(":vst3cwrapper")
 
 
 plugins {
-    kotlin("multiplatform") version "1.4.30"
+    kotlin("multiplatform") version "1.4.31"
     id("de.undercouch.download") version "4.1.1"
 }
 
