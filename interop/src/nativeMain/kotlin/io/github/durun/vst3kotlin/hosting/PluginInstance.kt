@@ -1,15 +1,18 @@
 package io.github.durun.vst3kotlin.hosting
 
-import cwrapper.IPlugView
-import cwrapper.IPlugView_iid
+import cwrapper.*
+import cwrapper.FUnknown
 import io.github.durun.io.Closeable
 import io.github.durun.log.logger
-import io.github.durun.vst3kotlin.base.PluginFactory
-import io.github.durun.vst3kotlin.base.UID
+import io.github.durun.vst3kotlin.InterfaceID
+import io.github.durun.vst3kotlin.base.*
 import io.github.durun.vst3kotlin.cppinterface.HostCallback
 import io.github.durun.vst3kotlin.gui.PlugView
 import io.github.durun.vst3kotlin.gui.ViewType
 import io.github.durun.vst3kotlin.vst.*
+import io.github.durun.vst3kotlin.vst.IoMode
+import io.github.durun.vst3kotlin.vst.ProcessSetup
+import kotlinx.cinterop.*
 
 class PluginInstance
 private constructor(
@@ -113,10 +116,7 @@ private constructor(
 
             val platformType = "HWND" // TODO: type for multiplatform
             val plugView = runCatching {
-                val viewAvailable = runCatching { controller.queryVstInterface<IPlugView>(IPlugView_iid) }
-                    .onSuccess { it.close() }
-                    .getOrNull() != null
-                check(viewAvailable)
+                check(isViewExists(from, classID))
                 val view: PlugView? = controller.createView(ViewType.Editor)
                 checkNotNull(view)
             }
@@ -133,6 +133,19 @@ private constructor(
                 .getOrThrow()
 
             return PluginInstance(component, processor, controller, plugView)
+        }
+
+        private fun isViewExists(factory: PluginFactory, classID: UID): Boolean = memScoped {
+            val obj: IPlugView = alloc()
+            val result = IPluginFactory_createInstance(
+                factory.ptr,
+                classID.toFuidPtr(this),
+                InterfaceID.IPlugView.uid.toFuidPtr(this),
+                obj.ptr.reinterpret()
+            )
+            log.assert { "PlugView result: ${result.kResultString}" }
+            if (result == kResultOk) FUnknown_release(obj.ptr.reinterpret())
+            result == kResultOk
         }
     }
 
