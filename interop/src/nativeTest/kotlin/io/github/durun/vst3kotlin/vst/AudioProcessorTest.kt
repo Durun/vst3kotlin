@@ -1,6 +1,8 @@
 package io.github.durun.vst3kotlin.vst
 
-import cwrapper.*
+import cwrapper.AudioBusBuffers
+import cwrapper.ProcessContext
+import cwrapper.Sample32Var
 import io.github.durun.io.use
 import io.github.durun.vst3kotlin.base.VstClassCategory
 import io.github.durun.vst3kotlin.hosting.Module
@@ -12,22 +14,19 @@ class AudioProcessorTest {
     val path = testResources.resolve("vst3/again.vst3")
 
     @kotlin.ExperimentalStdlibApi
+    @kotlin.ExperimentalUnsignedTypes
     @Test
     fun processWithParameters() {
         memScoped {
             val framePos = 0L
             val duration = 16
-            val context = alloc<cwrapper.ProcessContext>()
-                .apply {
-                    tempo = 120.0
-                    val beatPerSecond = tempo / 60
-                    sampleRate = 48000.0
-                    projectTimeSamples = framePos
-                    projectTimeMusic = framePos / sampleRate * beatPerSecond
-                    timeSigDenominator = 4
-                    timeSigNumerator = 4
-                    state = kPlaying or kProjectTimeMusicValid or kTempoValid or kTimeSigValid
-                }
+            val context = alloc<ProcessContext>().processContextOf(
+                playing = true,
+                sampleRate = 48000.0,
+                projectTimeSamples = framePos,
+                tempo = 120.0,
+                timeSig = 4 over 4
+            )
             val data = alloc<cwrapper.ProcessData>()
                 .apply {
                     processContext = context.ptr
