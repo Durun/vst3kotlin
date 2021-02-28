@@ -22,8 +22,6 @@ enum class InterfaceID(val uid: UID) {
 	IParamValueQueue(UID("01263A18ED074F6F98C9D3564686F9BA")),
 	IParameterChanges(UID("A47796630BB64A56B44384A8466FEB9D"));
 
-	override fun toString(): String = "${this::name}($uid)"
-
 	companion object {
 		fun of(uid: UID): InterfaceID? = values().firstOrNull { it.uid == uid }
         fun nameOf(uid: UID):String = of(uid)?.toString() ?: uid.toString()
