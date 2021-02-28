@@ -2,6 +2,7 @@ package io.github.durun.vst3kotlin.vst
 
 import cwrapper.AudioBusBuffers
 import cwrapper.ProcessContext
+import cwrapper.ProcessData
 import cwrapper.Sample32Var
 import io.github.durun.io.use
 import io.github.durun.vst3kotlin.base.VstClassCategory
@@ -27,50 +28,46 @@ class AudioProcessorTest {
                 tempo = 120.0,
                 timeSig = 4 over 4
             )
-            val data = alloc<cwrapper.ProcessData>()
-                .apply {
-                    processContext = context.ptr
-                    processMode = ProcessMode.Realtime.value
-                    symbolicSampleSize = SymbolicSampleSize.Sample32.value
-                    numSamples = duration
-                    numInputs = 1
-                    numOutputs = 1
 
-                    inputs = alloc<AudioBusBuffers>()
-                        .apply {
-                            channelBuffers32 = allocArray<CPointerVar<Sample32Var>>(1)
-                                .also {
-                                    it[0] = allocArray<Sample32Var>(duration).also {
-                                        (0 until duration).forEach { i -> it[i] = 0.1f }
-                                        /** 入力信号 (ずっと0.1) **/
-                                    }
+            val data = alloc<ProcessData>().processDataOf(
+                context = context.ptr,
+                mode = ProcessMode.Realtime,
+                sampleSize = SymbolicSampleSize.Sample32,
+                numSamples = duration,
+                numInputs = 1,
+                numOutputs = 1,
+                inputs = alloc<AudioBusBuffers>()
+                    .apply {
+                        channelBuffers32 = allocArray<CPointerVar<Sample32Var>>(1)
+                            .also {
+                                it[0] = allocArray<Sample32Var>(duration).also {
+                                    (0 until duration).forEach { i -> it[i] = 0.1f }
+                                    /** 入力信号 (ずっと0.1) **/
                                 }
-                            numChannels = 1
-                            silenceFlags = 0u
-                        }.ptr
-
-                    inputParameterChanges = buildParameterChanges {
-                        /** Sample offset を指定しない **/
-                        put(paramID = 0u, value = 4.0)
-                        /** Sample offset を指定する **/
-                        put(paramID = 1u) {
-                            put(sampleOffset = 1, value = 0.0)
-                            put(sampleOffset = 2, value = 1.0)
-                            put(sampleOffset = 3, value = 0.0)
-                            put(sampleOffset = 4, value = 1.0)
-                        }
-                    }.placeToCInterface(this@memScoped)
-
-                    outputs = alloc<AudioBusBuffers>()
-                        /** 出力バッファ **/
-                        .apply {
-                            channelBuffers32 = allocArray<CPointerVar<Sample32Var>>(1)
-                                .also { it[0] = allocArray(duration) }
-                            numChannels = 1
-                            silenceFlags = 0u
-                        }.ptr
-                }
-
+                            }
+                        numChannels = 1
+                        silenceFlags = 0u
+                    }.ptr,
+                inputParam = buildParameterChanges {
+                    /** Sample offset を指定しない **/
+                    put(paramID = 0u, value = 4.0)
+                    /** Sample offset を指定する **/
+                    put(paramID = 1u) {
+                        put(sampleOffset = 1, value = 0.0)
+                        put(sampleOffset = 2, value = 1.0)
+                        put(sampleOffset = 3, value = 0.0)
+                        put(sampleOffset = 4, value = 1.0)
+                    }
+                }.placeToCInterface(this@memScoped),
+                outputs = alloc<AudioBusBuffers>()
+                    /** 出力バッファ **/
+                    .apply {
+                        channelBuffers32 = allocArray<CPointerVar<Sample32Var>>(1)
+                            .also { it[0] = allocArray(duration) }
+                        numChannels = 1
+                        silenceFlags = 0u
+                    }.ptr
+            )
 
             Module.of(path).use {
                 val clazz = it.classes.find { it.info.category == VstClassCategory.AudioEffect }!!
