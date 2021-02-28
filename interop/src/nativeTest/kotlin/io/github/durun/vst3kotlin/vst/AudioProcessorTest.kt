@@ -6,6 +6,7 @@ import io.github.durun.io.use
 import io.github.durun.vst3kotlin.base.VstClassCategory
 import io.github.durun.vst3kotlin.hosting.Module
 import io.github.durun.vst3kotlin.testResources
+import io.kotest.matchers.shouldBe
 import kotlinx.cinterop.*
 import kotlin.test.Test
 
@@ -15,60 +16,57 @@ class AudioProcessorTest {
     @kotlin.ExperimentalStdlibApi
     @kotlin.ExperimentalUnsignedTypes
     @Test
-    fun processWithParameters() {
+    fun process32bit() {
+        val framePos = 0L
+        val duration = 4
+        val outBuffer = FloatAudioBusBuffer(length = duration, numChannels = 1)
+        val inBuffer = FloatAudioBusBuffer(length = duration, numChannels = 1)
+            .apply {
+                /** input signal **/
+                channels[0]?.let {
+                    it[1] = 0.1f
+                    it[2] = 0.2f
+                }
+            }
+
         memScoped {
-            val framePos = 0L
-            val duration = 16
             val context = alloc<ProcessContext>().processContextOf(
                 playing = true,
                 sampleRate = 48000.0,
                 projectTimeSamples = framePos,
-                tempo = 120.0,
-                timeSig = 4 over 4
+                tempo = 120.0,      // optional
+                timeSig = 4 over 4  // optional
             )
-
             val data = alloc<ProcessData>().processDataOf(
                 context = context.ptr,
                 mode = ProcessMode.Realtime,
-                inputAudio = FloatAudioBusBuffer(length = duration, numChannels = 1)
-                    .apply { channels[0]?.set(0, 0.1f) },
-                outputAudio = FloatAudioBusBuffer(length = duration, numChannels = 1),
+                inputAudio = inBuffer,
+                outputAudio = outBuffer,
                 inputParam = buildParameterChanges {
-                    /** Sample offset を指定しない **/
-                    put(paramID = 0u, value = 4.0)
-                    /** Sample offset を指定する **/
-                    put(paramID = 1u) {
-                        put(sampleOffset = 1, value = 0.0)
-                        put(sampleOffset = 2, value = 1.0)
-                        put(sampleOffset = 3, value = 0.0)
-                        put(sampleOffset = 4, value = 1.0)
-                    }
-                }.placeToCInterface(this@memScoped)
+                    /** parameters (Gain) **/
+                    put(paramID = 0u, value = 2.0)
+                }.placeToCInterface(this)
             )
 
             Module.of(path).use {
                 val clazz = it.classes.find { it.info.category == VstClassCategory.AudioEffect }!!
                 clazz.createInstance().use { instance ->
-                    instance.controller.apply {
-                        println(this.parameterInfo.joinToString("\n"))
-                    }
-                    instance.processor.apply {
-                        println(inputBusArrangements)
-                        println(outputBusArrangements)
-                        println(processContextRequirement)
-                    }
                     instance.processor.process(data)
                 }
             }
 
-            data.run {
+            val (inData, outData) = data.run {
                 listOf(inputs, outputs)
             }.map {
                 it?.pointed?.channelBuffers32?.get(0)
                     ?.let { samples -> (0 until duration).map { i -> samples[i] } }
-            }.forEach {
-                println(it)
             }
+            println("input : $inData")
+            println("output: $outData")
+            inData shouldBe listOf(0f, 0.1f, 0.2f, 0f)
+            outData shouldBe listOf(0f, 0.2f, 0.4f, 0f)
         }
+        inBuffer.close()
+        outBuffer.close()
     }
 }
