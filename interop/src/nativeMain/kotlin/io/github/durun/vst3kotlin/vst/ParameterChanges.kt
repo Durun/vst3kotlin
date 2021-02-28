@@ -53,6 +53,35 @@ fun Map<ParamID, Map<Int, ParamValue>>.toParameterChanges(): ParameterChanges {
 	return HashParameterChanges(data)
 }
 
+/**
+ * @sample io.github.durun.vst3kotlin.vst.AudioProcessorTest.processWithParameters
+ */
+fun buildParameterChanges(block: ParameterChangesScope.() -> Unit): ParameterChanges {
+	return ParameterChangesScope().apply(block).build()
+}
+
+class ParameterChangesScope {
+	private val values: MutableMap<ParamID, Map<Int, ParamValue>> = mutableMapOf()
+	fun build(): ParameterChanges = values.toParameterChanges()
+	fun put(paramID: ParamID, block: SingleParameterChangeScope.() -> Unit) {
+		check(!values.containsKey(paramID))
+		values[paramID] = SingleParameterChangeScope().apply(block).param
+	}
+
+	fun put(paramID: ParamID, value: ParamValue) {
+		check(!values.containsKey(paramID))
+		values[paramID] = mapOf(0 to value)
+	}
+}
+
+class SingleParameterChangeScope {
+	private val values: MutableMap<Int, ParamValue> = mutableMapOf()
+	val param: Map<Int, ParamValue> get() = values
+	fun put(sampleOffset: Int, value: ParamValue) {
+		values[sampleOffset] = value
+	}
+}
+
 private class HashSingleParameterChange(
 	private val data: Map<Int, ParamValue>
 ) : SingleParameterChange, Map<Int, ParamValue> by data

@@ -50,16 +50,17 @@ class AudioProcessorTest {
                             silenceFlags = 0u
                         }.ptr
 
-                    inputParameterChanges = buildMap<ParamID, Map<Int, ParamValue>> {
-                        put(0u, buildMap {
-                            put(5, 2.0)
-                            /** Gainパラメータ (@5th sample) **/
-                            put(7, 3.0)
-                            /** Gainパラメータ (@7th sample) **/
-                            put(10, 4.0)
-                            /** Gainパラメータ (@10th sample) **/
-                        })
-                    }.toParameterChanges().placeToCInterface(this@memScoped)
+                    inputParameterChanges = buildParameterChanges {
+                        /** Sample offset を指定しない **/
+                        put(paramID = 0u, value = 4.0)
+                        /** Sample offset を指定する **/
+                        put(paramID = 1u) {
+                            put(sampleOffset = 1, value = 0.0)
+                            put(sampleOffset = 2, value = 1.0)
+                            put(sampleOffset = 3, value = 0.0)
+                            put(sampleOffset = 4, value = 1.0)
+                        }
+                    }.placeToCInterface(this@memScoped)
 
                     outputs = alloc<AudioBusBuffers>()
                         /** 出力バッファ **/
@@ -87,9 +88,14 @@ class AudioProcessorTest {
                 }
             }
 
-            println((0 until duration).joinToString { input.channelBuffers32.get(0).get(it).toString() })
-            println((0 until duration).joinToString { output.channelBuffers32.get(0).get(it).toString() })
-
+            data.run {
+                listOf(inputs, outputs)
+            }.map {
+                it?.pointed?.channelBuffers32?.get(0)
+                    ?.let { samples -> (0 until duration).map { i -> samples[i] } }
+            }.forEach {
+                println(it)
+            }
         }
     }
 }
