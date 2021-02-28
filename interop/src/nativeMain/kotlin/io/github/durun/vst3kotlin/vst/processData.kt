@@ -1,6 +1,5 @@
 package io.github.durun.vst3kotlin.vst
 
-import cwrapper.AudioBusBuffers
 import cwrapper.IEventList
 import cwrapper.IParameterChanges
 import cwrapper.ProcessContext
@@ -8,12 +7,8 @@ import kotlinx.cinterop.CPointer
 
 fun cwrapper.ProcessData.processDataOf(
     mode: ProcessMode,
-    sampleSize: SymbolicSampleSize,
-    numSamples: Int,
-    numInputs: Int,
-    numOutputs: Int,
-    inputs: CPointer<AudioBusBuffers>? = null,
-    outputs: CPointer<AudioBusBuffers>,
+    inputAudio: FloatAudioBusBuffer? = null,
+    outputAudio: FloatAudioBusBuffer,
     inputParam: CPointer<IParameterChanges>? = null,
     outputParam: CPointer<IParameterChanges>? = null,
     inputEvent: CPointer<IEventList>? = null,
@@ -21,12 +16,15 @@ fun cwrapper.ProcessData.processDataOf(
     context: CPointer<ProcessContext>
 ): cwrapper.ProcessData = this.apply {
     this.processMode = mode.value
-    this.symbolicSampleSize = sampleSize.value
-    this.numSamples = numSamples
-    this.numInputs = numInputs
-    this.numOutputs = numOutputs
-    this.inputs = inputs
-    this.outputs = outputs
+    this.symbolicSampleSize = SymbolicSampleSize.Sample32.value
+    this.numSamples = outputAudio.length
+    inputAudio?.let {
+        check(it.length == numSamples) { "Sample size of all audio buffers must be same" }
+        this.numInputs = it.numChannels
+        this.inputs = it.ptr
+    }
+    this.numOutputs = outputAudio.numChannels
+    this.outputs = outputAudio.ptr
     this.inputParameterChanges = inputParam
     this.outputParameterChanges = outputParam
     this.inputEvents = inputEvent
