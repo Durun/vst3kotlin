@@ -1,6 +1,7 @@
 package io.github.durun.vst3kotlin.vst
 
 import cwrapper.*
+import cwrapper.ProcessData
 import io.github.durun.vst3kotlin.base.FUnknown
 import io.github.durun.vst3kotlin.base.kResultString
 import kotlinx.cinterop.*
@@ -81,8 +82,9 @@ class AudioProcessor(
         IAudioProcessor_setProcessing(ptr, state.toByte().toUByte())
     }
 
-    fun process() {
-        TODO()
+    fun process(data: ProcessData) {
+        val result = IAudioProcessor_process(ptr, data.ptr)
+        check(result == kResultOk) { result.kResultString }
     }
 
     @ExperimentalUnsignedTypes

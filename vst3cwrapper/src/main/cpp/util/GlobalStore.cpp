@@ -15,6 +15,10 @@ static void exit_lock(const int index) {
     Lock_exit(&(GlobalStore[index].locked));
 }
 
+void GlobalStore_init(int index) {
+    GlobalStore[index].locked = UNLOCK;
+}
+
 void GlobalStore_write(const int index, void *data) {
     //check
     if (index < 0 || GlobalStoreSize <= index) {

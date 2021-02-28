@@ -10,6 +10,7 @@ enum class InterfaceID(val uid: UID) {
 	IEditController(UID("DCD7BBE37742448DA874AACC979C759E")),
 	IEditController2(UID("7F4EFE59F3204967AC27A3AEAFB63038")),
 	IConnectionPoint(UID("70A4156F6E6E4026989148BFAA60D8D1")),
+	IPlugView(UID("5BC32507D06049EAA6151B522B755B29")),
 	IBStream(UID("C3BF6EA2309947529B6BF9901EE33E9B")),
 	ISizeableStream(UID("04F9549EE02F4E6E87E86A8747F4E17F")),
 	IAudioProcessor(UID("42043F99B7DA453CA569E79D9AAEC33D")),
@@ -20,8 +21,6 @@ enum class InterfaceID(val uid: UID) {
 	IKeyswitchController(UID("1F2F76D3BFFB4B96B99527A55EBCCEF4")),
 	IParamValueQueue(UID("01263A18ED074F6F98C9D3564686F9BA")),
 	IParameterChanges(UID("A47796630BB64A56B44384A8466FEB9D"));
-
-	override fun toString(): String = "${this::name}($uid)"
 
 	companion object {
 		fun of(uid: UID): InterfaceID? = values().firstOrNull { it.uid == uid }

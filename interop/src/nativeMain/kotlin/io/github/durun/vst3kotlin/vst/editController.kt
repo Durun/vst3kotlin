@@ -1,6 +1,7 @@
 package io.github.durun.vst3kotlin.vst
 
 import cwrapper.*
+import io.github.durun.log.logger
 import io.github.durun.vst3kotlin.VstInterface
 import io.github.durun.vst3kotlin.base.BStream
 import io.github.durun.vst3kotlin.base.PluginBase
@@ -12,6 +13,7 @@ import kotlinx.cinterop.*
 class EditController(
     override val ptr: CPointer<IEditController>
 ) : PluginBase() {
+    private val log by logger()
     private val this2: VstInterface<CPointer<IEditController2>> = queryVstInterface(IEditController2_iid)
     private val thisPtr2: CPointer<IEditController2> get() = this2.ptr.reinterpret()
 
@@ -97,8 +99,10 @@ class EditController(
     }
 
     fun createView(type: ViewType): PlugView? {
-        return IEditController_createView(ptr, type.value)
-            ?.let { PlugView(it) }
+        val viewPtr =IEditController_createView(ptr, type.value)
+        log.info { "PlugView pointer = $viewPtr" }
+        checkNotNull(viewPtr)
+        return PlugView(viewPtr)
     }
 
     @kotlin.ExperimentalUnsignedTypes
