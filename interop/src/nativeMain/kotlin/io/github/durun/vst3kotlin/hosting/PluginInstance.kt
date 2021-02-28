@@ -116,7 +116,6 @@ private constructor(
 
             val platformType = "HWND" // TODO: type for multiplatform
             val plugView = runCatching {
-                check(isViewExists(from, classID))
                 val view: PlugView? = controller.createView(ViewType.Editor)
                 checkNotNull(view)
             }
@@ -133,19 +132,6 @@ private constructor(
                 .getOrThrow()
 
             return PluginInstance(component, processor, controller, plugView)
-        }
-
-        private fun isViewExists(factory: PluginFactory, classID: UID): Boolean = memScoped {
-            val obj: IPlugView = alloc()
-            val result = IPluginFactory_createInstance(
-                factory.ptr,
-                classID.toFuidPtr(this),
-                InterfaceID.IPlugView.uid.toFuidPtr(this),
-                obj.ptr.reinterpret()
-            )
-            log.assert { "PlugView result: ${result.kResultString}" }
-            if (result == kResultOk) FUnknown_release(obj.ptr.reinterpret())
-            result == kResultOk
         }
     }
 
