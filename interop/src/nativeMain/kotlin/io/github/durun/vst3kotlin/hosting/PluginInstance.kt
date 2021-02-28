@@ -1,5 +1,7 @@
 package io.github.durun.vst3kotlin.hosting
 
+import cwrapper.IPlugView
+import cwrapper.IPlugView_iid
 import io.github.durun.io.Closeable
 import io.github.durun.log.logger
 import io.github.durun.vst3kotlin.base.PluginFactory
@@ -111,11 +113,15 @@ private constructor(
 
             val platformType = "HWND" // TODO: type for multiplatform
             val plugView = runCatching {
+                val viewAvailable = runCatching { controller.queryVstInterface<IPlugView>(IPlugView_iid) }
+                    .onSuccess { it.close() }
+                    .getOrNull() != null
+                check(viewAvailable)
                 val view: PlugView? = controller.createView(ViewType.Editor)
                 checkNotNull(view)
             }
                 .onSuccess { log.info { "Created PlugView" } }
-                .onFailure { log.warn { "PlugView not implemented" } }
+                .onFailure { log.warn { "PlugView not available" } }
                 .mapCatching { it.apply { check(isPlatformTypeSupported(platformType)) } }
                 .onSuccess { log.info { "$platformType is supported" } }
                 .onFailure { log.warn { "$platformType isn't supported" } }
