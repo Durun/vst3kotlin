@@ -17,7 +17,7 @@ class AudioProcessorTest {
         memScoped {
             val framePos = 0L
             val duration = 16
-            val context = alloc<ProcessContext>()
+            val context = alloc<cwrapper.ProcessContext>()
                 .apply {
                     tempo = 120.0
                     val beatPerSecond = tempo / 60
@@ -28,7 +28,7 @@ class AudioProcessorTest {
                     timeSigNumerator = 4
                     state = kPlaying or kProjectTimeMusicValid or kTempoValid or kTimeSigValid
                 }
-            val data = alloc<ProcessData>()
+            val data = alloc<cwrapper.ProcessData>()
                 .apply {
                     processContext = context.ptr
                     processMode = ProcessMode.Realtime.value
