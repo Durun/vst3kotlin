@@ -32,6 +32,7 @@ private constructor(
                 val libPath = ModuleUtil.libPathOf(path)
                 libPath to Dylib.open(libPath)
             }.recoverCatching {
+                log.warn { "Not found ${ModuleUtil.libPathOf(path)}. Open instead $path" }
                 path to Dylib.open(path)
             }.getOrThrow()
             log.info { "Open Module $libPath" }
