@@ -15,8 +15,8 @@ abstract class PluginBase : FUnknown() {
 		super.close()
 	}
 
-	fun initialize(context: CClass) {
-		val result = IPluginBase_initialize(thisPtr, context.ptr.reinterpret())
+	fun initialize(context: CClass? = null) {
+		val result = IPluginBase_initialize(thisPtr, context?.ptr?.reinterpret())
 		check(result == kResultTrue) {
 			terminate()
 			"${result.kResultString} on initialize"
