@@ -15,7 +15,7 @@ import kotlin.test.Test
 class WindowsControllerTest {
     val path = Path.of("C:\\Program Files\\Common Files\\VST3\\FabFilter Pro-Q 3.vst3") //testResources.resolve("vst3/again.vst3")
 
-    @Test
+    //@Test
     fun test() {
 
         val window = Window.create("VST3", WindowClass.Vst(null))
