@@ -20,6 +20,7 @@ abstract class PluginBase : FUnknown() {
 	}
 
 	fun initialize(context: CClass? = null) {
+		check(!initialized)
 		val result = IPluginBase_initialize(thisPtr, context?.ptr?.reinterpret())
 		check(result == kResultTrue) {
 			terminate()
