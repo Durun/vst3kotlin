@@ -1,5 +1,7 @@
 package io.github.durun.window
 
+import io.github.durun.vst3kotlin.gui.PlatformView
+import io.github.durun.vst3kotlin.gui.PlugView
 import kotlinx.cinterop.*
 import platform.windows.*
 
@@ -39,6 +41,14 @@ class Window(
         }
 
         fun getMessageForAll() = getMessage(null)
+    }
+
+    fun attach(plugView: PlugView) {
+        val size = plugView.size
+        val width = size.right - size.left
+        val height = size.bottom - size.top
+        resize(width, height)
+        plugView.attached(PlatformView(hwnd), platformType)
     }
 
     fun show() {
