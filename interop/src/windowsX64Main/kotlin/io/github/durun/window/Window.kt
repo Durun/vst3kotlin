@@ -8,6 +8,7 @@ class Window(
     val hwnd: HWND
 ) {
     companion object {
+        val platformType: String = "HWND"
         fun create(name: String, windowClass: WindowClass, instance: HINSTANCE? = null): Window {
             val hwnd = memScoped {
                 val parent: HWND? = null
