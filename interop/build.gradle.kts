@@ -79,6 +79,11 @@ kotlin {
             staticLib()
         }
     }
+    targets.withType<KotlinNativeTarget>().findByName("linuxX64")?.compilations?.getByName("main") {
+        cinterops.create("x11") {
+            defFile = projectDir.resolve("src/linuxX64Interop/cinterop/x11.def")
+        }
+    }
 }
 
 tasks { // for compilation
