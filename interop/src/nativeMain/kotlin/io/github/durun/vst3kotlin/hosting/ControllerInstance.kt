@@ -6,7 +6,6 @@ import io.github.durun.vst3kotlin.base.PluginFactory
 import io.github.durun.vst3kotlin.base.UID
 import io.github.durun.vst3kotlin.cppinterface.HostCallback
 import io.github.durun.vst3kotlin.gui.PlugView
-import io.github.durun.vst3kotlin.gui.ViewType
 import io.github.durun.vst3kotlin.vst.Component
 import io.github.durun.vst3kotlin.vst.ComponentHandler
 import io.github.durun.vst3kotlin.vst.EditController
@@ -27,13 +26,12 @@ class ControllerInstance(
 				.onFailure { log.error { "Failed to create component" } }
 				.getOrThrow()
 
-			val controller: EditController = runCatching {
-				component.queryEditController()
-			}.recover {
-				from.createEditController(component.controllerClassID)
-			}
+			val controller: EditController = runCatching { component.queryEditController() }
+				.onSuccess { log.info { "Queried EditController" } }
+				.onFailure { log.warn { "Failed to query EditController. Try create instead." } }
+				.recoverCatching { from.createEditController(component.controllerClassID) }
 				.onSuccess { log.info { "Created EditController" } }
-				.onFailure { log.warn { "Failed to create EditController" } }
+				.onFailure { log.error { "Failed to create EditController" } }
 				.getOrThrow()
 
 			/** Created **/
@@ -63,7 +61,7 @@ class ControllerInstance(
 
 			val platformType = "HWND" // TODO: type for multiplatform
 			val plugView = runCatching {
-				val view: PlugView? = controller.createView(ViewType.Editor)
+				val view: PlugView? = null //controller.createView(ViewType.Editor)
 				checkNotNull(view)
 			}
 				.onSuccess { log.info { "Created PlugView" } }
@@ -71,7 +69,7 @@ class ControllerInstance(
 				.mapCatching { it.apply { check(isPlatformTypeSupported(platformType)) } }
 				.onSuccess { log.info { "$platformType is supported" } }
 				.onFailure { log.warn { "$platformType isn't supported" } }
-				.getOrThrow()
+				.getOrElse { TODO("PlugView is not supported yet.") }
 
 			return ControllerInstance(component, controller, plugView)
 		}
