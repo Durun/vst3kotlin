@@ -10,8 +10,12 @@ import kotlinx.cinterop.reinterpret
 
 abstract class PluginBase : FUnknown() {
 	private val thisPtr: CPointer<IPluginBase> get() = ptr.reinterpret()
+
+	private var initialized: Boolean = false
+
 	override fun close() {
-		terminate()
+		if (initialized) terminate()
+		initialized = false
 		super.close()
 	}
 
@@ -21,6 +25,7 @@ abstract class PluginBase : FUnknown() {
 			terminate()
 			"${result.kResultString} on initialize"
 		}
+		initialized = true
 	}
 
 	fun terminate() {
