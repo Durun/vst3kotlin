@@ -7,7 +7,6 @@ import io.github.durun.log.logger
 import io.github.durun.path.Path
 import io.github.durun.vst3kotlin.base.ClassInfo
 import io.github.durun.vst3kotlin.base.PluginFactory
-import io.github.durun.vst3kotlin.base.UID
 import kotlinx.cinterop.CFunction
 import kotlinx.cinterop.CPointer
 import kotlinx.cinterop.invoke
@@ -33,6 +32,7 @@ private constructor(
                 val libPath = ModuleUtil.libPathOf(path)
                 libPath to Dylib.open(libPath)
             }.recoverCatching {
+                log.warn { "Not found ${ModuleUtil.libPathOf(path)}. Open instead $path" }
                 path to Dylib.open(path)
             }.getOrThrow()
             log.info { "Open Module $libPath" }
@@ -47,43 +47,42 @@ private constructor(
         private set
 
     init {
+        log.info { "Initializing $libPath" }
         // Initialize module
-        runCatching {
-            ModuleUtil.entryFuncOf(lib)
-        }.onFailure {
-            Companion.log.warn { "Entry function was not found. Ignored it.: $lib" }
-        }.getOrNull()?.runCatching {
-            this.invoke()
-        }?.onFailure {
-            Companion.log.error { "Failed to call entry function: $lib" }
-            throw Exception("Failed to call entry function: $lib")
-        }?.onSuccess {
-            Companion.log.info { "Succes Entry $libPath" }
-        }
+        val entryFunc = runCatching { ModuleUtil.entryFuncOf(lib) }
+            .onSuccess { log.info { "Found the entry function" } }
+            .onFailure { log.warn { "Entry function was not found. Ignored it." } }
+            .getOrNull()
+        runCatching { entryFunc?.invoke() }
+            .onSuccess { if (it != null) log.info { "Called entry function" } }
+            .onFailure { log.error { "Failed to call entry function" } }
+            .getOrThrow()
         // Get Plugin factory
-        val factoryPtr = runCatching {
-            ModuleUtil.factoryGetterOf(lib).invoke()
-        }.onFailure {
-            throw Exception("Failed to call 'GetPluginFactory'", it)
-        }.getOrThrow()
-        Companion.log.info { "Succes GetPluginFactory $libPath" }
+        val factoryPtr = runCatching { ModuleUtil.factoryGetterOf(lib) }
+            .onSuccess { log.info { "Found GetPluginFactory" } }
+            .onFailure { log.error { "GetPluginFactory was not found" } }
+            .mapCatching { it.invoke() }
+            .onSuccess { log.info { "Called GetPluginFactory" } }
+            .onFailure { throw Exception("Failed to call 'GetPluginFactory'", it) }
+            .getOrThrow()
         factory = PluginFactory(factoryPtr)
+        log.info { "Got PluginFactory: $lib" }
     }
 
     override fun close() {
+        log.info { "Closing $libPath" }
         isOpen = false
         factory.close()
-        runCatching {
-            ModuleUtil.exitFuncOf(lib)
-        }.onFailure {
-            Companion.log.warn { "Exit function was not found. Ignored it.: $lib" }
-        }.getOrNull()?.runCatching {
-            this.invoke()
-        }?.onFailure {
-            Companion.log.error { "Failed to call exit function: $lib" }
-        }
+        log.info { "Closed factory" }
+        val exitFunc = runCatching { ModuleUtil.exitFuncOf(lib) }
+            .onSuccess { log.info { "Found the exit function" } }
+            .onFailure { log.warn { "Exit function was not found. Ignored it." } }
+            .getOrNull()
+        runCatching { exitFunc?.invoke() }
+            .onSuccess { if (it != null) log.info { "Called exit function" } }
+            .onFailure { log.error { "Failed to call exit function" } }
         lib.close()
-        log.info { "Closed Module $libPath" }
+        log.info { "Closed Module: $lib" }
     }
 
     @ExperimentalUnsignedTypes
