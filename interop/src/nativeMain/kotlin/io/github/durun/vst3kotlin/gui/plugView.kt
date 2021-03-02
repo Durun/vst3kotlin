@@ -4,6 +4,7 @@ import cwrapper.*
 import io.github.durun.vst3kotlin.Adapter
 import io.github.durun.vst3kotlin.base.FUnknown
 import io.github.durun.vst3kotlin.base.kResultString
+import io.github.durun.vst3kotlin.window.Window
 import kotlinx.cinterop.*
 
 class PlatformView(val ptr: COpaquePointer)
@@ -19,8 +20,9 @@ class PlugView(
         return IPlugView_isPlatformTypeSupported(this.ptr, type) == kResultTrue
     }
 
-    fun attached(parent: PlatformView, type: String) {
-        val result = IPlugView_attached(this.ptr, parent.ptr, type)
+    fun attached(window: Window) {
+        window.resize(size.right - size.left, size.bottom - size.top)
+        val result = IPlugView_attached(this.ptr, window.ptr, Window.platformType)
         check(result == kResultTrue) { result.kResultString }
     }
 
@@ -28,12 +30,12 @@ class PlugView(
     fun onWheel(distance: Float): Boolean = IPlugView_onWheel(this.ptr, distance) == kResultTrue
 
     @ExperimentalUnsignedTypes
-	fun onKeyDown(key: Short, keyCode: Short, modifiers: Short): Boolean {
+    fun onKeyDown(key: Short, keyCode: Short, modifiers: Short): Boolean {
         return Adapter.IPlugView.onKeyDown(this.ptr, key, keyCode, modifiers) == kResultTrue
     }
 
     @ExperimentalUnsignedTypes
-	fun onKeyUp(key: Short, keyCode: Short, modifiers: Short): Boolean {
+    fun onKeyUp(key: Short, keyCode: Short, modifiers: Short): Boolean {
         return Adapter.IPlugView.onKeyUp(this.ptr, key, keyCode, modifiers) == kResultTrue
     }
 
@@ -41,7 +43,7 @@ class PlugView(
         get() = memScoped {
             val rect = alloc<cwrapper.ViewRect>()
             val result = IPlugView_getSize(this@PlugView.ptr, rect.ptr)
-			check(result == kResultTrue) { result.kResultString }
+            check(result == kResultTrue) { result.kResultString }
             rect.toKViewRect()
         }
 

@@ -1,0 +1,5 @@
+package = x11
+headers = X11/Xlib.h X11/Xutil.h X11/Xatom.h
+headerFilter = X11/*
+compilerOpts = -I/usr/include/
+linkerOpts = -lX11 -L/usr/lib/

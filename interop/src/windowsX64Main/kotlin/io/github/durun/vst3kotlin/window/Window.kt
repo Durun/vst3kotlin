@@ -1,16 +1,22 @@
-package io.github.durun.window
+package io.github.durun.vst3kotlin.window
 
-import io.github.durun.vst3kotlin.gui.PlatformView
+import io.github.durun.util.Vec2
 import io.github.durun.vst3kotlin.gui.PlugView
 import kotlinx.cinterop.*
 import platform.windows.*
 
-class Window(
-    val name: String,
-    val hwnd: HWND
+actual class Window(
+    private val hwnd: HWND
 ) {
-    companion object {
-        val platformType: String = "HWND"
+    actual val ptr: COpaquePointer = hwnd
+    actual companion object {
+        actual val platformType: String = "HWND"
+        actual fun create(size: Vec2<Int>, name: String): Window {
+            val window = create(name, WindowClass.Vst(null))
+            window.resize(size.x, size.y)
+            return window
+        }
+
         fun create(name: String, windowClass: WindowClass, instance: HINSTANCE? = null): Window {
             val hwnd = memScoped {
                 val parent: HWND? = null
@@ -28,7 +34,7 @@ class Window(
                 checkNotNull(hwnd)
                 hwnd
             }
-            return Window(name, hwnd)
+            return Window(hwnd)
         }
 
         private fun getMessage(hwnd: HWND?): tagMSG {
@@ -48,24 +54,27 @@ class Window(
         val width = size.right - size.left
         val height = size.bottom - size.top
         resize(width, height)
-        plugView.attached(PlatformView(hwnd), platformType)
+        plugView.attached(this)
     }
 
-    fun show() {
+    actual fun show() {
         ShowWindow(hwnd, SW_SHOW)
     }
 
-    fun resize(width: Int, height: Int) {
+    actual fun resize(width: Int, height: Int) {
         SetWindowPos(
             hwnd, HWND_TOP,
             0, 0,
             width, height,
             (SWP_NOMOVE or SWP_NOCOPYBITS).toUInt()
         )
-
     }
 
-    fun getMessage() = Companion.getMessage(hwnd)
+    actual fun loop(continueNext: (WindowEvent) -> Boolean) {
+        do {
+            val event = getMessage(hwnd).toKEvent()
+        } while (continueNext(event))
+    }
 }
 
 sealed class DwStyle(private val flags: Int) {
