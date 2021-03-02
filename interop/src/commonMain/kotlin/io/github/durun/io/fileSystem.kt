@@ -1,4 +1,4 @@
-package io.github.durun.path
+package io.github.durun.io
 
 expect val DEFAULT_FILESYSTEM: FileSystem
 

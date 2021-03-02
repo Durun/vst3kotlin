@@ -1,5 +1,6 @@
 package io.github.durun.path
 
+import io.github.durun.io.WindowsPath
 import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.matchers.shouldBe
 import io.kotest.matchers.shouldNotBe

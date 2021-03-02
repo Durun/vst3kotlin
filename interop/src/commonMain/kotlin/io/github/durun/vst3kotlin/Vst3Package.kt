@@ -1,6 +1,6 @@
 package io.github.durun.vst3kotlin
 
-import io.github.durun.path.Path
+import io.github.durun.io.Path
 import io.github.durun.resource.Closeable
 import io.github.durun.vst3kotlin.base.PluginFactory
 

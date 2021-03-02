@@ -1,7 +1,7 @@
 package io.github.durun.dylib
 
 
-import io.github.durun.path.Path
+import io.github.durun.io.Path
 import io.github.durun.resource.Closeable
 import kotlinx.cinterop.CFunction
 import kotlinx.cinterop.CPointed

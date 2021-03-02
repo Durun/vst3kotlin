@@ -1,6 +1,4 @@
-package io.github.durun.path
-
-import io.github.durun.path.WindowsPath.Companion.checkIsValidPath
+package io.github.durun.io
 
 class WindowsPath
 private constructor(

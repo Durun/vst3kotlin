@@ -1,7 +1,7 @@
 package io.github.durun.dylib
 
-import io.github.durun.path.Path
-import io.github.durun.path.exists
+import io.github.durun.io.Path
+import io.github.durun.io.exists
 import io.github.durun.resource.Closeable
 import kotlinx.cinterop.*
 import platform.posix.*

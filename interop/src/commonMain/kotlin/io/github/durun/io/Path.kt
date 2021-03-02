@@ -1,4 +1,4 @@
-package io.github.durun.path
+package io.github.durun.io
 
 interface Path {
     fun resolve(other: String): Path

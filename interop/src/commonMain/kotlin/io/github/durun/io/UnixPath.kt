@@ -1,4 +1,4 @@
-package io.github.durun.path
+package io.github.durun.io
 
 class UnixPath
 private constructor(
