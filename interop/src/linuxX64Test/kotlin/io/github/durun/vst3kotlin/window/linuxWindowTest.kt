@@ -1,10 +1,8 @@
-package io.github.durun.window
+package io.github.durun.vst3kotlin.window
 
 import io.github.durun.io.use
 import io.github.durun.util.Vec2
-import io.github.durun.util.toUInt
 import io.github.durun.vst3kotlin.base.VstClassCategory
-import io.github.durun.vst3kotlin.gui.PlatformView
 import io.github.durun.vst3kotlin.hosting.ControllerInstance
 import io.github.durun.vst3kotlin.hosting.Module
 import io.github.durun.vst3kotlin.testResources
@@ -171,32 +169,25 @@ class LinuxWindowTest {
 	@Test
 	fun wrapperWindow() {
 		val size = Vec2(480, 320)
-		val window = Window.create(size.toUInt(), "VST3")
+		val window = Window.create(size, "VST3")
 
-		val path = testResources.resolve("vst3/Witty Audio CLIP It.vst3")
+		val path = testResources.resolve("vst3/again.vst3")
 
 		Module.of(path).use { module ->
 			println("Module open.")
 			val classInfo = module.factory.classInfo.first { it.category == VstClassCategory.AudioEffect }
 			ControllerInstance.create(module.factory, classInfo.classId).use {
 				println("ControllerInstance open.")
-				it.plugView?.attached(PlatformView(window.window.toLong().toCPointer()!!), "X11EmbedWindowID")
+				it.plugView?.attached(window)
 				println("attached")
 			}
 			println("ControllerInstance closed.")
 
-
-
 			window.show()
 			println("loop start")
-			while (window.getEvent() != DestroyNotify) {
-				usleep(1000)
-			}
-
+			window.loop { it !is WindowEvent.OnClosed }
 
 		}
 		println("Module closed.")
-
-
 	}
 }

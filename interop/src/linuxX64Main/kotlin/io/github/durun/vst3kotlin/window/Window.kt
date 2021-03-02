@@ -1,19 +1,41 @@
-package io.github.durun.window
+package io.github.durun.vst3kotlin.window
 
 import io.github.durun.log.logger
 import io.github.durun.util.Vec2
 import io.github.durun.util.toUInt
 import kotlinx.cinterop.*
+import platform.posix.usleep
 import x11.*
 
-class Window(
-	val window: x11.Window,
-	val parentWindow: x11.Window,
-	val display: CPointer<Display>
+actual class Window(
+	private val window: x11.Window,
+	private val parentWindow: x11.Window,
+	private val display: CPointer<Display>
 ) {
-	companion object {
-		val log by logger()
-		fun create(size: Vec2<UInt>, name: String = "", resizeable: Boolean = true): Window {
+	actual val ptr: COpaquePointer = window.toLong().toCPointer()!!
+	actual fun show() {
+		XMapWindow(display, window)
+	}
+
+	actual fun loop(continueNext: (WindowEvent) -> Boolean) {
+		var running = true
+		memScoped {
+			val event: XEvent = alloc()
+			do {
+				if (0 < XPending(display)) {
+					XNextEvent(display, event.ptr)
+					running = continueNext(event.toKEvent())
+				} else usleep(1000)
+			} while (running)
+		}
+	}
+
+	actual companion object {
+		private val log by logger()
+		actual val platformType: String = "X11EmbedWindowID"
+		actual fun create(size: Vec2<Int>, name: String): Window {
+			val uSize = size.toUInt()
+			val resizeable = true
 			val display = XOpenDisplay(null) ?: error("Can't open display")
 			log.info { "Opened display" }
 
@@ -48,10 +70,10 @@ class Window(
 					flags = PMinSize
 					if (!resizeable) {
 						flags = flags or PMaxSize
-						min_width = size.x.toInt()
-						max_width = size.x.toInt()
-						min_height = size.y.toInt()
-						max_height = size.y.toInt()
+						min_width = size.x
+						max_width = size.x
+						min_height = size.y
+						max_height = size.y
 					} else {
 						min_width = 80
 						min_height = 80
@@ -88,12 +110,12 @@ class Window(
 					}
 
 				XCreateWindow(
-					display, window, 0, 0, size.x, size.y, borderWidth,
+					display, window, 0, 0, uSize.x, uSize.y, borderWidth,
 					vInfo.depth, InputOutput, null, attrMask.toULong(), attr.ptr
 				)
 			}
 			XFlush(display)
-			XResizeWindow(display, window, size.x, size.y)
+			XResizeWindow(display, window, uSize.x, uSize.y)
 			XSelectInput(
 				display, window,
 				ExposureMask or StructureNotifyMask or SubstructureNotifyMask or FocusChangeMask
@@ -101,17 +123,5 @@ class Window(
 			XSelectInput(display, parentWindow, SubstructureNotifyMask or PropertyChangeMask)
 			return Window(window, parentWindow, display)
 		}
-	}
-
-	fun show() {
-		XMapWindow(display, window)
-	}
-
-	fun getEvent(): Int? = memScoped {
-		val event: XEvent = alloc<XEvent>()
-		if (0 < XPending(display)) {
-			XNextEvent(display, event.ptr)
-			event.type
-		} else null
 	}
 }
