@@ -1,4 +1,4 @@
-package io.github.durun.io
+package io.github.durun.resource
 
 /**
  * [Closeable] is not thread-safe.

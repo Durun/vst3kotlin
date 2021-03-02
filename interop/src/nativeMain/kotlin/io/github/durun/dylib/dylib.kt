@@ -1,9 +1,11 @@
 package io.github.durun.dylib
 
 
-import io.github.durun.io.Closeable
 import io.github.durun.path.Path
-import kotlinx.cinterop.*
+import io.github.durun.resource.Closeable
+import kotlinx.cinterop.CFunction
+import kotlinx.cinterop.CPointed
+import kotlinx.cinterop.CPointer
 
 expect class Dylib: Closeable {
     companion object {

@@ -1,5 +1,6 @@
 package io.github.durun.io
 
+import io.github.durun.resource.RefCounted
 import io.kotest.assertions.throwables.shouldThrowAny
 import io.kotest.matchers.shouldBe
 import kotlin.native.concurrent.ThreadLocal

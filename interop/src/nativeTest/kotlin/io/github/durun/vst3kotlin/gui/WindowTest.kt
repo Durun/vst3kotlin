@@ -1,6 +1,6 @@
 package io.github.durun.vst3kotlin.gui
 
-import io.github.durun.io.use
+import io.github.durun.resource.use
 import io.github.durun.util.Vec2
 import io.github.durun.vst3kotlin.base.VstClassCategory
 import io.github.durun.vst3kotlin.cppinterface.HostCallback
@@ -8,7 +8,6 @@ import io.github.durun.vst3kotlin.hosting.Module
 import io.github.durun.vst3kotlin.testResources
 import io.github.durun.vst3kotlin.window.Window
 import io.github.durun.vst3kotlin.window.WindowEvent
-import kotlin.test.Test
 
 class WindowTest {
     //@Test

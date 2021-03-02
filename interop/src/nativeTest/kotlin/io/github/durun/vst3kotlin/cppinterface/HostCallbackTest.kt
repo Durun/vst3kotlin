@@ -1,6 +1,6 @@
 package io.github.durun.vst3kotlin.cppinterface
 
-import io.github.durun.io.use
+import io.github.durun.resource.use
 import io.github.durun.vst3kotlin.vst.ComponentHandler
 import io.kotest.matchers.shouldBe
 import kotlin.test.Test

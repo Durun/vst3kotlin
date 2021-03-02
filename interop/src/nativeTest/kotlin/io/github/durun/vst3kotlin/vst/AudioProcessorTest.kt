@@ -2,7 +2,7 @@ package io.github.durun.vst3kotlin.vst
 
 import cwrapper.ProcessContext
 import cwrapper.ProcessData
-import io.github.durun.io.use
+import io.github.durun.resource.use
 import io.github.durun.vst3kotlin.base.VstClassCategory
 import io.github.durun.vst3kotlin.hosting.Module
 import io.github.durun.vst3kotlin.testResources

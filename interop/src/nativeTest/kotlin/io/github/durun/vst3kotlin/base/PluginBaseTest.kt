@@ -1,6 +1,6 @@
 package io.github.durun.vst3kotlin.base
 
-import io.github.durun.io.use
+import io.github.durun.resource.use
 import io.github.durun.vst3kotlin.Vst3Package
 import io.github.durun.vst3kotlin.cppinterface.HostCallback
 import io.github.durun.vst3kotlin.testResources

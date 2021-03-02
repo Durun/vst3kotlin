@@ -1,4 +1,4 @@
-package io.github.durun.io
+package io.github.durun.resource
 
 expect class RefCounted<T>(
     onOpen: () -> T,

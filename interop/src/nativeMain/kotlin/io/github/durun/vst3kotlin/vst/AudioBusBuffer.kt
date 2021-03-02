@@ -2,7 +2,7 @@ package io.github.durun.vst3kotlin.vst
 
 import cwrapper.AudioBusBuffers
 import cwrapper.Sample32Var
-import io.github.durun.io.Closeable
+import io.github.durun.resource.Closeable
 import io.github.durun.vst3kotlin.cppinterface.CClass
 import kotlinx.cinterop.*
 

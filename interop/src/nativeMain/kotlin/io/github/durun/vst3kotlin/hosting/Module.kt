@@ -2,9 +2,9 @@ package io.github.durun.vst3kotlin.hosting
 
 import cwrapper.IPluginFactory
 import io.github.durun.dylib.Dylib
-import io.github.durun.io.Closeable
 import io.github.durun.log.logger
 import io.github.durun.path.Path
+import io.github.durun.resource.Closeable
 import io.github.durun.vst3kotlin.base.ClassInfo
 import io.github.durun.vst3kotlin.base.PluginFactory
 import kotlinx.cinterop.CFunction

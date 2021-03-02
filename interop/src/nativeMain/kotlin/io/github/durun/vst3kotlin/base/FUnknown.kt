@@ -2,8 +2,8 @@ package io.github.durun.vst3kotlin.base
 
 import cwrapper.*
 import cwrapper.FUnknown
-import io.github.durun.io.Closeable
 import io.github.durun.log.logger
+import io.github.durun.resource.Closeable
 import io.github.durun.vst3kotlin.InterfaceID
 import io.github.durun.vst3kotlin.VstInterface
 import io.github.durun.vst3kotlin.cppinterface.CClass

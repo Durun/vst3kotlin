@@ -31,7 +31,7 @@ actual class Window(
 	}
 
 	actual fun resize(width: Int, height: Int) {
-		XResizeWindow(display, window, width, height)
+		XResizeWindow(display, window, width.toUInt(), height.toUInt())
 	}
 
 	actual companion object {

@@ -2,7 +2,7 @@ package io.github.durun.vst3kotlin.base
 
 import cwrapper.PFactoryInfo
 import cwrapper.SIPluginFactory
-import io.github.durun.io.Closeable
+import io.github.durun.resource.Closeable
 import kotlinx.cinterop.*
 
 class SPluginFactory(
