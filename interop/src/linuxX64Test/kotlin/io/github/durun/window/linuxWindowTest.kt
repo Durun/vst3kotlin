@@ -1,6 +1,8 @@
 package io.github.durun.window
 
 import io.github.durun.io.use
+import io.github.durun.util.Vec2
+import io.github.durun.util.toUInt
 import io.github.durun.vst3kotlin.base.VstClassCategory
 import io.github.durun.vst3kotlin.gui.PlatformView
 import io.github.durun.vst3kotlin.hosting.ControllerInstance
