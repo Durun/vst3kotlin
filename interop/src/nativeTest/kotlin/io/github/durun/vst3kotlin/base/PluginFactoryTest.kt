@@ -1,7 +1,7 @@
 package io.github.durun.vst3kotlin.base
 
 import io.github.durun.resource.use
-import io.github.durun.vst3kotlin.Vst3Package
+import io.github.durun.vst3kotlin.hosting.Module
 import io.github.durun.vst3kotlin.pluginterface.base.ClassInfo
 import io.github.durun.vst3kotlin.pluginterface.base.FactoryInfo
 import io.github.durun.vst3kotlin.pluginterface.base.UID
@@ -15,10 +15,8 @@ class PluginFactoryTest {
 
 	@Test
 	fun factoryInfo() {
-		val info = Vst3Package.open(path).use { plugin ->
-			plugin.openPluginFactory().use {
-				it.factoryInfo
-			}
+		val info = Module.of(path).use { plugin ->
+			plugin.factory.factoryInfo
 		}
 		println(info)
 		info shouldBe FactoryInfo(
@@ -37,10 +35,8 @@ class PluginFactoryTest {
 
 	@Test
 	fun classInfo() {
-		val classes = Vst3Package.open(path).use { plugin ->
-			plugin.openPluginFactory().use {
-				it.classInfo
-			}
+		val classes = Module.of(path).use { plugin ->
+			plugin.factory.classInfo
 		}
 		println(classes.joinToString("\n"))
 		classes shouldBe listOf(

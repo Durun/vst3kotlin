@@ -1,12 +1,11 @@
 package io.github.durun.vst3kotlin
 
-import io.github.durun.io.use
-import io.github.durun.path.Path
-import io.github.durun.vst3kotlin.base.VstClassCategory
+import io.github.durun.io.Path
+import io.github.durun.resource.use
 import io.github.durun.vst3kotlin.cppinterface.HostCallback
-import io.github.durun.vst3kotlin.gui.PlatformView
 import io.github.durun.vst3kotlin.hosting.ControllerInstance
 import io.github.durun.vst3kotlin.hosting.Module
+import io.github.durun.vst3kotlin.pluginterface.base.VstClassCategory
 import io.github.durun.vst3kotlin.window.Window
 import io.github.durun.vst3kotlin.window.WindowClass
 import platform.windows.WM_QUIT
@@ -26,7 +25,7 @@ class WindowsControllerTest {
             val classInfo = module.factory.classInfo.first { it.category == VstClassCategory.AudioEffect }
             ControllerInstance.create(module.factory, classInfo.classId).use {
                 println("ControllerInstance open.")
-                it.plugView?.let { window.attach(it) }
+                it.plugView?.attached(window)
                 window.show()
                 loop()
             }

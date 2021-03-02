@@ -1,7 +1,7 @@
 package io.github.durun.vst3kotlin.window
 
-import io.github.durun.util.Vec2
-import io.github.durun.vst3kotlin.gui.PlugView
+import io.github.durun.data.Vec2
+import io.github.durun.vst3kotlin.pluginterface.gui.PlugView
 import kotlinx.cinterop.*
 import platform.windows.*
 
@@ -13,7 +13,7 @@ actual class Window(
         actual val platformType: String = "HWND"
         actual fun create(size: Vec2<Int>, name: String): Window {
             val window = create(name, WindowClass.Vst(null))
-            window.resize(size.x, size.y)
+            window.resize(size)
             return window
         }
 
@@ -49,23 +49,15 @@ actual class Window(
         fun getMessageForAll() = getMessage(null)
     }
 
-    fun attach(plugView: PlugView) {
-        val size = plugView.size
-        val width = size.right - size.left
-        val height = size.bottom - size.top
-        resize(width, height)
-        plugView.attached(this)
-    }
-
     actual fun show() {
         ShowWindow(hwnd, SW_SHOW)
     }
 
-    actual fun resize(width: Int, height: Int) {
+    actual fun resize(size: Vec2<Int>) {
         SetWindowPos(
             hwnd, HWND_TOP,
             0, 0,
-            width, height,
+            size.x, size.y,
             (SWP_NOMOVE or SWP_NOCOPYBITS).toUInt()
         )
     }

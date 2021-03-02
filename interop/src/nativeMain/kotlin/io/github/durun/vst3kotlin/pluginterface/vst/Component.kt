@@ -13,13 +13,11 @@ class Component(
     override val ptr: CPointer<IComponent>
 ) : PluginBase() {
 
-    val controllerClassID: UID by lazy {
-        memScoped {
-            val tuid = allocArray<ByteVar>(16)
-            val result = IComponent_getControllerClassId(ptr, tuid)
-            check(result == kResultTrue) { result.kResultString }
-            tuid.toUID()
-        }
+    val controllerClassID: UID = memScoped {
+        val tuid: CPointer<ByteVar> = allocArray(16)
+        val result = IComponent_getControllerClassId(ptr, tuid)
+        check(result == kResultTrue) { result.kResultString }
+        tuid.toUID()
     }
     val audioInputBusInfos: List<BusInfo> get() = getBusInfos(MediaType.Audio, BusDirection.Input)
     val eventInputBusInfos: List<BusInfo> get() = getBusInfos(MediaType.Event, BusDirection.Input)
