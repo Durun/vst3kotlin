@@ -21,6 +21,7 @@ class PlugView(
     }
 
     fun attached(window: Window) {
+        window.resize(size.right - size.left, size.bottom - size.top)
         val result = IPlugView_attached(this.ptr, window.ptr, Window.platformType)
         check(result == kResultTrue) { result.kResultString }
     }
@@ -34,7 +35,7 @@ class PlugView(
     }
 
     @ExperimentalUnsignedTypes
-	fun onKeyUp(key: Short, keyCode: Short, modifiers: Short): Boolean {
+    fun onKeyUp(key: Short, keyCode: Short, modifiers: Short): Boolean {
         return Adapter.IPlugView.onKeyUp(this.ptr, key, keyCode, modifiers) == kResultTrue
     }
 
@@ -42,7 +43,7 @@ class PlugView(
         get() = memScoped {
             val rect = alloc<cwrapper.ViewRect>()
             val result = IPlugView_getSize(this@PlugView.ptr, rect.ptr)
-			check(result == kResultTrue) { result.kResultString }
+            check(result == kResultTrue) { result.kResultString }
             rect.toKViewRect()
         }
 
