@@ -11,6 +11,7 @@ import io.github.durun.vst3kotlin.vst.Component
 import io.github.durun.vst3kotlin.vst.ComponentHandler
 import io.github.durun.vst3kotlin.vst.EditController
 import io.github.durun.vst3kotlin.vst.connectEach
+import io.github.durun.vst3kotlin.window.Window
 
 class ControllerInstance(
 	val component: Component,
@@ -56,21 +57,19 @@ class ControllerInstance(
 			runCatching { component.connectEach(controller) }
 				.onSuccess { log.info { "Connected Component and EditController" } }
 				.onFailure { log.error { "Failed to connect Component and EditController" } }
-			//.getOrThrow()
 
 			/** Connected **/
 
-			val platformType = "X11EmbedWindowID" // TODO: type for multiplatform
 			val plugView = runCatching {
 				val view: PlugView? = controller.createView(ViewType.Editor)
 				checkNotNull(view)
 			}
 				.onSuccess { log.info { "Created PlugView" } }
 				.onFailure { log.warn { "PlugView not available" } }
-				.mapCatching { it.apply { check(isPlatformTypeSupported(platformType)) } }
-				.onSuccess { log.info { "$platformType is supported" } }
-				.onFailure { log.warn { "$platformType isn't supported" } }
-				.getOrElse { null }
+				.mapCatching { it.apply { check(isPlatformTypeSupported(Window.platformType)) } }
+				.onSuccess { log.info { "${Window.platformType} is supported" } }
+				.onFailure { log.warn { "${Window.platformType} isn't supported" } }
+				.getOrNull()
 
 			return ControllerInstance(component, controller, plugView)
 		}
