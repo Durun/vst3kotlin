@@ -1,15 +1,13 @@
-package io.github.durun.vst3kotlin.vst
+package io.github.durun.vst3kotlin.pluginterface.vst
 
 import cwrapper.*
 import io.github.durun.util.logger
 import io.github.durun.vst3kotlin.VstInterface
-import io.github.durun.vst3kotlin.base.BStream
-import io.github.durun.vst3kotlin.base.PluginBase
-import io.github.durun.vst3kotlin.base.kResultString
-import io.github.durun.vst3kotlin.gui.PlugView
-import io.github.durun.vst3kotlin.gui.ViewType
-import io.github.durun.vst3kotlin.pluginterface.vst.KnobMode
-import io.github.durun.vst3kotlin.pluginterface.vst.ParameterInfo
+import io.github.durun.vst3kotlin.pluginterface.base.BStream
+import io.github.durun.vst3kotlin.pluginterface.base.PluginBase
+import io.github.durun.vst3kotlin.pluginterface.base.kResultString
+import io.github.durun.vst3kotlin.pluginterface.gui.PlugView
+import io.github.durun.vst3kotlin.pluginterface.gui.ViewType
 import kotlinx.cinterop.*
 
 class EditController(

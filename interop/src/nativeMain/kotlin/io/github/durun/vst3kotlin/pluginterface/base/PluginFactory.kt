@@ -1,15 +1,13 @@
-package io.github.durun.vst3kotlin.base
+package io.github.durun.vst3kotlin.pluginterface.base
 
 import cwrapper.*
 import io.github.durun.util.logger
 import io.github.durun.vst3kotlin.InterfaceID
-import io.github.durun.vst3kotlin.pluginterface.base.ClassInfo
-import io.github.durun.vst3kotlin.pluginterface.base.FactoryInfo
-import io.github.durun.vst3kotlin.pluginterface.base.UID
-import io.github.durun.vst3kotlin.pluginterface.base.VstClassCategory
-import io.github.durun.vst3kotlin.vst.AudioProcessor
-import io.github.durun.vst3kotlin.vst.Component
-import io.github.durun.vst3kotlin.vst.EditController
+import io.github.durun.vst3kotlin.base.toFuidPtr
+import io.github.durun.vst3kotlin.base.toUID
+import io.github.durun.vst3kotlin.pluginterface.vst.AudioProcessor
+import io.github.durun.vst3kotlin.pluginterface.vst.Component
+import io.github.durun.vst3kotlin.pluginterface.vst.EditController
 import kotlinx.cinterop.*
 
 class PluginFactory(

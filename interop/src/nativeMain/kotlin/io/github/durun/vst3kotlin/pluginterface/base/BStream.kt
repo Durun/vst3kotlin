@@ -1,7 +1,6 @@
-package io.github.durun.vst3kotlin.base
+package io.github.durun.vst3kotlin.pluginterface.base
 
 import cwrapper.*
-import io.github.durun.vst3kotlin.cppinterface.CClass
 import kotlinx.cinterop.*
 
 enum class StreamSeekMode(val value: Int) {

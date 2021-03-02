@@ -1,9 +1,9 @@
-package io.github.durun.vst3kotlin.vst
+package io.github.durun.vst3kotlin.pluginterface.vst
 
 import cwrapper.*
 import io.github.durun.vst3kotlin.VstInterface
-import io.github.durun.vst3kotlin.base.FUnknown
-import io.github.durun.vst3kotlin.base.kResultString
+import io.github.durun.vst3kotlin.pluginterface.base.FUnknown
+import io.github.durun.vst3kotlin.pluginterface.base.kResultString
 import kotlinx.cinterop.CPointer
 import kotlinx.cinterop.reinterpret
 import kotlinx.cinterop.toByte

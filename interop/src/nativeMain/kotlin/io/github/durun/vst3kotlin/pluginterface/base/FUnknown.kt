@@ -1,4 +1,4 @@
-package io.github.durun.vst3kotlin.base
+package io.github.durun.vst3kotlin.pluginterface.base
 
 import cwrapper.*
 import cwrapper.FUnknown
@@ -6,6 +6,7 @@ import io.github.durun.resource.Closeable
 import io.github.durun.util.logger
 import io.github.durun.vst3kotlin.InterfaceID
 import io.github.durun.vst3kotlin.VstInterface
+import io.github.durun.vst3kotlin.base.toUID
 import io.github.durun.vst3kotlin.cppinterface.CClass
 import kotlinx.cinterop.*
 

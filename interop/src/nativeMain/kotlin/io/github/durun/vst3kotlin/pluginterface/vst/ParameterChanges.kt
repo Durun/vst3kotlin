@@ -1,7 +1,7 @@
-package io.github.durun.vst3kotlin.vst
+package io.github.durun.vst3kotlin.pluginterface.vst
 
 import cwrapper.*
-import io.github.durun.vst3kotlin.base.FUnknown
+import io.github.durun.vst3kotlin.pluginterface.base.FUnknown
 import kotlinx.cinterop.*
 
 /**

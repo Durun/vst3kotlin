@@ -1,10 +1,8 @@
-package io.github.durun.vst3kotlin.vst
+package io.github.durun.vst3kotlin.pluginterface.vst
 
 import cwrapper.IEventList
 import cwrapper.IParameterChanges
 import cwrapper.ProcessContext
-import io.github.durun.vst3kotlin.pluginterface.vst.ProcessMode
-import io.github.durun.vst3kotlin.pluginterface.vst.SymbolicSampleSize
 import kotlinx.cinterop.CPointer
 
 fun cwrapper.ProcessData.processDataOf(

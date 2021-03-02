@@ -1,4 +1,4 @@
-package io.github.durun.vst3kotlin.vst
+package io.github.durun.vst3kotlin.pluginterface.vst
 
 import cwrapper.*
 

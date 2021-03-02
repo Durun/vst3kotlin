@@ -1,14 +1,11 @@
-package io.github.durun.vst3kotlin.vst
+package io.github.durun.vst3kotlin.pluginterface.vst
 
 import cwrapper.IMessage
 import cwrapper.IMessage_getAttributes
 import cwrapper.IMessage_getMessageID
 import cwrapper.IMessage_setMessageID
-import io.github.durun.vst3kotlin.cppinterface.CClass
-import io.github.durun.vst3kotlin.base.FUnknown
+import io.github.durun.vst3kotlin.pluginterface.base.FUnknown
 import kotlinx.cinterop.CPointer
-import kotlinx.cinterop.CStructVar
-import kotlinx.cinterop.reinterpret
 import kotlinx.cinterop.toKString
 
 class VstMessage(

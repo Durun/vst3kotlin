@@ -1,13 +1,8 @@
-package io.github.durun.vst3kotlin.vst
+package io.github.durun.vst3kotlin.pluginterface.vst
 
 import cwrapper.*
-import io.github.durun.vst3kotlin.base.FUnknown
-import io.github.durun.vst3kotlin.base.kResultString
-import io.github.durun.vst3kotlin.pluginterface.vst.*
-import io.github.durun.vst3kotlin.pluginterface.vst.BusDirection
-import io.github.durun.vst3kotlin.pluginterface.vst.MediaType
-import io.github.durun.vst3kotlin.pluginterface.vst.ProcessSetup
-import io.github.durun.vst3kotlin.pluginterface.vst.SpeakerArrangement
+import io.github.durun.vst3kotlin.pluginterface.base.FUnknown
+import io.github.durun.vst3kotlin.pluginterface.base.kResultString
 import kotlinx.cinterop.*
 
 class AudioProcessor(

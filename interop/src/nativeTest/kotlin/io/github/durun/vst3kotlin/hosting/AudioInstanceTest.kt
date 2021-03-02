@@ -4,10 +4,8 @@ import cwrapper.ProcessContext
 import cwrapper.ProcessData
 import io.github.durun.resource.use
 import io.github.durun.vst3kotlin.pluginterface.base.VstClassCategory
-import io.github.durun.vst3kotlin.pluginterface.vst.IoMode
-import io.github.durun.vst3kotlin.pluginterface.vst.ProcessMode
+import io.github.durun.vst3kotlin.pluginterface.vst.*
 import io.github.durun.vst3kotlin.testResources
-import io.github.durun.vst3kotlin.vst.*
 import io.kotest.matchers.shouldBe
 import kotlinx.cinterop.*
 import kotlin.test.Test
@@ -57,6 +55,7 @@ class AudioInstanceTest {
 				inputAudio = inBuffer,
 				outputAudio = outBuffer,
 				inputParam = buildParameterChanges {
+					/** parameters (Gain) **/
 					/** parameters (Gain) **/
 					put(paramID = 0u, value = 2.0)
 				}.placeToCInterface(this)

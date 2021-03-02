@@ -4,7 +4,7 @@ import cwrapper.IPluginFactory
 import io.github.durun.dylib.Dylib
 import io.github.durun.io.Path
 import io.github.durun.resource.Closeable
-import io.github.durun.vst3kotlin.base.PluginFactory
+import io.github.durun.vst3kotlin.pluginterface.base.PluginFactory
 import kotlinx.cinterop.CPointer
 import kotlinx.cinterop.invoke
 

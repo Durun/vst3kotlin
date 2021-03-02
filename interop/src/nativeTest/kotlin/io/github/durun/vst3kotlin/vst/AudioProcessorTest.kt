@@ -5,7 +5,7 @@ import cwrapper.ProcessData
 import io.github.durun.resource.use
 import io.github.durun.vst3kotlin.hosting.Module
 import io.github.durun.vst3kotlin.pluginterface.base.VstClassCategory
-import io.github.durun.vst3kotlin.pluginterface.vst.ProcessMode
+import io.github.durun.vst3kotlin.pluginterface.vst.*
 import io.github.durun.vst3kotlin.testResources
 import io.kotest.matchers.shouldBe
 import kotlinx.cinterop.*
@@ -45,7 +45,8 @@ class AudioProcessorTest {
                 outputAudio = outBuffer,
                 inputParam = buildParameterChanges {
                     /** parameters (Gain) **/
-                    put(paramID = 0u, value = 2.0)
+                    /** parameters (Gain) **/
+					put(paramID = 0u, value = 2.0)
                 }.placeToCInterface(this)
             )
 

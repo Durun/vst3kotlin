@@ -1,18 +1,12 @@
-package io.github.durun.vst3kotlin.vst
+package io.github.durun.vst3kotlin.pluginterface.vst
 
 import cwrapper.*
-import io.github.durun.vst3kotlin.base.BStream
-import io.github.durun.vst3kotlin.base.PluginBase
-import io.github.durun.vst3kotlin.base.kResultString
 import io.github.durun.vst3kotlin.base.toUID
-import io.github.durun.vst3kotlin.gui.PlugView
+import io.github.durun.vst3kotlin.pluginterface.base.BStream
+import io.github.durun.vst3kotlin.pluginterface.base.PluginBase
 import io.github.durun.vst3kotlin.pluginterface.base.UID
-import io.github.durun.vst3kotlin.pluginterface.vst.BusDirection
-import io.github.durun.vst3kotlin.pluginterface.vst.BusInfo
-import io.github.durun.vst3kotlin.pluginterface.vst.BusType
-import io.github.durun.vst3kotlin.pluginterface.vst.IoMode
-import io.github.durun.vst3kotlin.pluginterface.vst.MediaType
-import io.github.durun.vst3kotlin.pluginterface.vst.RoutingInfo
+import io.github.durun.vst3kotlin.pluginterface.base.kResultString
+import io.github.durun.vst3kotlin.pluginterface.gui.PlugView
 import kotlinx.cinterop.*
 
 class Component(
