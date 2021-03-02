@@ -7,13 +7,14 @@ import io.github.durun.vst3kotlin.cppinterface.HostCallback
 import io.github.durun.vst3kotlin.gui.PlatformView
 import io.github.durun.vst3kotlin.hosting.ControllerInstance
 import io.github.durun.vst3kotlin.hosting.Module
-import io.github.durun.window.Window
-import io.github.durun.window.WindowClass
+import io.github.durun.vst3kotlin.window.Window
+import io.github.durun.vst3kotlin.window.WindowClass
 import platform.windows.WM_QUIT
 import kotlin.test.Test
 
 class WindowsControllerTest {
-    val path = Path.of("C:\\Program Files\\Common Files\\VST3\\FabFilter Pro-Q 3.vst3") //testResources.resolve("vst3/again.vst3")
+    val path =
+        Path.of("C:\\Program Files\\Common Files\\VST3\\FabFilter Pro-Q 3.vst3") //testResources.resolve("vst3/again.vst3")
 
     //@Test
     fun test() {
@@ -25,7 +26,7 @@ class WindowsControllerTest {
             val classInfo = module.factory.classInfo.first { it.category == VstClassCategory.AudioEffect }
             ControllerInstance.create(module.factory, classInfo.classId).use {
                 println("ControllerInstance open.")
-                window.attach(it.plugView)
+                it.plugView?.let { window.attach(it) }
                 window.show()
                 loop()
             }

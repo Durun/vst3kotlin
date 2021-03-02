@@ -1,4 +1,4 @@
-package io.github.durun.window
+package io.github.durun.vst3kotlin.window
 
 import kotlinx.cinterop.invoke
 import kotlinx.cinterop.memScoped
