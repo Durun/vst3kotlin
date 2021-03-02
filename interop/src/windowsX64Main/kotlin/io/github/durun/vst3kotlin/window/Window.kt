@@ -1,7 +1,6 @@
 package io.github.durun.vst3kotlin.window
 
 import io.github.durun.data.Vec2
-import io.github.durun.vst3kotlin.pluginterface.gui.PlugView
 import kotlinx.cinterop.*
 import platform.windows.*
 

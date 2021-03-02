@@ -5,7 +5,6 @@ import cwrapper.ProcessData
 import io.github.durun.resource.use
 import io.github.durun.vst3kotlin.hosting.Module
 import io.github.durun.vst3kotlin.pluginterface.base.VstClassCategory
-import io.github.durun.vst3kotlin.pluginterface.vst.*
 import io.github.durun.vst3kotlin.testResources
 import io.kotest.matchers.shouldBe
 import kotlinx.cinterop.*

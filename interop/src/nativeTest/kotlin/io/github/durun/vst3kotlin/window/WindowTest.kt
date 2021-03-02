@@ -6,8 +6,6 @@ import io.github.durun.vst3kotlin.cppinterface.HostCallback
 import io.github.durun.vst3kotlin.hosting.Module
 import io.github.durun.vst3kotlin.pluginterface.base.VstClassCategory
 import io.github.durun.vst3kotlin.testResources
-import io.github.durun.vst3kotlin.window.Window
-import io.github.durun.vst3kotlin.window.WindowEvent
 
 class WindowTest {
     //@Test

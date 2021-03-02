@@ -1,8 +1,6 @@
 package io.github.durun.vst3kotlin.pluginterface.vst
 
 import cwrapper.*
-import io.github.durun.vst3kotlin.pluginterface.vst.toKInterface
-import io.github.durun.vst3kotlin.pluginterface.vst.toParameterChanges
 import io.kotest.matchers.shouldBe
 import kotlinx.cinterop.*
 import kotlin.test.Test
