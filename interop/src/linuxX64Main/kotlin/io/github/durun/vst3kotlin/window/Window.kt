@@ -30,6 +30,10 @@ actual class Window(
 		}
 	}
 
+	actual fun resize(width: Int, height: Int) {
+		XResizeWindow(display, window, width, height)
+	}
+
 	actual companion object {
 		private val log by logger()
 		actual val platformType: String = "X11EmbedWindowID"

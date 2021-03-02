@@ -10,6 +10,7 @@ expect class Window {
 	}
 
 	val ptr: COpaquePointer
+	fun resize(width: Int, height: Int)
 	fun show()
 	fun loop(continueNext: (WindowEvent) -> Boolean)
 }

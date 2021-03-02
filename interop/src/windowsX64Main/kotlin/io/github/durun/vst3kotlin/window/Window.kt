@@ -61,14 +61,13 @@ actual class Window(
         ShowWindow(hwnd, SW_SHOW)
     }
 
-    fun resize(width: Int, height: Int) {
+    actual fun resize(width: Int, height: Int) {
         SetWindowPos(
             hwnd, HWND_TOP,
             0, 0,
             width, height,
             (SWP_NOMOVE or SWP_NOCOPYBITS).toUInt()
         )
-
     }
 
     actual fun loop(continueNext: (WindowEvent) -> Boolean) {
