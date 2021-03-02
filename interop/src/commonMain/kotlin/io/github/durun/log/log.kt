@@ -71,5 +71,3 @@ class LoggerProperty : ReadOnlyProperty<Any, Logger> {
 }
 
 fun logger(): ReadOnlyProperty<Any, Logger> = LoggerProperty()
-
-expect fun println()
