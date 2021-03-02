@@ -1,7 +1,7 @@
 package io.github.durun.vst3kotlin.base
 
-import io.github.durun.util.decodeAsBigEndian
-import io.github.durun.util.encodeBigEndian
+import io.github.durun.data.decodeAsBigEndian
+import io.github.durun.data.encodeBigEndian
 
 data class UID(
 	val bytes: ByteArray	// big endian

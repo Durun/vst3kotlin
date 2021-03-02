@@ -1,5 +1,7 @@
 package io.github.durun.util
 
+import io.github.durun.data.ByteArrayReader
+import io.github.durun.data.buildByteArray
 import io.kotest.matchers.shouldBe
 import kotlin.test.Test
 

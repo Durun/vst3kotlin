@@ -1,6 +1,6 @@
 package io.github.durun.vst3kotlin.window
 
-import io.github.durun.util.Vec2
+import io.github.durun.data.Vec2
 import kotlinx.cinterop.COpaquePointer
 
 expect class Window {

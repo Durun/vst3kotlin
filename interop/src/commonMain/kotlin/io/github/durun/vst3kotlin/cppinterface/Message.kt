@@ -1,9 +1,9 @@
 package io.github.durun.vst3kotlin.cppinterface
 
-import io.github.durun.util.ByteArrayReader
+import io.github.durun.data.ByteArrayReader
+import io.github.durun.data.buildByteArray
 import io.github.durun.util.MessageBase
 import io.github.durun.util.MessageDecoder
-import io.github.durun.util.buildByteArray
 
 
 sealed class Message(reader: ByteArrayReader) : MessageBase(reader) {

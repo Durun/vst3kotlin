@@ -1,4 +1,4 @@
-package io.github.durun.util
+package io.github.durun.data
 
 data class Vec2<T>(val x: T, val y: T) {
 	fun <R> map(transform: (T) -> R): Vec2<R> {

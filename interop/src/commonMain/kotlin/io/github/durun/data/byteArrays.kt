@@ -1,4 +1,4 @@
-package io.github.durun.util
+package io.github.durun.data
 
 import kotlin.math.min
 

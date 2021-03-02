@@ -1,5 +1,7 @@
 package io.github.durun.util
 
+import io.github.durun.data.ByteArrayReader
+
 
 interface MessageDecoder {
 	fun <T : MessageBase> decode(reader: ByteArrayReader): T
