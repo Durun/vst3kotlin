@@ -1,8 +1,7 @@
-package io.github.durun.vst3kotlin.base
+package io.github.durun.vst3kotlin.pluginterface.base
 
 import cwrapper.FUID
 import cwrapper.TUID
-import io.github.durun.vst3kotlin.pluginterface.base.UID
 import kotlinx.cinterop.*
 
 fun TUID.toUID(): UID {

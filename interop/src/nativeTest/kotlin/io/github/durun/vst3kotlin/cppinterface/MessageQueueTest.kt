@@ -1,4 +1,4 @@
-package io.github.durun.vst3kotlin
+package io.github.durun.vst3kotlin.cppinterface
 
 import cwrapper.MessageQueue_dequeue
 import cwrapper.MessageQueue_enqueue

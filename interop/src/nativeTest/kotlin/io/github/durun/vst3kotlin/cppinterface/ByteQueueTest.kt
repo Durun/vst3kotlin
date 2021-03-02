@@ -1,10 +1,6 @@
-package io.github.durun.util
+package io.github.durun.vst3kotlin.cppinterface
 
 import cwrapper.ByteQueueLength
-import io.github.durun.vst3kotlin.cppinterface.allocByteQueue
-import io.github.durun.vst3kotlin.cppinterface.dequeue
-import io.github.durun.vst3kotlin.cppinterface.enqueue
-import io.github.durun.vst3kotlin.cppinterface.free
 import io.kotest.matchers.shouldBe
 import kotlinx.cinterop.memScoped
 import kotlinx.cinterop.nativeHeap

@@ -1,8 +1,5 @@
-package io.github.durun.util
+package io.github.durun.vst3kotlin.cppinterface
 
-import io.github.durun.vst3kotlin.cppinterface.allocLongArrayStore
-import io.github.durun.vst3kotlin.cppinterface.free
-import io.github.durun.vst3kotlin.cppinterface.use
 import io.kotest.matchers.shouldBe
 import kotlinx.cinterop.memScoped
 import kotlinx.cinterop.nativeHeap
