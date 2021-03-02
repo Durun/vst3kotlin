@@ -1,6 +1,6 @@
 package io.github.durun.vst3kotlin
 
-import io.github.durun.vst3kotlin.base.UID
+import io.github.durun.vst3kotlin.pluginterface.base.UID
 
 enum class InterfaceID(val uid: UID) {
 	IPluginFactory(UID("7A4D811C52114A1FAED9D2EE0B43BF9F")),

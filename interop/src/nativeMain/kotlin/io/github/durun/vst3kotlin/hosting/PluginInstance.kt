@@ -3,10 +3,14 @@ package io.github.durun.vst3kotlin.hosting
 import io.github.durun.resource.Closeable
 import io.github.durun.util.logger
 import io.github.durun.vst3kotlin.base.PluginFactory
-import io.github.durun.vst3kotlin.base.UID
 import io.github.durun.vst3kotlin.cppinterface.HostCallback
 import io.github.durun.vst3kotlin.gui.PlugView
 import io.github.durun.vst3kotlin.gui.ViewType
+import io.github.durun.vst3kotlin.pluginterface.base.UID
+import io.github.durun.vst3kotlin.pluginterface.vst.IoMode
+import io.github.durun.vst3kotlin.pluginterface.vst.ProcessMode
+import io.github.durun.vst3kotlin.pluginterface.vst.ProcessSetup
+import io.github.durun.vst3kotlin.pluginterface.vst.SymbolicSampleSize
 import io.github.durun.vst3kotlin.vst.*
 
 class PluginInstance

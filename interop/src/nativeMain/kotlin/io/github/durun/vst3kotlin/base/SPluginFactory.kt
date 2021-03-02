@@ -3,6 +3,7 @@ package io.github.durun.vst3kotlin.base
 import cwrapper.PFactoryInfo
 import cwrapper.SIPluginFactory
 import io.github.durun.resource.Closeable
+import io.github.durun.vst3kotlin.pluginterface.base.FactoryInfo
 import kotlinx.cinterop.*
 
 class SPluginFactory(

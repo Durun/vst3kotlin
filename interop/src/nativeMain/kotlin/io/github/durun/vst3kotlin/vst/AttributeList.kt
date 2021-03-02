@@ -1,10 +1,11 @@
 package io.github.durun.vst3kotlin.vst
 
 import cwrapper.*
-import io.github.durun.vst3kotlin.cppinterface.CClass
 import io.github.durun.vst3kotlin.Adapter
 import io.github.durun.vst3kotlin.base.FUnknown
 import io.github.durun.vst3kotlin.base.kResultString
+import io.github.durun.vst3kotlin.pluginterface.vst.AttrID
+import io.github.durun.vst3kotlin.pluginterface.vst.AttrProperty
 import kotlinx.cinterop.*
 
 class AttributeList(

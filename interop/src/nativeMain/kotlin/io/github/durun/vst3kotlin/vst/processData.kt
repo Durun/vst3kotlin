@@ -3,17 +3,19 @@ package io.github.durun.vst3kotlin.vst
 import cwrapper.IEventList
 import cwrapper.IParameterChanges
 import cwrapper.ProcessContext
+import io.github.durun.vst3kotlin.pluginterface.vst.ProcessMode
+import io.github.durun.vst3kotlin.pluginterface.vst.SymbolicSampleSize
 import kotlinx.cinterop.CPointer
 
 fun cwrapper.ProcessData.processDataOf(
-    mode: ProcessMode,
-    inputAudio: FloatAudioBusBuffer? = null,
-    outputAudio: FloatAudioBusBuffer,
-    inputParam: CPointer<IParameterChanges>? = null,
-    outputParam: CPointer<IParameterChanges>? = null,
-    inputEvent: CPointer<IEventList>? = null,
-    outputEvent: CPointer<IEventList>? = null,
-    context: CPointer<ProcessContext>
+	mode: ProcessMode,
+	inputAudio: FloatAudioBusBuffer? = null,
+	outputAudio: FloatAudioBusBuffer,
+	inputParam: CPointer<IParameterChanges>? = null,
+	outputParam: CPointer<IParameterChanges>? = null,
+	inputEvent: CPointer<IEventList>? = null,
+	outputEvent: CPointer<IEventList>? = null,
+	context: CPointer<ProcessContext>
 ): cwrapper.ProcessData = this.apply {
     this.processMode = mode.value
     this.symbolicSampleSize = SymbolicSampleSize.Sample32.value

@@ -1,4 +1,4 @@
-package io.github.durun.vst3kotlin.vst
+package io.github.durun.vst3kotlin.pluginterface.vst
 
 enum class IoMode(val value: Int) {
     Simple(0), Advanced(1), OfflineProcessing(2)
@@ -17,18 +17,18 @@ enum class BusType(val value: Int) {
 }
 
 data class BusInfo(
-    val index: Int,
-    val mediaType: MediaType,
-    val direction: BusDirection,
-    val channelCount: Int,
-    val name: String,
-    val busType: BusType,
-    val defaultActive: Boolean,
-    val isControlVoltage: Boolean
+	val index: Int,
+	val mediaType: MediaType,
+	val direction: BusDirection,
+	val channelCount: Int,
+	val name: String,
+	val busType: BusType,
+	val defaultActive: Boolean,
+	val isControlVoltage: Boolean
 )
 
 data class RoutingInfo(
-    val mediaType: MediaType,
-    val busIndex: Int,
-    val channel: Int
+	val mediaType: MediaType,
+	val busIndex: Int,
+	val channel: Int
 )

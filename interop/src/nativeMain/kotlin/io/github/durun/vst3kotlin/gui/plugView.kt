@@ -4,6 +4,7 @@ import cwrapper.*
 import io.github.durun.vst3kotlin.Adapter
 import io.github.durun.vst3kotlin.base.FUnknown
 import io.github.durun.vst3kotlin.base.kResultString
+import io.github.durun.vst3kotlin.pluginterface.gui.ViewRect
 import io.github.durun.vst3kotlin.window.Window
 import kotlinx.cinterop.*
 

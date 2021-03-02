@@ -2,8 +2,8 @@ package io.github.durun.vst3kotlin
 
 import io.github.durun.resource.use
 import io.github.durun.vst3kotlin.base.PluginFactory
-import io.github.durun.vst3kotlin.base.UID
 import io.github.durun.vst3kotlin.cppinterface.HostCallback
+import io.github.durun.vst3kotlin.pluginterface.base.UID
 import io.github.durun.vst3kotlin.vst.Component
 import io.github.durun.vst3kotlin.vst.EditController
 import io.github.durun.vst3kotlin.vst.connectEach

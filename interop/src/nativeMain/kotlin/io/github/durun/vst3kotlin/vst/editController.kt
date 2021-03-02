@@ -8,6 +8,8 @@ import io.github.durun.vst3kotlin.base.PluginBase
 import io.github.durun.vst3kotlin.base.kResultString
 import io.github.durun.vst3kotlin.gui.PlugView
 import io.github.durun.vst3kotlin.gui.ViewType
+import io.github.durun.vst3kotlin.pluginterface.vst.KnobMode
+import io.github.durun.vst3kotlin.pluginterface.vst.ParameterInfo
 import kotlinx.cinterop.*
 
 class EditController(

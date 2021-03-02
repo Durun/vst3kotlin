@@ -1,4 +1,4 @@
-package io.github.durun.vst3kotlin.base
+package io.github.durun.vst3kotlin.pluginterface.base
 
 data class ClassInfo(
 	val classId: UID,

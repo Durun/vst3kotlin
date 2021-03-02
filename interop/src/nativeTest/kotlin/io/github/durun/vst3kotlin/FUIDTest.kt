@@ -4,9 +4,9 @@ import cwrapper.FUID
 import cwrapper.FUID_from4Int
 import cwrapper.FUID_fromTUID
 import cwrapper.TUID_from4Int
-import io.github.durun.vst3kotlin.base.UID
 import io.github.durun.vst3kotlin.base.toFuidPtr
 import io.github.durun.vst3kotlin.base.toUID
+import io.github.durun.vst3kotlin.pluginterface.base.UID
 import io.kotest.matchers.shouldBe
 import kotlinx.cinterop.*
 import kotlin.test.Test

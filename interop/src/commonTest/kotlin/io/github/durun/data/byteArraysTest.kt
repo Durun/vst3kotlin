@@ -1,6 +1,5 @@
-package io.github.durun.util
+package io.github.durun.data
 
-import io.github.durun.data.readScope
 import io.kotest.matchers.shouldBe
 import kotlin.test.Test
 
@@ -8,7 +7,7 @@ import kotlin.test.Test
 class ByteArraysTest {
 	@Test
 	fun buildByteArray() {
-		val bytes = io.github.durun.data.buildByteArray {
+		val bytes = buildByteArray {
 			appendUByte(114u)
 			appendUInt(114514u)
 			appendULong(1145141919810u)

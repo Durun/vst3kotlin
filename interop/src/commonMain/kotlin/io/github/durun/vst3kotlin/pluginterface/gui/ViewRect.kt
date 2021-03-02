@@ -1,4 +1,4 @@
-package io.github.durun.vst3kotlin.gui
+package io.github.durun.vst3kotlin.pluginterface.gui
 
 data class ViewRect(
     val left: Int,

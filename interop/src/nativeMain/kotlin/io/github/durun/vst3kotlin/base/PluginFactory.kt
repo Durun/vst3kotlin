@@ -3,6 +3,10 @@ package io.github.durun.vst3kotlin.base
 import cwrapper.*
 import io.github.durun.util.logger
 import io.github.durun.vst3kotlin.InterfaceID
+import io.github.durun.vst3kotlin.pluginterface.base.ClassInfo
+import io.github.durun.vst3kotlin.pluginterface.base.FactoryInfo
+import io.github.durun.vst3kotlin.pluginterface.base.UID
+import io.github.durun.vst3kotlin.pluginterface.base.VstClassCategory
 import io.github.durun.vst3kotlin.vst.AudioProcessor
 import io.github.durun.vst3kotlin.vst.Component
 import io.github.durun.vst3kotlin.vst.EditController

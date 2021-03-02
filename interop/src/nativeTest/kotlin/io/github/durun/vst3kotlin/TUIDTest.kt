@@ -1,8 +1,8 @@
 package io.github.durun.vst3kotlin
 
 import cwrapper.TUID_from4Int
-import io.github.durun.vst3kotlin.base.UID
 import io.github.durun.vst3kotlin.base.toUID
+import io.github.durun.vst3kotlin.pluginterface.base.UID
 import io.kotest.matchers.shouldBe
 import kotlinx.cinterop.ByteVar
 import kotlinx.cinterop.allocArray

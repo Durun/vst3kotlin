@@ -1,6 +1,5 @@
-package io.github.durun.util
+package io.github.durun.data
 
-import io.github.durun.data.*
 import io.kotest.matchers.shouldBe
 import kotlin.test.Test
 
