@@ -1,8 +1,8 @@
 package io.github.durun.vst3kotlin.window
 
-import io.github.durun.log.logger
-import io.github.durun.util.Vec2
-import io.github.durun.util.toUInt
+import io.github.durun.data.Vec2
+import io.github.durun.data.toUInt
+import io.github.durun.util.logger
 import kotlinx.cinterop.*
 import platform.posix.usleep
 import x11.*
@@ -30,8 +30,9 @@ actual class Window(
 		}
 	}
 
-	actual fun resize(width: Int, height: Int) {
-		XResizeWindow(display, window, width, height)
+	@kotlin.ExperimentalUnsignedTypes
+	actual fun resize(size: Vec2<Int>) {
+		XResizeWindow(display, window, size.x.toUInt(), size.y.toUInt())
 	}
 
 	actual companion object {

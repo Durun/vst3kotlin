@@ -1,25 +1,20 @@
 package io.github.durun.vst3kotlin.hosting
 
-import cwrapper.*
-import cwrapper.FUnknown
-import io.github.durun.io.Closeable
-import io.github.durun.log.logger
-import io.github.durun.vst3kotlin.InterfaceID
-import io.github.durun.vst3kotlin.base.*
+import io.github.durun.resource.Closeable
+import io.github.durun.util.logger
 import io.github.durun.vst3kotlin.cppinterface.HostCallback
-import io.github.durun.vst3kotlin.gui.PlugView
-import io.github.durun.vst3kotlin.gui.ViewType
-import io.github.durun.vst3kotlin.vst.*
-import io.github.durun.vst3kotlin.vst.IoMode
-import io.github.durun.vst3kotlin.vst.ProcessSetup
-import kotlinx.cinterop.*
+import io.github.durun.vst3kotlin.pluginterface.base.PluginFactory
+import io.github.durun.vst3kotlin.pluginterface.base.UID
+import io.github.durun.vst3kotlin.pluginterface.gui.PlugView
+import io.github.durun.vst3kotlin.pluginterface.gui.ViewType
+import io.github.durun.vst3kotlin.pluginterface.vst.*
 
 class PluginInstance
 private constructor(
-    val component: Component,
-    val processor: AudioProcessor,
-    val controller: EditController,
-    val plugView: PlugView?
+	val component: Component,
+	val processor: AudioProcessor,
+	val controller: EditController,
+	val plugView: PlugView?
 ) : Closeable {
     companion object {
         private val log by logger()

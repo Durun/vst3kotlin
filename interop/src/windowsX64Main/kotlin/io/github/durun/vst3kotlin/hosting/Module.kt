@@ -2,8 +2,8 @@ package io.github.durun.vst3kotlin.hosting
 
 import cwrapper.IPluginFactory
 import io.github.durun.dylib.Dylib
-import io.github.durun.path.Path
-import io.github.durun.path.exists
+import io.github.durun.io.Path
+import io.github.durun.io.exists
 import kotlinx.cinterop.CFunction
 import kotlinx.cinterop.CPointer
 

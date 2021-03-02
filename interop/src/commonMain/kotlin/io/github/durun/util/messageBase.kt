@@ -1,5 +1,7 @@
 package io.github.durun.util
 
+import io.github.durun.data.ByteArrayReader
+import io.github.durun.data.buildByteArray
 import kotlin.properties.ReadWriteProperty
 import kotlin.reflect.KProperty
 
