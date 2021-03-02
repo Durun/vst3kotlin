@@ -1,7 +1,7 @@
 package io.github.durun.vst3kotlin.base
 
 import cwrapper.*
-import io.github.durun.log.logger
+import io.github.durun.util.logger
 import io.github.durun.vst3kotlin.InterfaceID
 import io.github.durun.vst3kotlin.vst.AudioProcessor
 import io.github.durun.vst3kotlin.vst.Component

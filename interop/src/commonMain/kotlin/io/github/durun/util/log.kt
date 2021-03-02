@@ -1,4 +1,4 @@
-package io.github.durun.log
+package io.github.durun.util
 
 import kotlin.properties.ReadOnlyProperty
 import kotlin.reflect.KProperty
