@@ -1,4 +1,4 @@
-package io.github.durun.vst3kotlin.gui
+package io.github.durun.vst3kotlin.window
 
 import io.github.durun.data.Vec2
 import io.github.durun.resource.use

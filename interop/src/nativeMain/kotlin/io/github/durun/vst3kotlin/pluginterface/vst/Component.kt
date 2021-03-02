@@ -1,7 +1,7 @@
 package io.github.durun.vst3kotlin.pluginterface.vst
 
 import cwrapper.*
-import io.github.durun.vst3kotlin.base.toUID
+import io.github.durun.vst3kotlin.pluginterface.base.toUID
 import io.github.durun.vst3kotlin.pluginterface.base.BStream
 import io.github.durun.vst3kotlin.pluginterface.base.PluginBase
 import io.github.durun.vst3kotlin.pluginterface.base.UID

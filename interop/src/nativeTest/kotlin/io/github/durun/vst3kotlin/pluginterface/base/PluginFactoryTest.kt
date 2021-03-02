@@ -1,11 +1,7 @@
-package io.github.durun.vst3kotlin.base
+package io.github.durun.vst3kotlin.pluginterface.base
 
 import io.github.durun.resource.use
 import io.github.durun.vst3kotlin.hosting.Module
-import io.github.durun.vst3kotlin.pluginterface.base.ClassInfo
-import io.github.durun.vst3kotlin.pluginterface.base.FactoryInfo
-import io.github.durun.vst3kotlin.pluginterface.base.UID
-import io.github.durun.vst3kotlin.pluginterface.base.VstClassCategory
 import io.github.durun.vst3kotlin.testResources
 import io.kotest.matchers.shouldBe
 import kotlin.test.Test
