@@ -30,8 +30,9 @@ actual class Window(
 		}
 	}
 
-	actual fun resize(width: Int, height: Int) {
-		XResizeWindow(display, window, width.toUInt(), height.toUInt())
+	@kotlin.ExperimentalUnsignedTypes
+	actual fun resize(size: Vec2<Int>) {
+		XResizeWindow(display, window, size.x.toUInt(), size.y.toUInt())
 	}
 
 	actual companion object {

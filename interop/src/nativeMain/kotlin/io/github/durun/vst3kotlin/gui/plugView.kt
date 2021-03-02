@@ -1,10 +1,10 @@
 package io.github.durun.vst3kotlin.gui
 
 import cwrapper.*
+import io.github.durun.data.IntBox
 import io.github.durun.vst3kotlin.Adapter
 import io.github.durun.vst3kotlin.base.FUnknown
 import io.github.durun.vst3kotlin.base.kResultString
-import io.github.durun.vst3kotlin.pluginterface.gui.ViewRect
 import io.github.durun.vst3kotlin.window.Window
 import kotlinx.cinterop.*
 
@@ -22,7 +22,7 @@ class PlugView(
     }
 
     fun attached(window: Window) {
-        window.resize(size.right - size.left, size.bottom - size.top)
+        window.resize(box.size)
         val result = IPlugView_attached(this.ptr, window.ptr, Window.platformType)
         check(result == kResultTrue) { result.kResultString }
     }
@@ -40,15 +40,15 @@ class PlugView(
         return Adapter.IPlugView.onKeyUp(this.ptr, key, keyCode, modifiers) == kResultTrue
     }
 
-    val size: ViewRect
+    val box: IntBox
         get() = memScoped {
             val rect = alloc<cwrapper.ViewRect>()
             val result = IPlugView_getSize(this@PlugView.ptr, rect.ptr)
             check(result == kResultTrue) { result.kResultString }
-            rect.toKViewRect()
+            rect.toIntBox()
         }
 
-    fun onSize(newSize: ViewRect) {
+    fun onSize(newSize: IntBox) {
         memScoped {
             val rect = alloc<cwrapper.ViewRect>()
             rect.set(newSize)
@@ -71,7 +71,7 @@ class PlugView(
     val canResize: Boolean
         get() = IPlugView_canResize(this.ptr) == kResultTrue
 
-    fun checkSizeConstraint(rect: ViewRect): Boolean {
+    fun checkSizeConstraint(rect: IntBox): Boolean {
         val result = memScoped {
             val buf = alloc<cwrapper.ViewRect>()
             buf.set(rect)
@@ -85,7 +85,7 @@ class PlugView(
 class PlugFrame(
     override val ptr: CPointer<IPlugFrame>
 ) : FUnknown() {
-    fun resizeView(view: PlugView, newSize: ViewRect) {
+    fun resizeView(view: PlugView, newSize: IntBox) {
         memScoped {
             val rect = alloc<cwrapper.ViewRect>()
             rect.set(newSize)
@@ -95,11 +95,11 @@ class PlugFrame(
     }
 }
 
-private fun cwrapper.ViewRect.toKViewRect(): ViewRect {
-    return ViewRect(left, top, right, bottom)
+private fun cwrapper.ViewRect.toIntBox(): IntBox {
+    return IntBox(left, top, right, bottom)
 }
 
-private fun cwrapper.ViewRect.set(value: ViewRect) {
+private fun cwrapper.ViewRect.set(value: IntBox) {
     left = value.left
     top = value.top
     right = value.right
