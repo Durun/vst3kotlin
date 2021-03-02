@@ -1,4 +1,4 @@
-package io.github.durun.util
+package io.github.durun.vst3kotlin.cppinterface
 
 import cwrapper.*
 import kotlinx.cinterop.*

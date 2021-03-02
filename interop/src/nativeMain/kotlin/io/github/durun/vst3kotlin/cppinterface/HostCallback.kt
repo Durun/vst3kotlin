@@ -3,7 +3,6 @@ package io.github.durun.vst3kotlin.cppinterface
 import cwrapper.*
 import io.github.durun.data.toBoolean
 import io.github.durun.resource.Closeable
-import io.github.durun.util.*
 import kotlinx.cinterop.*
 
 
