@@ -171,9 +171,32 @@ tasks { // for testing
         )
         else -> throw GradleException("${os.familyName} is not supported.")
     }
+
+    val talFilter2 by when {
+        os.isWindows -> creatingDownloadZip(
+            url = "https://tal-software.com//downloads/plugins/install_TAL-Filter-2.zip",
+            md5 = "c4d796ac9391a134ba23f827290d4d9c",
+            dest = projectDir.resolve("src/windowsX64Test/resources/vst3"),
+            fromDepth = 0
+        )
+        os.isMacOsX -> creatingDownloadPkg(
+            url = "https://tal-software.com//downloads/plugins/TAL-Filter-2-installer.pkg",
+            md5 = "bcb8c0d587ac75de0b43d0302b564ad4",
+            dest = projectDir.resolve("src/macosX64Test/resources/vst3"),
+            fromDepth = 2
+        )
+        os.isLinux -> creatingDownloadZip(
+            url = "https://tal-software.com/downloads/plugins/TAL-Filter-2_64_linux.zip",
+            md5 = "175a62684e753eba0a51ec90d00e1f4c",
+            dest = projectDir.resolve("src/linuxX64Test/resources/vst3"),
+            fromDepth = 2
+        )
+        else -> throw GradleException("${os.familyName} is not supported.")
+    }
     getByName("${targetName}Test") {
         dependsOn(vst3sdkSamples)
         dependsOn(talNoizeMaker)
+        dependsOn(talFilter2)
     }
 }
 
