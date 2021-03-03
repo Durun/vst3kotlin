@@ -10,12 +10,12 @@ import io.github.durun.vst3kotlin.testResources
 class WindowTest {
     //@Test
     fun vstWindow() {
-        val path = testResources.resolve("vst3/again.vst3")
+        val path = testResources.resolve("vst3/TAL-NoiseMaker.vst3")
 
         val window = Window.create(Vec2(480, 320), "VST3")
 
         Module.of(path).use { module ->
-            module.classes.find { it.info.category == VstClassCategory.AudioEffect }!!.createInstance()
+            module.classes.find { it.info.category == VstClassCategory.AudioEffect }!!.createControllerInstance()
                 .use { instance ->
                     val view = instance.plugView ?: error("No PlugView.")
                     view.attached(window)

@@ -7,6 +7,7 @@ import io.github.durun.resource.Closeable
 import io.github.durun.util.logger
 import io.github.durun.vst3kotlin.pluginterface.base.ClassInfo
 import io.github.durun.vst3kotlin.pluginterface.base.PluginFactory
+import io.github.durun.vst3kotlin.pluginterface.vst.IoMode
 import kotlinx.cinterop.CFunction
 import kotlinx.cinterop.CPointer
 import kotlinx.cinterop.invoke
@@ -94,9 +95,12 @@ private constructor(
     constructor(
         val info: ClassInfo
     ) {
-        @ExperimentalUnsignedTypes
-        fun createInstance(): PluginInstance {
-            return PluginInstance.create(factory, info.classId)
+        fun createAudioInstance(mode: IoMode = IoMode.Advanced): AudioInstance {
+            return AudioInstance.create(factory, info.classId, mode)
+        }
+
+        fun createControllerInstance(): ControllerInstance {
+            return ControllerInstance.create(factory, info.classId)
         }
     }
 }
