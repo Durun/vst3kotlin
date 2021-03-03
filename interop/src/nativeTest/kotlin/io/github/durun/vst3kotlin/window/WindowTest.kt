@@ -6,10 +6,9 @@ import io.github.durun.vst3kotlin.cppinterface.HostCallback
 import io.github.durun.vst3kotlin.hosting.Module
 import io.github.durun.vst3kotlin.pluginterface.base.VstClassCategory
 import io.github.durun.vst3kotlin.testResources
-import kotlin.test.Test
 
 class WindowTest {
-    @Test
+    //@Test
     fun vstWindow() {
         val path = testResources.resolve("vst3/TAL-NoiseMaker.vst3")
 
