@@ -150,8 +150,30 @@ tasks { // for testing
         )
         else -> throw GradleException("${os.familyName} is not supported.")
     }
+    val talNoizeMaker by when {
+        os.isWindows -> creatingDownloadZip(
+            url = "https://tal-software.com//downloads/plugins/install_tal-noisemaker.zip",
+            md5 = "5049f5a57cdf06c872c925b6b449e76b",
+            dest = projectDir.resolve("src/windowsX64Test/resources/vst3"),
+            fromDepth = 0
+        )
+        os.isMacOsX -> creatingDownloadPkg(
+            url = "https://tal-software.com//downloads/plugins/tal-noisemaker-installer.pkg",
+            md5 = "6934b18acb462c73a41582d717ec1ea9",
+            dest = projectDir.resolve("src/macosX64Test/resources/vst3"),
+            fromDepth = 2
+        )
+        os.isLinux -> creatingDownloadZip(
+            url = "https://tal-software.com/downloads/plugins/TAL-NoiseMaker_64_linux.zip",
+            md5 = "e6a1a740629123437ff18da93058ea21",
+            dest = projectDir.resolve("src/linuxX64Test/resources/vst3"),
+            fromDepth = 2
+        )
+        else -> throw GradleException("${os.familyName} is not supported.")
+    }
     getByName("${targetName}Test") {
         dependsOn(vst3sdkSamples)
+        dependsOn(talNoizeMaker)
     }
 }
 
@@ -180,4 +202,58 @@ fun TaskContainerScope.creatingDownloadZip(url: String, md5: String, dest: File,
         }
     }
     dependsOn(unzip)
+}
+
+fun TaskContainerScope.creatingDownloadPkg(url: String, md5: String, dest: File, fromDepth: Int = 0) = creating {
+    val download = create<Download>("${name}Download") {
+        src(url)
+        dest(temporaryDir)
+    }
+    val outputFile = download.outputFiles.single()
+    val verify = create<Verify>("${name}Verify") {
+        dependsOn(download)
+        src(outputFile)
+        algorithm("MD5")
+        checksum(md5)
+    }
+
+    val extract1 = create<Exec>("${name}Extract1") {
+        dependsOn(verify)
+        workingDir = temporaryDir
+        commandLine("xar", "-xf", outputFile)
+        isIgnoreExitValue = true
+    }
+
+    val extract2 = create("${name}Extract2") {
+        dependsOn(extract1)
+        doLast {
+            val payloads = fileTree(extract1.temporaryDir).asFileTree.filter {
+                it.isDirectory || it.name == "Payload"
+            }
+            payloads.files.forEach {
+                println(it)
+                exec { commandLine("mv", "$it", "$it.gz") }
+                exec { commandLine("gunzip", "$it.gz") }
+                exec {
+                    workingDir = it.parentFile
+                    commandLine("cpio", "-i", "--file=Payload")
+                }
+            }
+        }
+    }
+    val copy = create<Copy>("${name}Copy") {
+        dependsOn(extract2)
+        from(fileTree(extract1.temporaryDir))
+        include("**/*.vst3/**")
+        val destRoot = projectDir.resolve(dest)
+        into(destRoot)
+        includeEmptyDirs = false
+        eachFile {
+            val dest =
+                if (fromDepth < relativePath.segments.size) relativePath.segments.drop(fromDepth).joinToString("/")
+                else relativePath.pathString
+            copyTo(destRoot.resolve(dest))
+        }
+    }
+    dependsOn(copy)
 }
