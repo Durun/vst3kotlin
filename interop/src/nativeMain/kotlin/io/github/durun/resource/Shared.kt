@@ -6,10 +6,11 @@ actual class Shared<T>
 actual constructor(
 	private val onOpen: () -> T,
 	private val onClose: (T) -> Unit
-) {
+) : Closeable {
 	private var refCount: AtomicInt = AtomicInt(0)
 	private var _value: T? = null
 
+	override val isOpen: Boolean get() = 0 < refCount.value
 	actual val value: T? get() = _value
 
 	actual fun open(): T {
@@ -22,7 +23,7 @@ actual constructor(
 		}
 	}
 
-	actual fun close() {
+	override fun close() {
 		val count = refCount.addAndGet(-1)
 		check(0 <= count) { "already closed" }
 		if (count == 0) {
