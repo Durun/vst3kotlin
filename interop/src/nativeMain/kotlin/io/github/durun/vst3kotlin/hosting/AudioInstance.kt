@@ -1,5 +1,6 @@
 package io.github.durun.vst3kotlin.hosting
 
+import cwrapper.ProcessData
 import io.github.durun.resource.Closeable
 import io.github.durun.util.logger
 import io.github.durun.vst3kotlin.pluginterface.base.PluginFactory
@@ -7,9 +8,9 @@ import io.github.durun.vst3kotlin.pluginterface.base.UID
 import io.github.durun.vst3kotlin.pluginterface.vst.*
 
 class AudioInstance(
-	val component: Component,
-	val processor: AudioProcessor,
-	val connectionPoint: ConnectionPoint?
+	private val component: Component,
+	private val processor: AudioProcessor,
+	private val connectionPoint: ConnectionPoint?
 ) : Closeable {
 	companion object {
 		private val log by logger()
@@ -120,5 +121,9 @@ class AudioInstance(
 		component.close()
 
 		isOpen = false
+	}
+
+	fun process(data: ProcessData) {
+		processor.process(data)
 	}
 }

@@ -14,8 +14,8 @@ import io.github.durun.vst3kotlin.pluginterface.vst.connectEach
 import io.github.durun.vst3kotlin.window.Window
 
 class ControllerInstance(
-	val component: Component,
-	val controller: EditController,
+	private val component: Component,
+	private val controller: EditController,
 	val plugView: PlugView?
 ) : Closeable {
 	companion object {

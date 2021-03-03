@@ -66,7 +66,7 @@ class AudioInstanceTest {
 				println("Module open.")
 				val classInfo = module.factory.classInfo.first { it.category == VstClassCategory.AudioEffect }
 				AudioInstance.create(module.factory, classInfo.classId, IoMode.Advanced).use {
-					it.processor.process(data)
+					it.process(data)
 					println("Instance open.")
 				}
 				println("Instance closed.")
