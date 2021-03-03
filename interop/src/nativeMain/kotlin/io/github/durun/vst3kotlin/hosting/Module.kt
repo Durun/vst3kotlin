@@ -22,7 +22,6 @@ expect object ModuleUtil {
 
 class Module
 private constructor(
-    val libPath: Path,
     private val lib: Dylib
 ) : Closeable {
     private val log by logger()
@@ -37,7 +36,7 @@ private constructor(
                 path to Dylib.open(path)
             }.getOrThrow()
             log.info { "Open Module $libPath" }
-            return Module(libPath, lib)
+            return Module(lib)
         }
     }
 
@@ -48,7 +47,7 @@ private constructor(
         private set
 
     init {
-        log.info { "Initializing $libPath" }
+        log.info { "Initializing $lib" }
         // Initialize module
         val entryFunc = runCatching { ModuleUtil.entryFuncOf(lib) }
             .onSuccess { log.info { "Found the entry function" } }
@@ -71,7 +70,7 @@ private constructor(
     }
 
     override fun close() {
-        log.info { "Closing $libPath" }
+        log.info { "Closing $lib" }
         isOpen = false
         factory.close()
         log.info { "Closed factory" }

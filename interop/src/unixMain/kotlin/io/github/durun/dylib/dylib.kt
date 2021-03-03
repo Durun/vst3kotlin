@@ -26,6 +26,7 @@ private constructor(
 		}
 	}
 
+	override fun toString(): String = "DyLib($name)"
 	override var isOpen: Boolean = true
 		private set
 
