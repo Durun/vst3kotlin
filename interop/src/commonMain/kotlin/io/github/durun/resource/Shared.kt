@@ -1,6 +1,6 @@
 package io.github.durun.resource
 
-expect class RefCounted<T>(
+expect class Shared<T>(
     onOpen: () -> T,
     onClose: (T) -> Unit
 ) {

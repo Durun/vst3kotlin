@@ -2,7 +2,7 @@ package io.github.durun.resource
 
 import kotlin.native.concurrent.AtomicInt
 
-actual class RefCounted<T>
+actual class Shared<T>
 actual constructor(
 	private val onOpen: () -> T,
 	private val onClose: (T) -> Unit

@@ -8,7 +8,7 @@ import kotlin.test.Test
 class RefCountedTest {
     @Test
     fun openAndClose() {
-        val ref = RefCounted(onOpen = { SampleResource() }, onClose = { it.close() })
+        val ref = Shared(onOpen = { SampleResource() }, onClose = { it.close() })
 
         ref.open().id shouldBe 0
         ref.close()
@@ -22,7 +22,7 @@ class RefCountedTest {
 
     @Test
     fun closeTwiceCausesError() {
-        val ref = RefCounted(onOpen = { SampleResource() }, onClose = { it.close() })
+        val ref = Shared(onOpen = { SampleResource() }, onClose = { it.close() })
         ref.use { println(it) }
         shouldThrowAny {
             ref.close()
