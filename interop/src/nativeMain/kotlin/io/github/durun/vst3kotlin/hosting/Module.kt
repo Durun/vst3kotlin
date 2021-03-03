@@ -27,7 +27,7 @@ private constructor(
     private val log by logger()
     companion object {
         private val log by logger()
-        fun of(path: Path): Module {
+        fun open(path: Path): Module {
             val (libPath, lib) = runCatching {
                 val libPath = ModuleUtil.libPathOf(path)
                 libPath to Dylib.open(libPath)

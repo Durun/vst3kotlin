@@ -11,7 +11,7 @@ class PluginFactoryTest {
 
 	@Test
 	fun factoryInfo() {
-		val info = Module.of(path).use { plugin ->
+		val info = Module.open(path).use { plugin ->
 			plugin.factory.factoryInfo
 		}
 		println(info)
@@ -31,7 +31,7 @@ class PluginFactoryTest {
 
 	@Test
 	fun classInfo() {
-		val classes = Module.of(path).use { plugin ->
+		val classes = Module.open(path).use { plugin ->
 			plugin.factory.classInfo
 		}
 		println(classes.joinToString("\n"))

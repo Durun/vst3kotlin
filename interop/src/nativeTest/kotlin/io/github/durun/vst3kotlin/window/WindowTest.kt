@@ -14,7 +14,7 @@ class WindowTest {
 
         val window = Window.create(Vec2(480, 320), "VST3")
 
-        Module.of(path).use { module ->
+        Module.open(path).use { module ->
             module.classes.find { it.info.category == VstClassCategory.AudioEffect }!!.createControllerInstance()
                 .use { instance ->
                     val view = instance.plugView ?: error("No PlugView.")

@@ -11,7 +11,7 @@ class ControllerInstanceTest {
 
 	@Test
 	fun test() {
-		Module.of(path).use { module ->
+		Module.open(path).use { module ->
 			println("Module open.")
 			module.classes.first { it.info.category == VstClassCategory.AudioEffect }.createControllerInstance().use {
 				println("ControllerInstance open.")

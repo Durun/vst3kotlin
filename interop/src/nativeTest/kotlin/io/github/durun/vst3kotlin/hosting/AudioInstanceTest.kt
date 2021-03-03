@@ -16,7 +16,7 @@ class AudioInstanceTest {
 	@Test
 	fun openTwice() {
 		(1..2).forEach { _ ->
-			Module.of(path).use { module ->
+			Module.open(path).use { module ->
 				println("Module open.")
 				val classInfo = module.factory.classInfo.first { it.category == VstClassCategory.AudioEffect }
 				AudioInstance.create(module.factory, classInfo.classId, IoMode.Advanced).use {
@@ -62,7 +62,7 @@ class AudioInstanceTest {
 			)
 
 			/** Open VST here **/
-			Module.of(path).use { module ->
+			Module.open(path).use { module ->
 				println("Module open.")
 				val classInfo = module.factory.classInfo.first { it.category == VstClassCategory.AudioEffect }
 				AudioInstance.create(module.factory, classInfo.classId, IoMode.Advanced).use {

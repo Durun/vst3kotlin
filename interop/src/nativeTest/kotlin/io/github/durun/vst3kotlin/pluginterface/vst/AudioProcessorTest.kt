@@ -49,7 +49,7 @@ class AudioProcessorTest {
                 }.placeToCInterface(this)
             )
 
-            Module.of(path).use {
+            Module.open(path).use {
                 val clazz = it.classes.find { it.info.category == VstClassCategory.AudioEffect }!!
                 clazz.createAudioInstance().use { instance ->
                     instance.process(data)

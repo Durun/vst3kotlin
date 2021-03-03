@@ -10,11 +10,11 @@ class ModuleTest {
     fun open_twice() {
         val path = testResources.resolve("vst3/again.vst3")
         // close automatically
-        Module.of(path).use {
+        Module.open(path).use {
             println(it.factory)
         }
         // close manually
-        val module = Module.of(path)
+        val module = Module.open(path)
         println(module.factory)
         module.close()
     }
