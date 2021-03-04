@@ -16,10 +16,6 @@ plugins {
 	id("de.undercouch.download") version "4.1.1"
 }
 
-repositories {
-	mavenCentral()
-}
-
 val kotestVersion = "4.4.1"
 dependencies {
 	// Main Dependencies

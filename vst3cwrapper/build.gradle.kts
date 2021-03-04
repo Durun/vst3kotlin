@@ -16,10 +16,6 @@ plugins {
     `maven-publish`
 }
 
-repositories {
-    mavenLocal()
-}
-
 library {
     linkage.set(listOf(Linkage.STATIC))
     targetMachines.add(machines.linux.x86_64)
