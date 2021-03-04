@@ -33,7 +33,6 @@ private constructor(
         }
     }
 
-    val name: String = lib.name
     val factory: PluginFactory
 
     override var isOpen: Boolean = true
@@ -76,23 +75,5 @@ private constructor(
             .onFailure { log.error { "Failed to call exit function" } }
         lib.close()
         log.info { "Closed Module: $lib" }
-    }
-
-    @ExperimentalUnsignedTypes
-    val classes: List<ModuleClass> by lazy {
-        factory.classInfo.map { ModuleClass(it) }
-    }
-
-    inner class ModuleClass
-    constructor(
-        val info: ClassInfo
-    ) {
-        fun createAudioInstance(mode: IoMode = IoMode.Advanced): AudioInstance {
-            return AudioInstance.create(factory, info.classId, mode)
-        }
-
-        fun createControllerInstance(): ControllerInstance {
-            return ControllerInstance.create(factory, info.classId)
-        }
     }
 }

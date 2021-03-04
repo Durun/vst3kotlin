@@ -1,6 +1,7 @@
 package io.github.durun.vst3kotlin.hosting
 
 import io.github.durun.resource.Closeable
+import io.github.durun.resource.Shared
 import io.github.durun.util.logger
 import io.github.durun.vst3kotlin.cppinterface.HostCallback
 import io.github.durun.vst3kotlin.pluginterface.base.PluginFactory
@@ -16,14 +17,15 @@ import io.github.durun.window.Window
 class ControllerInstance(
 	private val component: Component,
 	private val controller: EditController,
-	val plugView: PlugView?
+	val plugView: PlugView?,
+	private val toClose: Shared<*>
 ) : Closeable {
 	companion object {
 		private val log by logger()
 
-		fun create(from: PluginFactory, classID: UID, hostContext: HostCallback = HostCallback): ControllerInstance {
+		internal fun create(factory: PluginFactory, classID: UID, toClose: Shared<*>, hostContext: HostCallback = HostCallback): ControllerInstance {
 
-			val component: Component = runCatching { from.createComponent(classID) }
+			val component: Component = runCatching { factory.createComponent(classID) }
 				.onSuccess { log.info { "Created component" } }
 				.onFailure { log.error { "Failed to create component" } }
 				.getOrThrow()
@@ -31,7 +33,7 @@ class ControllerInstance(
 			val controller: EditController = runCatching { component.queryEditController() }
 				.onSuccess { log.info { "Queried EditController" } }
 				.onFailure { log.warn { "Failed to query EditController. Try create instead." } }
-				.recoverCatching { from.createEditController(component.controllerClassID) }
+				.recoverCatching { factory.createEditController(component.controllerClassID) }
 				.onSuccess { log.info { "Created EditController" } }
 				.onFailure { log.error { "Failed to create EditController" } }
 				.getOrThrow()
@@ -71,7 +73,7 @@ class ControllerInstance(
 				.onFailure { log.warn { "${Window.platformType} isn't supported" } }
 				.getOrNull()
 
-			return ControllerInstance(component, controller, plugView)
+			return ControllerInstance(component, controller, plugView, toClose)
 		}
 	}
 
@@ -84,6 +86,7 @@ class ControllerInstance(
 		plugView?.close()
 		controller.close()
 		component.close()
+		toClose.close()
 
 		isOpen = false
 	}

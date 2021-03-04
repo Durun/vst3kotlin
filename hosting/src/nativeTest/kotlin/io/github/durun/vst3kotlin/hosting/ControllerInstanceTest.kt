@@ -11,13 +11,12 @@ class ControllerInstanceTest {
 
 	@Test
 	fun test() {
-		Module.open(path).use { module ->
-			println("Module open.")
-			module.classes.first { it.info.category == VstClassCategory.AudioEffect }.createControllerInstance().use {
-				println("ControllerInstance open.")
-			}
-			println("ControllerInstance closed.")
+		val repo: VstClassRepository = VstFile.of(path)
+		val classId = repo.classInfos.first { it.category == VstClassCategory.AudioEffect }.classId
+		val vstClass = repo[classId] ?: error("No Audio effect")
+		vstClass.createAudioInstance().use {
+			println("ControllerInstance open.")
 		}
-		println("Module closed.")
+		println("ControllerInstance closed.")
 	}
 }
