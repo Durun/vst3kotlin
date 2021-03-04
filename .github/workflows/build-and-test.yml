@@ -22,16 +22,18 @@ jobs:
           sudo apt install clang
           sudo apt install "libstdc++6" libx11-xcb-dev libxcb-util-dev libxcb-cursor-dev libxcb-xkb-dev libxkbcommon-dev libxkbcommon-x11-dev libfontconfig1-dev libcairo2-dev libgtkmm-3.0-dev libsqlite3-dev libxcb-keysyms1-dev
       - name: Build
-        run: ./gradlew interop:linkReleaseStaticLinuxX64 --info
+        run: ./gradlew linkReleaseStaticLinuxX64 --info
       - name: Generate test report
-        run: ./gradlew interop:allTests || true
+        run: |
+          ./gradlew downloadAll
+          ./gradlew allTests || true
       - name: Upload Test Report
         uses: actions/upload-artifact@v2.2.1
         with:
           name: reports-linuxX64
           path: interop/build/reports
       - name: Test
-        run: ./gradlew interop:allTests
+        run: ./gradlew allTests
 
   testOnMacOS:
     runs-on: macOS-latest
@@ -42,16 +44,18 @@ jobs:
         with:
           java-version: 15
       - name: Build
-        run: ./gradlew interop:linkReleaseStaticMacosX64 --info
+        run: ./gradlew linkReleaseStaticMacosX64 --info
       - name: Generate test report
-        run: ./gradlew interop:allTests || true
+        run: |
+          ./gradlew downloadAll
+          ./gradlew allTests || true
       - name: Upload Test Report
         uses: actions/upload-artifact@v2.2.1
         with:
           name: reports-macosX64
           path: interop/build/reports
       - name: Test
-        run: ./gradlew interop:allTests
+        run: ./gradlew allTests
 
   testOnWindows:
     runs-on: windows-latest
@@ -62,13 +66,15 @@ jobs:
         with:
           java-version: 15
       - name: Build library
-        run: .\gradlew interop:linkReleaseStaticWindowsX64 --info
+        run: .\gradlew linkReleaseStaticWindowsX64 --info
       - name: Generate test report
-        run: .\gradlew interop:allTests || true
+        run: |
+          .\gradlew downloadAll
+          .\gradlew allTests || true
       - name: Upload Test Report
         uses: actions/upload-artifact@v2.2.1
         with:
           name: reports-windowsX64
           path: interop/build/reports
       - name: Test
-        run: .\gradlew interop:allTests
+        run: .\gradlew allTests
