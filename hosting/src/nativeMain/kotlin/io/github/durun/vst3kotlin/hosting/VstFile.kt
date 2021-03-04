@@ -6,6 +6,11 @@ import io.github.durun.util.logger
 import io.github.durun.vst3kotlin.pluginterface.base.ClassInfo
 import io.github.durun.vst3kotlin.pluginterface.base.UID
 
+
+/**
+ * ライブラリ1ファイル分のVSTプラグインを持つ[VstClassRepository]です。
+ * @sample io.github.durun.vst3kotlin.samples.vstFileSample
+ */
 class VstFile
 private constructor(path: Path) : VstClassRepository {
 	private val log by logger()

@@ -4,6 +4,10 @@ import io.github.durun.resource.Shared
 import io.github.durun.vst3kotlin.pluginterface.base.UID
 import io.github.durun.vst3kotlin.pluginterface.vst.IoMode
 
+/**
+ * VSTプラグイン1種類を表現するクラスです。
+ * VSTプラグインインスタンス[AudioInstance], [ControllerInstance]のファクトリです。
+ */
 class VstClass(
 	private val classId: UID,
 	private val module: Shared<Module>

@@ -9,6 +9,9 @@ import io.github.durun.vst3kotlin.pluginterface.base.PluginFactory
 import io.github.durun.vst3kotlin.pluginterface.vst.IoMode
 import kotlinx.cinterop.invoke
 
+/**
+ * ダイナミックロードライブラリをVSTプラグインとして扱うためのラッパーです。
+ */
 class Module
 private constructor(
     private val lib: Dylib
