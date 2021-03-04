@@ -6,6 +6,9 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 
 // other project reference
+evaluationDependsOn(":util")
+evaluationDependsOn(":window")
+evaluationDependsOn(":vst3pluginterface")
 evaluationDependsOn(":vst3cwrapper")
 val cwrapper = project(":vst3cwrapper")
 
@@ -23,6 +26,9 @@ val kotestVersion = "4.4.1"
 dependencies {
     // Main Dependencies
     commonMainImplementation(kotlin("stdlib-common"))
+    commonMainImplementation(project(":util"))
+    commonMainImplementation(project(":window"))
+    commonMainImplementation(project(":vst3pluginterface"))
 
     // Test Dependencies
     commonTestImplementation(kotlin("test-common"))
@@ -60,60 +66,10 @@ kotlin {
                 }
             }
         }
-        compilations.getByName("main") {
-            cinterops {
-                create("cwrapper") {
-                    defFile = cwrapperDef
-                    includeDirs.allHeaders(
-                        cwrapper.projectDir.resolve("src/main/public"),
-                        cwrapper.buildDir.resolve("headers")
-                    )
-                    headers(fileTree(cwrapper.projectDir.resolve("src/main/public")))
-                }
-            }
-            kotlinOptions {
-                freeCompilerArgs += "-Xopt-in=kotlin.RequiresOptIn"
-            }
-        }
-        binaries {
-            staticLib()
-        }
-    }
-    targets.withType<KotlinNativeTarget>().findByName("linuxX64")?.compilations?.getByName("main") {
-        cinterops.create("x11") {
-            defFile = projectDir.resolve("src/linuxX64Interop/cinterop/x11.def")
-        }
     }
 }
 
 tasks { // for compilation
-    val cinteropDef by creating {
-        fun File.unixPath() = when {
-            os.isWindows -> this.toURI().toString().drop("file:/".length)
-            else -> this.path
-        }
-        doLast {
-            cwrapperDef.parentFile.mkdirs()
-            if (!cwrapperDef.exists()) cwrapperDef.createNewFile()
-            val unixStyleText = """
-                staticLibraries.linux_x64 = libvst3cwrapper.a
-                staticLibraries.macos_x64 = libvst3cwrapper.a
-                staticLibraries.mingw_x64 = vst3cwrapper.lib
-                libraryPaths.linux_x64 = ${cwrapper.buildDir.resolve("lib/main/release/linux").unixPath()}
-                libraryPaths.macos_x64 = ${cwrapper.buildDir.resolve("lib/main/release/macos").unixPath()}
-                libraryPaths.mingw_x64 = ${cwrapper.buildDir.resolve("lib/main/release/windows").unixPath()}
-            """.trimIndent()
-            val text = when {
-                os.isWindows -> unixStyleText.replace("\n", "\r\n")
-                else -> unixStyleText
-            }
-            cwrapperDef.writeText(text)
-        }
-    }
-    withType(CInteropProcess::class) {
-        dependsOn(cwrapper.tasks["assemble"])
-        dependsOn(cinteropDef)
-    }
     withType(KotlinCompile::class).all {
         kotlinOptions {
             freeCompilerArgs += "-Xopt-in=kotlin.RequiresOptIn"

@@ -11,7 +11,7 @@ import io.github.durun.vst3kotlin.pluginterface.vst.Component
 import io.github.durun.vst3kotlin.pluginterface.vst.ComponentHandler
 import io.github.durun.vst3kotlin.pluginterface.vst.EditController
 import io.github.durun.vst3kotlin.pluginterface.vst.connectEach
-import io.github.durun.vst3kotlin.window.Window
+import io.github.durun.window.Window
 
 class ControllerInstance(
 	private val component: Component,

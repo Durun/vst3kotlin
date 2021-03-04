@@ -1,0 +1,33 @@
+package io.github.durun.window
+
+import io.github.durun.data.Vec2
+import io.github.durun.resource.use
+import io.github.durun.vst3kotlin.cppinterface.HostCallback
+import io.github.durun.vst3kotlin.hosting.Module
+import io.github.durun.vst3kotlin.pluginterface.base.VstClassCategory
+import io.github.durun.vst3kotlin.testResources
+
+class WindowTest {
+    //@Test
+    fun vstWindow() {
+        val path = testResources.resolve("vst3/TAL-NoiseMaker.vst3")
+
+        val window = Window.create(Vec2(480, 320), "VST3")
+
+        Module.open(path).use { module ->
+            module.classes.find { it.info.category == VstClassCategory.AudioEffect }!!.createControllerInstance()
+                .use { instance ->
+                    val view = instance.plugView ?: error("No PlugView.")
+                    view.attached(window)
+                    println("attached.")
+
+                    window.show()
+
+                    window.loop {
+                        HostCallback.receiveMessages().forEach { println(it) }
+                        it != WindowEvent.OnClosed
+                    }
+                }
+        }
+    }
+}

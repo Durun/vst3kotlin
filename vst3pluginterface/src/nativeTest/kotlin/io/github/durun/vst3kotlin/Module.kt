@@ -1,12 +1,10 @@
-package io.github.durun.vst3kotlin.hosting
+package io.github.durun.vst3kotlin
 
 import io.github.durun.dylib.Dylib
 import io.github.durun.io.Path
 import io.github.durun.resource.Closeable
 import io.github.durun.util.logger
-import io.github.durun.vst3kotlin.pluginterface.base.ClassInfo
 import io.github.durun.vst3kotlin.pluginterface.base.PluginFactory
-import io.github.durun.vst3kotlin.pluginterface.vst.IoMode
 import kotlinx.cinterop.invoke
 
 class Module
@@ -14,6 +12,7 @@ private constructor(
     private val lib: Dylib
 ) : Closeable {
     private val log by logger()
+
     companion object {
         private val log by logger()
         fun open(path: Path): Module {
@@ -21,11 +20,7 @@ private constructor(
                 val libPath = ModuleUtil.libPathOf(path)
                 libPath to Dylib.open(libPath)
             }.recoverCatching {
-                log.warn { "Not found ${
-                    ModuleUtil.libPathOf(
-                        path
-                    )
-                }. Open instead $path" }
+                log.warn { "Not found ${ModuleUtil.libPathOf(path)}. Open instead $path" }
                 path to Dylib.open(path)
             }.getOrThrow()
             log.info { "Open Module $libPath" }
@@ -76,23 +71,5 @@ private constructor(
             .onFailure { log.error { "Failed to call exit function" } }
         lib.close()
         log.info { "Closed Module: $lib" }
-    }
-
-    @ExperimentalUnsignedTypes
-    val classes: List<ModuleClass> by lazy {
-        factory.classInfo.map { ModuleClass(it) }
-    }
-
-    inner class ModuleClass
-    constructor(
-        val info: ClassInfo
-    ) {
-        fun createAudioInstance(mode: IoMode = IoMode.Advanced): AudioInstance {
-            return AudioInstance.create(factory, info.classId, mode)
-        }
-
-        fun createControllerInstance(): ControllerInstance {
-            return ControllerInstance.create(factory, info.classId)
-        }
     }
 }
