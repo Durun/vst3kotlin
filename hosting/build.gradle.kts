@@ -1,7 +1,6 @@
 import de.undercouch.gradle.tasks.download.Download
 import de.undercouch.gradle.tasks.download.Verify
 import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget
-import org.jetbrains.kotlin.gradle.tasks.CInteropProcess
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 
@@ -85,6 +84,7 @@ tasks { // for testing
         os.isLinux -> "linuxX64"
         else -> throw GradleException("${os.familyName} is not supported.")
     }
+    val downloadAll by creating {}
     val vst3sdkSamples by when {
         os.isWindows -> creatingDownloadZip(
             url = "https://github.com/Durun/vst3experiment/releases/download/samples/vst3samples-windowsX64.zip",
@@ -161,9 +161,10 @@ fun TaskContainerScope.creatingDownloadZip(url: String, md5: String, dest: File,
         src(url)
         dest(temporaryDir)
     }
+    val downloadAll by getting
+    downloadAll.dependsOn(download)
     val outputFile = download.outputFiles.single()
     val verify = create<Verify>("${name}Verify") {
-        dependsOn(download)
         src(outputFile)
         algorithm("MD5")
         checksum(md5)
@@ -188,9 +189,11 @@ fun TaskContainerScope.creatingDownloadPkg(url: String, md5: String, dest: File,
         src(url)
         dest(temporaryDir)
     }
+    val downloadAll by getting
+    downloadAll.dependsOn(download)
     val outputFile = download.outputFiles.single()
     val verify = create<Verify>("${name}Verify") {
-        dependsOn(download)
+        //dependsOn(download)
         src(outputFile)
         algorithm("MD5")
         checksum(md5)
