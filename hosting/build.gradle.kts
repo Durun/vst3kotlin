@@ -15,10 +15,7 @@ val cwrapper = project(":vst3cwrapper")
 plugins {
     kotlin("multiplatform") version "1.4.31"
     id("de.undercouch.download") version "4.1.1"
-}
-
-repositories {
-    mavenCentral()
+    id("org.jetbrains.dokka") version "1.4.20"
 }
 
 val kotestVersion = "4.4.1"
