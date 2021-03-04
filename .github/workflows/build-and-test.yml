@@ -24,7 +24,9 @@ jobs:
       - name: Build
         run: ./gradlew linkReleaseStaticLinuxX64 --info
       - name: Generate test report
-        run: ./gradlew allTests || true
+        run: |
+          ./gradlew downloadAll
+          ./gradlew allTests || true
       - name: Upload Test Report
         uses: actions/upload-artifact@v2.2.1
         with:
@@ -44,7 +46,9 @@ jobs:
       - name: Build
         run: ./gradlew linkReleaseStaticMacosX64 --info
       - name: Generate test report
-        run: ./gradlew allTests || true
+        run: |
+          ./gradlew downloadAll
+          ./gradlew allTests || true
       - name: Upload Test Report
         uses: actions/upload-artifact@v2.2.1
         with:
@@ -64,7 +68,9 @@ jobs:
       - name: Build library
         run: .\gradlew linkReleaseStaticWindowsX64 --info
       - name: Generate test report
-        run: .\gradlew allTests || true
+        run: |
+          .\gradlew downloadAll
+          .\gradlew allTests || true
       - name: Upload Test Report
         uses: actions/upload-artifact@v2.2.1
         with:
