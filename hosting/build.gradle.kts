@@ -1,5 +1,6 @@
 import de.undercouch.gradle.tasks.download.Download
 import de.undercouch.gradle.tasks.download.Verify
+import org.jetbrains.dokka.gradle.DokkaTask
 import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
@@ -66,22 +67,31 @@ kotlin {
 }
 
 tasks { // for compilation
-    withType(KotlinCompile::class).all {
-        kotlinOptions {
-            freeCompilerArgs += "-Xopt-in=kotlin.RequiresOptIn"
-        }
-    }
+	withType(KotlinCompile::class).all {
+		kotlinOptions {
+			freeCompilerArgs += "-Xopt-in=kotlin.RequiresOptIn"
+		}
+	}
+}
+
+// for documentation
+tasks.withType<DokkaTask>().configureEach {
+	dokkaSourceSets {
+		configureEach {
+			samples.from("samples/")
+		}
+	}
 }
 
 tasks { // for testing
-    // OS setting
-    val targetName = when {
-        os.isWindows -> "windowsX64"
-        os.isMacOsX -> "macosX64"
-        os.isLinux -> "linuxX64"
-        else -> throw GradleException("${os.familyName} is not supported.")
-    }
-    val downloadAll by creating {}
+	// OS setting
+	val targetName = when {
+		os.isWindows -> "windowsX64"
+		os.isMacOsX -> "macosX64"
+		os.isLinux -> "linuxX64"
+		else -> throw GradleException("${os.familyName} is not supported.")
+	}
+	val downloadAll by creating {}
     val vst3sdkSamples by when {
         os.isWindows -> creatingDownloadZip(
             url = "https://github.com/Durun/vst3experiment/releases/download/samples/vst3samples-windowsX64.zip",
