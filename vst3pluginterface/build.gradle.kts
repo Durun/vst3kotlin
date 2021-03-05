@@ -15,6 +15,7 @@ plugins {
 	kotlin("multiplatform") version "1.4.31"
 	id("de.undercouch.download") version "4.1.1"
 	id("org.jetbrains.dokka") version "1.4.20"
+	`maven-publish`
 }
 
 val kotestVersion = "4.4.1"

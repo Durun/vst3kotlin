@@ -17,6 +17,7 @@ plugins {
     kotlin("multiplatform") version "1.4.31"
     id("de.undercouch.download") version "4.1.1"
     id("org.jetbrains.dokka") version "1.4.20"
+    `maven-publish`
 }
 
 val kotestVersion = "4.4.1"
@@ -67,31 +68,42 @@ kotlin {
 }
 
 tasks { // for compilation
-	withType(KotlinCompile::class).all {
-		kotlinOptions {
-			freeCompilerArgs += "-Xopt-in=kotlin.RequiresOptIn"
-		}
-	}
+    withType(KotlinCompile::class).all {
+        kotlinOptions {
+            freeCompilerArgs += "-Xopt-in=kotlin.RequiresOptIn"
+        }
+    }
+}
+
+// for publishing
+afterEvaluate {
+    project.publishing.publications.withType<MavenPublication>().all {
+        /*
+        artifactId = if (name.contains("metadata")) project.name
+        else "${project.name}-$name"
+
+         */
+    }
 }
 
 // for documentation
 tasks.withType<DokkaTask>().configureEach {
-	dokkaSourceSets {
-		configureEach {
-			samples.from("samples/")
-		}
-	}
+    dokkaSourceSets {
+        configureEach {
+            samples.from("samples/")
+        }
+    }
 }
 
 tasks { // for testing
-	// OS setting
-	val targetName = when {
-		os.isWindows -> "windowsX64"
-		os.isMacOsX -> "macosX64"
-		os.isLinux -> "linuxX64"
-		else -> throw GradleException("${os.familyName} is not supported.")
-	}
-	val downloadAll by creating {}
+    // OS setting
+    val targetName = when {
+        os.isWindows -> "windowsX64"
+        os.isMacOsX -> "macosX64"
+        os.isLinux -> "linuxX64"
+        else -> throw GradleException("${os.familyName} is not supported.")
+    }
+    val downloadAll by creating {}
     val vst3sdkSamples by when {
         os.isWindows -> creatingDownloadZip(
             url = "https://github.com/Durun/vst3experiment/releases/download/samples/vst3samples-windowsX64.zip",
