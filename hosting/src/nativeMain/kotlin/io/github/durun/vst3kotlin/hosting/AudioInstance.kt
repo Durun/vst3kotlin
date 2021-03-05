@@ -8,6 +8,13 @@ import io.github.durun.vst3kotlin.pluginterface.base.PluginFactory
 import io.github.durun.vst3kotlin.pluginterface.base.UID
 import io.github.durun.vst3kotlin.pluginterface.vst.*
 
+/**
+ * VSTプラグインの、オーディオプロセッサ側のインスタンスです。
+ * [VstClass]から作られます。
+ * 使用後には[close]が呼ばれる必要があります。
+ * @sample io.github.durun.vst3kotlin.samples.audioInstanceSample
+ * @sample io.github.durun.vst3kotlin.samples.processDataSample
+ */
 class AudioInstance(
     private val component: Component,
     private val processor: AudioProcessor,

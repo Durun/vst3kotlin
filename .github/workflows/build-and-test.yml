@@ -22,7 +22,9 @@ jobs:
           sudo apt install clang
           sudo apt install "libstdc++6" libx11-xcb-dev libxcb-util-dev libxcb-cursor-dev libxcb-xkb-dev libxkbcommon-dev libxkbcommon-x11-dev libfontconfig1-dev libcairo2-dev libgtkmm-3.0-dev libsqlite3-dev libxcb-keysyms1-dev
       - name: Build
-        run: ./gradlew linkReleaseStaticLinuxX64 --info
+        run: |
+          GRADLE_OPTS="-Xms1g -Xmx6g -XX:MaxMetaspaceSize=4g"
+          ./gradlew linkReleaseStaticLinuxX64 --info
       - name: Generate test report
         run: |
           ./gradlew downloadAll
@@ -44,7 +46,9 @@ jobs:
         with:
           java-version: 15
       - name: Build
-        run: ./gradlew linkReleaseStaticMacosX64 --info
+        run: |
+          GRADLE_OPTS="-Xms1g -Xmx6g -XX:MaxMetaspaceSize=4g"
+          ./gradlew linkReleaseStaticMacosX64 --info
       - name: Generate test report
         run: |
           ./gradlew downloadAll
@@ -66,7 +70,9 @@ jobs:
         with:
           java-version: 15
       - name: Build library
-        run: .\gradlew linkReleaseStaticWindowsX64 --info
+        run: |
+          set GRADLE_OPTS="-Xms1g -Xmx6g -XX:MaxMetaspaceSize=4g"
+          .\gradlew linkReleaseStaticWindowsX64 --info
       - name: Generate test report
         run: |
           .\gradlew downloadAll

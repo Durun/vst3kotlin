@@ -3,10 +3,7 @@ import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget
 
 plugins {
     kotlin("multiplatform") version "1.4.31"
-}
-
-repositories {
-    mavenCentral()
+    `maven-publish`
 }
 
 val kotestVersion = "4.4.1"

@@ -1,5 +1,6 @@
 import de.undercouch.gradle.tasks.download.Download
 import de.undercouch.gradle.tasks.download.Verify
+import org.jetbrains.dokka.gradle.DokkaTask
 import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
@@ -15,10 +16,8 @@ val cwrapper = project(":vst3cwrapper")
 plugins {
     kotlin("multiplatform") version "1.4.31"
     id("de.undercouch.download") version "4.1.1"
-}
-
-repositories {
-    mavenCentral()
+    id("org.jetbrains.dokka") version "1.4.20"
+    `maven-publish`
 }
 
 val kotestVersion = "4.4.1"
@@ -72,6 +71,26 @@ tasks { // for compilation
     withType(KotlinCompile::class).all {
         kotlinOptions {
             freeCompilerArgs += "-Xopt-in=kotlin.RequiresOptIn"
+        }
+    }
+}
+
+// for publishing
+afterEvaluate {
+    project.publishing.publications.withType<MavenPublication>().all {
+        /*
+        artifactId = if (name.contains("metadata")) project.name
+        else "${project.name}-$name"
+
+         */
+    }
+}
+
+// for documentation
+tasks.withType<DokkaTask>().configureEach {
+    dokkaSourceSets {
+        configureEach {
+            samples.from("samples/")
         }
     }
 }

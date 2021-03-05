@@ -6,7 +6,7 @@ import io.github.durun.io.Path
 import kotlinx.cinterop.CFunction
 import kotlinx.cinterop.CPointer
 
-expect object ModuleUtil {
+internal expect object ModuleUtil {
 	fun moduleNameOf(vst3Path: Path): String
 	fun libPathOf(vst3Path: Path): Path
 	fun entryFuncOf(lib: Dylib): CPointer<CFunction<() -> Unit>>

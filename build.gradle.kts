@@ -1,6 +1,11 @@
 allprojects {
     group = "io.github.durun.vst3kotlin"
     version = "0.1"
+
+    repositories {
+        mavenCentral()
+        jcenter()
+    }
 }
 
 tasks.withType<Wrapper> {

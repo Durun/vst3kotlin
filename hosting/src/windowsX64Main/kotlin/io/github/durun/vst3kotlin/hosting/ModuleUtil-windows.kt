@@ -7,7 +7,7 @@ import io.github.durun.io.exists
 import kotlinx.cinterop.CFunction
 import kotlinx.cinterop.CPointer
 
-actual object ModuleUtil {
+internal actual object ModuleUtil {
     actual fun moduleNameOf(vst3Path: Path): String {
         return vst3Path.nameWithoutExtension
     }

@@ -14,6 +14,12 @@ import io.github.durun.vst3kotlin.pluginterface.vst.EditController
 import io.github.durun.vst3kotlin.pluginterface.vst.connectEach
 import io.github.durun.window.Window
 
+/**
+ * VSTプラグインの、コントローラ側のインスタンスです。
+ * [VstClass]から作られます。
+ * 使用後には[close]が呼ばれる必要があります。
+ * @sample io.github.durun.vst3kotlin.samples.controllerInstanceSample
+ */
 class ControllerInstance(
 	private val component: Component,
 	private val controller: EditController,

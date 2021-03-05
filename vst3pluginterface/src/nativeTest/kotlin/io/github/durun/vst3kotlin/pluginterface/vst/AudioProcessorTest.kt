@@ -3,7 +3,7 @@ package io.github.durun.vst3kotlin.pluginterface.vst
 import cwrapper.ProcessContext
 import cwrapper.ProcessData
 import io.github.durun.resource.use
-import io.github.durun.vst3kotlin.Module
+import io.github.durun.vst3kotlin.TestModule
 import io.github.durun.vst3kotlin.pluginterface.base.VstClassCategory
 import io.github.durun.vst3kotlin.testResources
 import io.kotest.matchers.shouldBe
@@ -49,7 +49,7 @@ class AudioProcessorTest {
 				}.placeToCInterface(this)
 			)
 
-			Module.open(path).use {
+			TestModule.open(path).use {
 				val cid = it.factory.classInfo.find { it.category == VstClassCategory.AudioEffect }!!.classId
 				it.factory.createAudioProcessor(cid).use { instance ->
 					instance.process(data)
