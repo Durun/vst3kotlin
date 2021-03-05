@@ -1,7 +1,7 @@
 package io.github.durun.vst3kotlin.pluginterface.base
 
 import io.github.durun.resource.use
-import io.github.durun.vst3kotlin.Module
+import io.github.durun.vst3kotlin.TestModule
 import io.github.durun.vst3kotlin.testResources
 import io.kotest.matchers.shouldBe
 import kotlin.test.Test
@@ -11,7 +11,7 @@ class PluginFactoryTest {
 
 	@Test
 	fun factoryInfo() {
-		val info = Module.open(path).use { plugin ->
+		val info = TestModule.open(path).use { plugin ->
 			plugin.factory.factoryInfo
 		}
 		println(info)
@@ -31,7 +31,7 @@ class PluginFactoryTest {
 
 	@Test
 	fun classInfo() {
-		val classes = Module.open(path).use { plugin ->
+		val classes = TestModule.open(path).use { plugin ->
 			plugin.factory.classInfo
 		}
 		println(classes.joinToString("\n"))

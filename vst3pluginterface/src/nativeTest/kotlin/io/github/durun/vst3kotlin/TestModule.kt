@@ -7,7 +7,7 @@ import io.github.durun.util.logger
 import io.github.durun.vst3kotlin.pluginterface.base.PluginFactory
 import kotlinx.cinterop.invoke
 
-class Module
+class TestModule
 private constructor(
     private val lib: Dylib
 ) : Closeable {
@@ -15,7 +15,7 @@ private constructor(
 
     companion object {
         private val log by logger()
-        fun open(path: Path): Module {
+        fun open(path: Path): TestModule {
             val (libPath, lib) = runCatching {
                 val libPath = ModuleUtil.libPathOf(path)
                 libPath to Dylib.open(libPath)
@@ -24,7 +24,7 @@ private constructor(
                 path to Dylib.open(path)
             }.getOrThrow()
             log.info { "Open Module $libPath" }
-            return Module(lib)
+            return TestModule(lib)
         }
     }
 
