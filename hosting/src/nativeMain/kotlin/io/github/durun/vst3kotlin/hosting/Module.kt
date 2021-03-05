@@ -12,7 +12,7 @@ import kotlinx.cinterop.invoke
 /**
  * ダイナミックロードライブラリをVSTプラグインとして扱うためのラッパーです。
  */
-class Module
+internal class Module
 private constructor(
     private val lib: Dylib
 ) : Closeable {
