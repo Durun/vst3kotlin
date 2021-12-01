@@ -10,7 +10,7 @@ val targetName = when {
 }
 
 plugins {
-    id("org.ajoberstar.grgit") version "4.1.0"
+    id("org.ajoberstar.grgit") version "4.1.1"
     `cpp-library`
     `cpp-unit-test`
     `maven-publish`
